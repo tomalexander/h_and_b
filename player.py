@@ -1,5 +1,6 @@
 import pygame
 from bullet import bullet
+from bullet import fireball
 import math
 
 class player(object):
@@ -8,6 +9,7 @@ class player(object):
         #pygame.sprite.Sprite.__init__(self) #call Sprite initializer
         self.images = [pygame.image.load("img/koiproxy.png"), pygame.image.load("img/dragonproxy.png")]
         self.rect = self.images[0].get_rect()
+        self.energy = 0
         #move koi to the middle of the screen
         self.rect.move_ip(284, 534)
         self.xvel = 35
@@ -23,26 +25,62 @@ class player(object):
         self.projectiles = []
         #dragon mode activated
         self.dragon = False
+        self.dragon_cooldown = 0.0
+        self.dragon_prereq = 300
+        #animation utilities
         self.frame = 0
 		
     def update(self, FrameRate):
         """handles input"""
         FrameRate = FrameRate/100
+        
+        self.energy += 1
+        
         #we're going to move if we aren't in the middle of a roll
         lock = self.barrel_roll(FrameRate)
         if lock == False:
             self.move(FrameRate)
+        
+        #handle dragon mode attempt
+        if self.dragon == True:
+            print("%f"%self.energy)
+            #disable dragon mode if they don't have enough energy
+            if self.energy < self.dragon_prereq:
+                self.dragon = False
+            #activate dragon mode
+            else:
+                self.rect.width = self.images[1].get_rect().width
+                self.rect.height = self.images[1].get_rect().height
+                self.dragon_cooldown += FrameRate
+                #deactivate dragon mode
+                if self.dragon_cooldown > 25.0:
+                    self.energy = 0
+                    self.dragon = False
+                    self.rect.width = self.images[0].get_rect().width
+                    self.rect.height = self.images[0].get_rect().height
+        
         #handle shooting
         self.shoot_cooldown -= FrameRate
         if self.shoot_cooldown < 0.0:
             self.shoot_cooldown = 0.0
         if self.shoot == True:
             if self.shoot_cooldown == 0.0:
-                new_bullet = bullet(self.rect.left+16, self.rect.top, math.pi/2)
-                self.projectiles.append(new_bullet)
+                self.energy +=1
+                if self.dragon == False:
+                    new_bullet = bullet(self.rect.left+16, self.rect.top, math.pi/2)
+                    self.projectiles.append(new_bullet)
+                else:
+                    new_fireball = fireball(self.rect.left+16, self.rect.top, math.pi/2)
+                    self.projectiles.append(new_fireball)
                 self.shoot_cooldown = 0.5
-        for projectile in self.projectiles:
-            projectile.update(FrameRate)
+        for i, projectile in enumerate(self.projectiles):
+            if projectile.update(FrameRate) == False:
+                self.projectiles.pop(i)
+                
+        
+                
+        #pass projectiles back to game
+        return self.projectiles
             
 
     #ABILITIES
@@ -51,7 +89,10 @@ class player(object):
         self.barrel[4] -= FrameRate
         if self.barrel[4] < 0.0:
             self.barrel[4] = 0.0
-        #contradictory input receives and we're not in the middle of anything
+        #check to see if we even have enough energy
+        if self.energy < 100:
+            return False
+        #contradictory input received and we're not in the middle of anything
         if self.barrel[0] and self.barrel[1] and self.barrel[2]==0 and self.barrel[3]==0:
             return False
         #check to see if a left-roll is in progress or if we're free to start one
@@ -62,6 +103,7 @@ class player(object):
                 #reset utilites
                 self.barrel[4] = 1.0
                 self.barrel[2] = 0.0
+                self.energy -= 100
                 return False
             else:
                 #advance animation
@@ -74,6 +116,7 @@ class player(object):
                 #reset utilities
                 self.barrel[4] = 1.0
                 self.barrel[3] = 0.0
+                self.energy -= 100
                 return False
             else:
                 #advance animation
@@ -85,7 +128,10 @@ class player(object):
 
     def roll_left(self, FrameRate):
         self.barrel[2] += FrameRate
-        future = self.rect.move(-self.xvel*2*FrameRate, 0)
+        acc = 2
+        if self.dragon:
+            acc = 4
+        future = self.rect.move(-self.xvel*acc*FrameRate, 0)
         if future.left < 75:
             self.rect.left = 75
         else:
@@ -93,7 +139,10 @@ class player(object):
                 
     def roll_right(self, FrameRate):
         self.barrel[3] += FrameRate
-        future = self.rect.move(self.xvel*2*FrameRate, 0)
+        acc = 2
+        if self.dragon:
+            acc = 4
+        future = self.rect.move(self.xvel*acc*FrameRate, 0)
         if future.right > 525:
             self.rect.right = 525
         else:
@@ -101,51 +150,55 @@ class player(object):
     
     #MOVEMENT
     def move(self, FrameRate):
-    #Negate any contradictory movements
+        updown_lock = False
+        leftright_lock = False
+        #Negate any contradictory movements
         if self.moving[0] and self.moving[1]:
-            return
+            updown_lock = True
         elif self.moving[2] and self.moving[3]:
-            return
+            leftright_lock = True
         
-        #up
-        if self.moving[0]:
-            future = self.rect.move(0, -self.yvel*FrameRate)
-            if(future.top<534):
-                self.rect.top=534
-            else:
-                self.rect = future
-        #down
-        elif self.moving[1]:
-            future = self.rect.move(0, self.yvel*FrameRate)
-            if(future.bottom>800):
-                self.rect.bottom = 800
-            else:
-                self.rect = future
-        #left
-        if self.moving[2]:
-            future = self.rect.move(-self.xvel*FrameRate, 0)
-            if(future.left < 75):
-                self.rect.left = 75
-            else:
-                self.rect = future
-        #right
-        elif self.moving[3]:
-            future = self.rect.move(self.xvel*FrameRate, 0)
-            if(future.right > 525):
-                self.rect.right = 525
-            else:
-                self.rect = future
-	
-    #DRAGON MODE
-    def dragon_mode(self, FrameRate):
-        pass
+        if updown_lock == False:
+            #up
+            if self.moving[0]:
+                future = self.rect.move(0, -self.yvel*FrameRate)
+                if(future.top<534):
+                    self.rect.top=534
+                else:
+                    self.rect = future
+            #down
+            elif self.moving[1]:
+                future = self.rect.move(0, self.yvel*FrameRate)
+                if(future.bottom>800):
+                    self.rect.bottom = 800
+                else:
+                    self.rect = future
+        if leftright_lock == False:
+            #left
+            if self.moving[2]:
+                future = self.rect.move(-self.xvel*FrameRate, 0)
+                if(future.left < 75):
+                    self.rect.left = 75
+                else:
+                    self.rect = future
+            #right
+            elif self.moving[3]:
+                future = self.rect.move(self.xvel*FrameRate, 0)
+                if(future.right > 525):
+                    self.rect.right = 525
+                else:
+                    self.rect = future
+
         
     def shoot(self, FrameRate):
         pass
         
     def draw(self, screen):
         """draws koi"""
-        screen.blit(self.images[0], self.rect);
+        if self.dragon == False:
+            screen.blit(self.images[0], self.rect)
+        else:
+            screen.blit(self.images[1], self.rect)
         for projectile in self.projectiles:
             projectile.draw(screen)
 

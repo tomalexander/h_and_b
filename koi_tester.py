@@ -35,6 +35,8 @@ class Game(object):
                     self.player.barrel[1] = True
                 if event.key == pygame.K_SPACE:
                     self.player.shoot = True
+                if event.key == pygame.K_r:
+                    self.player.dragon = True
             #RELEASING KEYS
             if event.type == pygame.KEYUP:
             #movement
