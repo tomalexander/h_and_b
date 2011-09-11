@@ -1,22 +1,27 @@
 import pygame
+from bullet import bullet
+import math
 
 class player(object):
     """the player's koi fish"""
     def __init__(self):
         #pygame.sprite.Sprite.__init__(self) #call Sprite initializer
-        self.image = pygame.image.load("img/koiproxy.png")
-        self.rect = self.image.get_rect()
+        self.images = [pygame.image.load("img/koiproxy.png"), pygame.image.load("img/dragonproxy.png")]
+        self.rect = self.images[0].get_rect()
         #move koi to the middle of the screen
         self.rect.move_ip(284, 534)
-        self.rect.width = 32
-        self.rect.height = 64
         self.xvel = 35
         self.yvel = 35
-        #control locks
-        self.moving = [False, False, False, False] #up, down, left, right
+        #CONTROL LOCKS
+        #movement: up, down, left, right
+        self.moving = [False, False, False, False]
         #barrel roll controls [q pressed, e pressed, time since q, time since e, cooldown]
         self.barrel = [False, False, 0.0, 0.0, 0.0]
+        #shooting
         self.shoot = False
+        self.shoot_cooldown = 0.0
+        self.projectiles = []
+        #dragon mode activated
         self.dragon = False
         self.frame = 0
 		
@@ -27,6 +32,18 @@ class player(object):
         lock = self.barrel_roll(FrameRate)
         if lock == False:
             self.move(FrameRate)
+        #handle shooting
+        self.shoot_cooldown -= FrameRate
+        if self.shoot_cooldown < 0.0:
+            self.shoot_cooldown = 0.0
+        if self.shoot == True:
+            if self.shoot_cooldown == 0.0:
+                new_bullet = bullet(self.rect.left+16, self.rect.top, math.pi/2)
+                self.projectiles.append(new_bullet)
+                self.shoot_cooldown = 0.5
+        for projectile in self.projectiles:
+            projectile.update(FrameRate)
+            
 
     #ABILITIES
     def barrel_roll(self, FrameRate):
@@ -52,8 +69,6 @@ class player(object):
                 return True
         elif self.barrel[3]>0.0 or(self.barrel[1] and self.barrel[2]==0.0 and self.barrel[4]==0.0):
             #again, check if done, otherwise continue
-            #Debugging
-            print("Debugging: Right Roll -> (time elapsed: %f)"%self.barrel[3])
             self.barrel[1] = False
             if self.barrel[3] >= 1.0:
                 #reset utilities
@@ -121,7 +136,16 @@ class player(object):
             else:
                 self.rect = future
 	
-
+    #DRAGON MODE
+    def dragon_mode(self, FrameRate):
+        pass
+        
+    def shoot(self, FrameRate):
+        pass
+        
     def draw(self, screen):
         """draws koi"""
-        screen.blit(self.image, self.rect);
+        screen.blit(self.images[0], self.rect);
+        for projectile in self.projectiles:
+            projectile.draw(screen)
+

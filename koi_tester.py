@@ -15,6 +15,7 @@ class Game(object):
 
     def process_events(self):
         for event in pygame.event.get():
+            #PRESSING KEYS
             if event.type == pygame.KEYDOWN:
             #movement
                 if event.key == pygame.K_ESCAPE:
@@ -32,6 +33,9 @@ class Game(object):
                     self.player.barrel[0] = True
                 if event.key == pygame.K_e:
                     self.player.barrel[1] = True
+                if event.key == pygame.K_SPACE:
+                    self.player.shoot = True
+            #RELEASING KEYS
             if event.type == pygame.KEYUP:
             #movement
                 if event.key == pygame.K_w:
@@ -47,7 +51,8 @@ class Game(object):
                     self.player.barrel[0] = False
                 if event.key == pygame.K_e:
                     self.player.barrel[1] = False
-                
+                if event.key == pygame.K_SPACE:
+                    self.player.shoot = False
 
     def update(self):
         FrameRate = float(self.clock.tick(60))
