@@ -16,28 +16,42 @@ class Game(object):
     def process_events(self):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
+            #movement
                 if event.key == pygame.K_ESCAPE:
                     sys.exit()
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_w:
                     self.player.moving[0] = True
-                if event.key == pygame.K_DOWN:
+                if event.key == pygame.K_s:
                     self.player.moving[1] = True
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_a:
                     self.player.moving[2] = True
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_d:
                     self.player.moving[3] = True
+            #abilities
+                if event.key == pygame.K_q:
+                    self.player.barrel[0] = True
+                if event.key == pygame.K_e:
+                    self.player.barrel[1] = True
             if event.type == pygame.KEYUP:
-                if event.key == pygame.K_UP:
+            #movement
+                if event.key == pygame.K_w:
                     self.player.moving[0] = False
-                if event.key == pygame.K_DOWN:
+                if event.key == pygame.K_s:
                     self.player.moving[1] = False
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_a:
                     self.player.moving[2] = False
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_d:
                     self.player.moving[3] = False
+            #abilities
+                if event.key == pygame.K_q:
+                    self.player.barrel[0] = False
+                if event.key == pygame.K_e:
+                    self.player.barrel[1] = False
+                
 
     def update(self):
-        self.player.update(self.FrameRate)
+        FrameRate = float(self.clock.tick(60))
+        self.player.update(FrameRate)
 
     def draw(self):
         background = pygame.Surface(self.SCREENRECT.size).convert()

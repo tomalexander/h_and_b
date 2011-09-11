@@ -10,18 +10,16 @@ class game():
         self.time_since_last_frame = 0
         self.enemies = []
         self.player = player()
-        self.screen = pygame.display.set_mode((800, 640))
+        pass
 
     def run(self):
         """Begin running the game"""
         self.set_up_screen()
         while True:
             self.handle_events()
-            self.player.update(self.time_since_last_frame)
-            self.player.draw(self.screen)
             pygame.display.flip()
             self.time_since_last_frame = self.clock.tick(60)
-	
+
     def set_up_screen(self):
         """Initialize the window"""
         self.screen = pygame.display.set_mode((640, 480))
