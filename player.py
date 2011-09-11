@@ -10,8 +10,8 @@ class player(object):
         self.rect.move_ip(284, 534)
         self.rect.width = 32
         self.rect.height = 64
-        self.xvel = 6
-        self.yvel = 6
+        self.xvel = 35
+        self.yvel = 35
         #control locks
         self.moving = [False, False, False, False] #up, down, left, right
         #barrel roll controls [q pressed, e pressed, time since q, time since e, cooldown]
@@ -22,7 +22,7 @@ class player(object):
 		
     def update(self, FrameRate):
         """handles input"""
-        FrameRate = FrameRate/10
+        FrameRate = FrameRate/100
         #we're going to move if we aren't in the middle of a roll
         lock = self.barrel_roll(FrameRate)
         if lock == False:
@@ -40,7 +40,7 @@ class player(object):
         #check to see if a left-roll is in progress or if we're free to start one
         if self.barrel[2]>0.0 or (self.barrel[0] and self.barrel[3]==0.0 and self.barrel[4]==0.0):
             self.barrel[0] = False
-           #check to see if we're done, otherwise continue
+            #check to see if we're done, otherwise continue
             if self.barrel[2] >= 1.0:
                 #reset utilites
                 self.barrel[4] = 1.0
@@ -52,6 +52,9 @@ class player(object):
                 return True
         elif self.barrel[3]>0.0 or(self.barrel[1] and self.barrel[2]==0.0 and self.barrel[4]==0.0):
             #again, check if done, otherwise continue
+            #Debugging
+            print("Debugging: Right Roll -> (time elapsed: %f)"%self.barrel[3])
+            self.barrel[1] = False
             if self.barrel[3] >= 1.0:
                 #reset utilities
                 self.barrel[4] = 1.0
@@ -59,7 +62,6 @@ class player(object):
                 return False
             else:
                 #advance animation
-                self.barrel[3] += FrameRate
                 self.roll_right(FrameRate)
                 return True
         #if nothing is going on in here
@@ -67,10 +69,10 @@ class player(object):
             return False
 
     def roll_left(self, FrameRate):
-        self.barrel[3] += FrameRate
+        self.barrel[2] += FrameRate
         future = self.rect.move(-self.xvel*2*FrameRate, 0)
-        if future.right > 525:
-            self.rect.right = 525
+        if future.left < 75:
+            self.rect.left = 75
         else:
             self.rect = future
                 
