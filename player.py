@@ -43,45 +43,13 @@ class player(object):
         
         #handle dragon mode attempt
         if self.dragon == True:
-            print("%f"%self.energy)
-            #disable dragon mode if they don't have enough energy
-            if self.energy < self.dragon_prereq:
-                self.dragon = False
-            #activate dragon mode
-            else:
-                self.rect.width = self.images[1].get_rect().width
-                self.rect.height = self.images[1].get_rect().height
-                self.dragon_cooldown += FrameRate
-                #deactivate dragon mode
-                if self.dragon_cooldown > 25.0:
-                    self.energy = 0
-                    self.dragon = False
-                    self.rect.width = self.images[0].get_rect().width
-                    self.rect.height = self.images[0].get_rect().height
+            self.dragon_mode(FrameRate)
         
         #handle shooting
-        self.shoot_cooldown -= FrameRate
-        if self.shoot_cooldown < 0.0:
-            self.shoot_cooldown = 0.0
-        if self.shoot == True:
-            if self.shoot_cooldown == 0.0:
-                self.energy +=1
-                if self.dragon == False:
-                    new_bullet = bullet(self.rect.left+16, self.rect.top, math.pi/2)
-                    self.projectiles.append(new_bullet)
-                else:
-                    new_fireball = fireball(self.rect.left+16, self.rect.top, math.pi/2)
-                    self.projectiles.append(new_fireball)
-                self.shoot_cooldown = 0.5
-        for i, projectile in enumerate(self.projectiles):
-            if projectile.update(FrameRate) == False:
-                self.projectiles.pop(i)
-                
-        
+        self.handle_shoot(FrameRate)
                 
         #pass projectiles back to game
         return self.projectiles
-            
 
     #ABILITIES
     def barrel_roll(self, FrameRate):
@@ -90,7 +58,7 @@ class player(object):
         if self.barrel[4] < 0.0:
             self.barrel[4] = 0.0
         #check to see if we even have enough energy
-        if self.energy < 100:
+        if self.energy < 50:
             return False
         #contradictory input received and we're not in the middle of anything
         if self.barrel[0] and self.barrel[1] and self.barrel[2]==0 and self.barrel[3]==0:
@@ -103,7 +71,7 @@ class player(object):
                 #reset utilites
                 self.barrel[4] = 1.0
                 self.barrel[2] = 0.0
-                self.energy -= 100
+                self.energy -= 50
                 return False
             else:
                 #advance animation
@@ -116,7 +84,7 @@ class player(object):
                 #reset utilities
                 self.barrel[4] = 1.0
                 self.barrel[3] = 0.0
-                self.energy -= 100
+                self.energy -= 50
                 return False
             else:
                 #advance animation
@@ -189,9 +157,44 @@ class player(object):
                 else:
                     self.rect = future
 
-        
-    def shoot(self, FrameRate):
-        pass
+    
+    
+    #ACTIVATING AND DEACTIVATING DRAGON MODE
+    def dragon_mode(self, FrameRate):
+        print("%f"%self.energy)
+        #disable dragon mode if they don't have enough energy
+        if self.energy < self.dragon_prereq:
+            self.dragon = False
+        #activate dragon mode
+        else:
+            self.rect.width = self.images[1].get_rect().width
+            self.rect.height = self.images[1].get_rect().height
+            self.dragon_cooldown += FrameRate
+            #deactivate dragon mode
+            if self.dragon_cooldown > 25.0:
+                self.energy = 0
+                self.dragon = False
+                self.rect.width = self.images[0].get_rect().width
+                self.rect.height = self.images[0].get_rect().height
+
+    
+    def handle_shoot(self, FrameRate):
+        self.shoot_cooldown -= FrameRate
+        if self.shoot_cooldown < 0.0:
+            self.shoot_cooldown = 0.0
+        if self.shoot == True:
+            if self.shoot_cooldown == 0.0:
+                self.energy +=1
+                if self.dragon == False:
+                    new_bullet = bullet(self.rect.left+16, self.rect.top, math.pi/2)
+                    self.projectiles.append(new_bullet)
+                else:
+                    new_fireball = fireball(self.rect.left+16, self.rect.top, math.pi/2)
+                    self.projectiles.append(new_fireball)
+                self.shoot_cooldown = 0.5
+        for i, projectile in enumerate(self.projectiles):
+            if projectile.update(FrameRate) == False:
+                self.projectiles.pop(i)
         
     def draw(self, screen):
         """draws koi"""
