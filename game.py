@@ -60,6 +60,7 @@ class game():
     def update(self):
         """Update every frame"""
         self.distance += self.time_since_last_frame * self.worldspeed
+        #think about using clock.tick(60) to have a consistent frame rate across different machines
         if self.time_since_last_frame > 0:
             self.player.update(self.time_since_last_frame)
         else:
