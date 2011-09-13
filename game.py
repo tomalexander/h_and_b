@@ -22,6 +22,9 @@ class game():
         #self.landimgr = pygame.image.load("img/landproxy.png").convert()
         self.landimgr = pygame.transform.rotate(self.landimgl, 180)
         pass
+	
+	def load_obstacles(self, filename):
+		pass
 
     def run(self):
         """Begin running the game"""
