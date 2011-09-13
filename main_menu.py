@@ -1,7 +1,7 @@
 import pygame
 
 class main_menu():
-    """the player's coy fish"""
+    """The Main Menu"""
 
     WAITING = 0
     RUNNING = 1
@@ -32,8 +32,23 @@ class main_menu():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self._game.exit_game()
+                if event.key == pygame.K_DOWN:
+                    self.move_down()
+                if event.key == pygame.K_UP:
+                    self.move_up()
 
     def display(self, surface):
         for i,text in enumerate(self._options):
             text_pos = text.get_rect(centerx=surface.get_width()/2, centery=surface.get_height()/2 - 10*len(self._options) + 10*i)
             surface.blit(text, text_pos)
+
+    def move_down(self):
+        self.selected += 1
+        if (self.selected == len(self._options)):
+            self.selected = 0
+
+    def move_up(self):
+        self.selected -= 1
+        if (self.selected == -1):
+            self.selected = len(self._options) - 1
+

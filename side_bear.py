@@ -1,6 +1,7 @@
 import pygame
+from generic_bear import generic_bear
 
-class side_bear(pygame.sprite.Sprite):
-    """the player's coy fish"""
+class side_bear(generic_bear):
+    """The bears that are on the side of the river"""
     def __init__(self):
-        pygame.sprite.Sprite.__init__(self) #call Sprite initializer
+        generic_bear.__init__(self)
