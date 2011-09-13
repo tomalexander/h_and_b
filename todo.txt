@@ -1,0 +1,4 @@
+Things to Do at Next Meeting:
+
+9/13->
+Do collision between player and bears, breakable debris and bullets, etc.
