@@ -22,8 +22,8 @@ class game():
 
     def set_up_screen(self):
         """Initialize the window"""
-        self.screen = pygame.display.set_mode((640, 480))
-        pygame.display.set_caption("REPLACE THIS TITLE")
+        self.screen = pygame.display.set_mode((800, 640))
+        pygame.display.set_caption("A Game With Koi Fish, Bears, Debris, and DRAGON MODE!!!!111!!!11!!!!1one")
         pygame.mouse.set_visible(0)
 
     def handle_events(self):
