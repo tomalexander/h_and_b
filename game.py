@@ -1,6 +1,7 @@
 import sys
 import pygame
 from player import player
+from main_menu import main_menu
 
 class game():
     
@@ -21,6 +22,8 @@ class game():
 
     def run(self):
         """Begin running the game"""
+        the_menu = main_menu(self)
+        the_menu.run(self.screen)
         while True:
             self.handle_events()
             self.update()

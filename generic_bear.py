@@ -1,7 +1,7 @@
 import pygame
 from math import sqrt
 
-class generic_bear(pygame.sprite.Sprite):
+class generic_bear(object):
     """Common parent class of bear enemies"""
 
     WAITING = 0
@@ -10,14 +10,14 @@ class generic_bear(pygame.sprite.Sprite):
     ACTING = 3
     DEAD = 4
     
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self) #call Sprite initializer
+    def __init__(self, x_position, y_position):
         self.state = WAITING
         self._frame = 0
         self._max_hp = 100
         self._health = self._max_hp
         self._target = None
         self._target_range = 500
+        self.rect = pygame.Rect(x_position, y_position, 210, 120)
 
     def find_target(self, player):
         if (self._target == None):

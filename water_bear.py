@@ -8,6 +8,7 @@ class water_bear(generic_bear):
     
     def __init__(self):
         generic_bear.__init__(self)
+        self.image = pygame.image.load("img/water_bear_proxy.png")
         self._max_preperation_time = 500
         self._preperation_time = self._max_preperation_time
         self.substate = None
