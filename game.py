@@ -18,6 +18,9 @@ class game():
         self.distance = 0
         self.worldspeed = 1 #distance per ms for river image movement
         self.riverimg = pygame.image.load("img/riverproxy.png").convert()
+        self.landimgl = pygame.image.load("img/landproxy.png").convert()
+        #self.landimgr = pygame.image.load("img/landproxy.png").convert()
+        self.landimgr = pygame.transform.rotate(self.landimgl, 180)
         pass
 
     def run(self):
@@ -41,9 +44,15 @@ class game():
         """Draw all the things!"""
         #Currently, the setup is up to two images dealing with the scrolling river
         riverrect = self.riverimg.get_rect()
+        landrectl = self.landimgl.get_rect()
+        landrectr = self.landimgr.get_rect()
         ydisp = (self.distance/2)%riverrect.height
         self.screen.blit(self.riverimg, pygame.Rect(0, ydisp, self.windowx, self.windowy))
         self.screen.blit(self.riverimg, pygame.Rect(0, ydisp - riverrect.height, self.windowx, self.windowy))
+        self.screen.blit(self.landimgl, pygame.Rect(0, ydisp, self.windowx, self.windowy))
+        self.screen.blit(self.landimgl, pygame.Rect(0, ydisp - landrectl.height, self.windowx, self.windowy))
+        self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp, self.windowx, self.windowy))
+        self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp - landrectr.height, self.windowx, self.windowy))
         self.player.draw(self.screen)
         
     def update(self):
@@ -62,7 +71,7 @@ class game():
                 self.exit_game() #If close button clicked
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.exit_game()
+                    self.activate_menu()
 		#KOI CONTROLS (pardon the intrusion)
 				#movement
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
@@ -100,6 +109,10 @@ class game():
                 if event.key == pygame.K_SPACE:
                     self.player.shoot = False
 
+    def activate_menu(self):
+        m = main_menu(self)
+        m.run(self.screen)
+                    
     def exit_game(self):
         """Exit the game"""
         pygame.quit()
