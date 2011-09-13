@@ -1,4 +1,5 @@
 import pygame
+from key_capture import key_capture
 
 class options_menu():
     """The Options Menu"""
@@ -26,7 +27,7 @@ class options_menu():
     def run(self, surface):
         self.state = options_menu.RUNNING
         while self.state == options_menu.RUNNING:
-            self.handle_events()
+            self.handle_events(surface)
             self.update_progress(self.time_since_last_frame)
             self.display(surface)
             pygame.display.flip()
@@ -37,7 +38,7 @@ class options_menu():
         while (self._rotate_progress > self._rotate_duration):
             self._rotate_progress -= self._rotate_duration
 
-    def handle_events(self):
+    def handle_events(self, surface):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self._game.exit_game() #If close button clicked
@@ -49,7 +50,8 @@ class options_menu():
                 elif event.key == pygame.K_UP:
                     self.move_up()
                 elif event.key == pygame.K_RETURN:
-                    pass
+                    new_key = key_capture(self._game)
+                    new_key.run(surface)
 
     def display(self, surface):
         self.draw_background(surface)
