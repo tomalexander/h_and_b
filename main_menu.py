@@ -20,14 +20,22 @@ class main_menu():
         self.clock = pygame.time.Clock()
         self.image = pygame.image.load("img/riverproxy.png").convert()
         self.selector = pygame.image.load("img/selector_proxy.png").convert_alpha()
+        self._rotate_duration = 1000
+        self._rotate_progress = 0
 
     def run(self, surface):
         self.state = main_menu.RUNNING
         while self.state == main_menu.RUNNING:
             self.handle_events()
+            self.update_progress(self.time_since_last_frame)
             self.display(surface)
             pygame.display.flip()
             self.time_since_last_frame = self.clock.tick(60)
+
+    def update_progress(self, time_since_last_frame):
+        self._rotate_progress += time_since_last_frame
+        while (self._rotate_progress > self._rotate_duration):
+            self._rotate_progress -= self._rotate_duration
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -70,4 +78,6 @@ class main_menu():
 
     def draw_background(self, surface):
         background_rect = self.image.get_rect()
-        surface.blit(self.image, pygame.Rect(0, 0, self.image.get_rect().width, self.image.get_rect().height))
+        y_progress = float(-1) * float(self._rotate_progress) / float(self._rotate_duration) * float(self.image.get_rect().height)
+        surface.blit(self.image, pygame.Rect(0, 0, self.image.get_rect().width, self.image.get_rect().height), pygame.Rect(0, y_progress, self.image.get_rect().width, self.image.get_rect().height))
+        surface.blit(self.image, pygame.Rect(0, -1 * (self.image.get_rect().height+y_progress), self.image.get_rect().width, self.image.get_rect().height), pygame.Rect(0, 0, self.image.get_rect().width, self.image.get_rect().height))
