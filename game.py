@@ -3,8 +3,9 @@ import pygame
 from player import player
 
 class game():
-    """Main running function"""
+    
     def __init__(self):
+        """Main running function"""
         self.windowx = 640
         self.windowy = 800
         pygame.init()
@@ -34,16 +35,25 @@ class game():
         pygame.mouse.set_visible(0)
     
     def draw(self):
+        """Draw all the things!"""
         #Currently, the setup is up to two images dealing with the scrolling river
         riverrect = self.riverimg.get_rect()
         ydisp = (self.distance/2)%riverrect.height
         self.screen.blit(self.riverimg, pygame.Rect(0, ydisp, self.windowx, self.windowy))
         self.screen.blit(self.riverimg, pygame.Rect(0, ydisp - riverrect.height, self.windowx, self.windowy))
+        self.player.draw(self.screen)
         
     def update(self):
+        """Update every frame"""
         self.distance += self.time_since_last_frame * self.worldspeed
+        if self.time_since_last_frame > 0:
+            self.player.update(60.0/self.time_since_last_frame)
+        else:
+            self.player.update(0)
 
     def handle_events(self):
+        """Handle events (such as key presses)"""
+        #TODO: Implement Koi shooting + Dragon Mode Controls
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.exit_game() #If close button clicked
@@ -52,13 +62,13 @@ class game():
                     self.exit_game()
 		#KOI CONTROLS (pardon the intrusion)
 				#movement
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_UP or event.key == pygame.K_w:
                     self.player.moving[0] = True
-                if event.key == pygame.K_DOWN:
+                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     self.player.moving[1] = True
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     self.player.moving[2] = True
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     self.player.moving[3] = True
 				#abilities
                 if event.key == pygame.K_q:
@@ -67,13 +77,13 @@ class game():
                     self.player.barrel[1] = True
             if event.type == pygame.KEYUP:
 				#cancelling movement
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_UP or event.key == pygame.K_w:
                     self.player.moving[0] = False
-                if event.key == pygame.K_DOWN:
+                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     self.player.moving[1] = False
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     self.player.moving[2] = False
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     self.player.moving[3] = False
 				#cancelling abilities
                 if event.key == pygame.K_q:
@@ -82,6 +92,7 @@ class game():
                     self.player.barrel[1] = True
 
     def exit_game(self):
+        """Exit the game"""
         pygame.quit()
         sys.exit()
  
