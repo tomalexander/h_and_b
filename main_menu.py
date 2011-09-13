@@ -36,10 +36,13 @@ class main_menu():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self._game.exit_game()
-                if event.key == pygame.K_DOWN:
+                elif event.key == pygame.K_DOWN:
                     self.move_down()
-                if event.key == pygame.K_UP:
+                elif event.key == pygame.K_UP:
                     self.move_up()
+                elif event.key == pygame.K_RETURN:
+                    if (self.selected == 0): #start game
+                        self.state = main_menu.FINISHED
 
     def display(self, surface):
         self.draw_background(surface)
@@ -48,7 +51,10 @@ class main_menu():
             text_pos = text.get_rect(centerx=surface.get_width()/2, centery=surface.get_height()/2 - vertical_space*len(self._options) + vertical_space*i)
             surface.blit(text, text_pos)
 
-        selector_rect = self.selector.get_rect(centerx=self._options[self.selected].get_rect().x - self.selector.get_rect().width, centery=surface.get_height()/2 - vertical_space*len(self._options) + vertical_space*self.selected)
+        selector_rect = self.selector.get_rect()
+        selector_rect.centerx = surface.get_width()/3
+        selector_rect.centery = surface.get_height()/2 - vertical_space*len(self._options) + vertical_space*self.selected
+        #(centerx=self._options[self.selected].get_rect().x - self.selector.get_rect().width, centery=surface.get_height()/2 - vertical_space*len(self._options) + vertical_space*self.selected)
         surface.blit(self.selector, selector_rect)
 
     def move_down(self):
