@@ -11,7 +11,7 @@ class game():
         pygame.init()
         self.clock = pygame.time.Clock()
         self.set_up_screen()
-        self.time_since_last_frame = 0
+        self.time_since_last_frame = 0.0
         self.enemies = []
         self.player = player()
         self.distance = 0
@@ -26,7 +26,7 @@ class game():
             self.update()
             self.draw()
             pygame.display.flip()
-            self.time_since_last_frame = self.clock.tick(60)
+            self.time_since_last_frame = float(self.clock.tick(60))
 
     def set_up_screen(self):
         """Initialize the window"""
@@ -47,7 +47,7 @@ class game():
         """Update every frame"""
         self.distance += self.time_since_last_frame * self.worldspeed
         if self.time_since_last_frame > 0:
-            self.player.update(60.0/self.time_since_last_frame)
+            self.player.update(self.time_since_last_frame)
         else:
             self.player.update(0)
 
@@ -75,6 +75,10 @@ class game():
                     self.player.barrel[0] = True
                 if event.key == pygame.K_e:
                     self.player.barrel[1] = True
+                if event.key == pygame.K_SPACE:
+                    self.player.shoot = True
+                if event.key == pygame.K_r:
+                    self.player.dragon = True
             if event.type == pygame.KEYUP:
 				#cancelling movement
                 if event.key == pygame.K_UP or event.key == pygame.K_w:
@@ -90,6 +94,8 @@ class game():
                     self.player.barrel[0] = True
                 if event.key == pygame.K_e:
                     self.player.barrel[1] = True
+                if event.key == pygame.K_SPACE:
+                    self.player.shoot = False
 
     def exit_game(self):
         """Exit the game"""
