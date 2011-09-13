@@ -2,6 +2,7 @@ import sys
 import pygame
 from player import player
 from main_menu import main_menu
+from key_bindings import key_bindings
 
 class game():
     
@@ -21,6 +22,7 @@ class game():
         self.landimgl = pygame.image.load("img/landproxy.png").convert()
         #self.landimgr = pygame.image.load("img/landproxy.png").convert()
         self.landimgr = pygame.transform.rotate(self.landimgl, 180)
+        self.key_bindings = key_bindings()
         pass
 
     def run(self):
