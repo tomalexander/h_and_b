@@ -43,6 +43,8 @@ class main_menu():
                 elif event.key == pygame.K_RETURN:
                     if (self.selected == 0): #start game
                         self.state = main_menu.FINISHED
+                    if (self.selected == 2): #end game
+                        self._game.exit_game()
 
     def display(self, surface):
         self.draw_background(surface)
@@ -54,7 +56,6 @@ class main_menu():
         selector_rect = self.selector.get_rect()
         selector_rect.centerx = surface.get_width()/3
         selector_rect.centery = surface.get_height()/2 - vertical_space*len(self._options) + vertical_space*self.selected
-        #(centerx=self._options[self.selected].get_rect().x - self.selector.get_rect().width, centery=surface.get_height()/2 - vertical_space*len(self._options) + vertical_space*self.selected)
         surface.blit(self.selector, selector_rect)
 
     def move_down(self):
