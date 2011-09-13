@@ -1,21 +1,21 @@
 import pygame
-from options_menu import options_menu
+from key_capture import key_capture
 
-class main_menu():
-    """The Main Menu"""
+class options_menu():
+    """The Options Menu"""
 
     WAITING = 0
     RUNNING = 1
     FINISHED = 2
     
     def __init__(self, _game):
-        self.state = main_menu.WAITING
+        self.state = options_menu.WAITING
         self.time_since_last_frame = 0
         self._game = _game
         self.font = pygame.font.Font(None, 36)
-        self._start_text = self.font.render("Start Game", 1, (255, 255, 255))
-        self._exit_text = self.font.render("Exit Game", 1, (255, 255, 255))
-        self._options_text = self.font.render("Options", 1, (255, 255, 255))
+        self._start_text = self.font.render("OPTIONS 1", 1, (255, 255, 255))
+        self._exit_text = self.font.render("OPTIONS 2", 1, (255, 255, 255))
+        self._options_text = self.font.render("OPTIONS 3", 1, (255, 255, 255))
         self.selected = 0
         self._options = [self._start_text, self._options_text, self._exit_text]
         self.clock = pygame.time.Clock()
@@ -25,8 +25,8 @@ class main_menu():
         self._rotate_progress = 0
 
     def run(self, surface):
-        self.state = main_menu.RUNNING
-        while self.state == main_menu.RUNNING:
+        self.state = options_menu.RUNNING
+        while self.state == options_menu.RUNNING:
             self.handle_events(surface)
             self.update_progress(self.time_since_last_frame)
             self.display(surface)
@@ -44,19 +44,14 @@ class main_menu():
                 self._game.exit_game() #If close button clicked
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self._game.exit_game()
+                    self.state = self.FINISHED
                 elif event.key == pygame.K_DOWN:
                     self.move_down()
                 elif event.key == pygame.K_UP:
                     self.move_up()
                 elif event.key == pygame.K_RETURN:
-                    if (self.selected == 0): #start game
-                        self.state = main_menu.FINISHED
-                    if (self.selected == 1): #options
-                        sub_menu = options_menu(self._game)
-                        sub_menu.run(surface)
-                    if (self.selected == 2): #end game
-                        self._game.exit_game()
+                    new_key = key_capture(self._game)
+                    new_key.run(surface)
 
     def display(self, surface):
         self.draw_background(surface)
