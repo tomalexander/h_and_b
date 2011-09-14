@@ -10,6 +10,7 @@ class debris(object):
         self.scale = random.randrange(1, 5)
         pygame.transform.scale(self.image, (self.scale*self.image.get_rect().width, self.scale*self.image.get_rect().height))
         self.rect = self.image.get_rect()
+        self.type = "debris"
         #spawn debris at the top of the river
         self.rect.move_ip(x, 0)
         self.angle = ang
@@ -38,7 +39,7 @@ class debris(object):
         """draws the bullet"""
         screen.blit(self.image, self.rect)
 
-class unbreakable_debris(debris):
+class rock(debris):
     """unbreakable type debris"""
     def __init__(self):
         debris.__init__(self)
@@ -47,5 +48,6 @@ class unbreakable_debris(debris):
         self.scale = random.randrange(1, 5)
         pygame.transform.scale(self.image, (self.scale*self.image.get_rect().width, self.scale*self.image.get_rect().height))
         self.rect = self.image.get_rect()
+        self.type == "rock"
         
     
