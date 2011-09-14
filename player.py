@@ -40,7 +40,7 @@ class player(object):
         
         #we're going to move if we aren't in the middle of a roll
         self.barrel_lock = self.barrel_roll(FrameRate)
-        if self.barrel_lock == False:
+        if not self.barrel_lock:
             self.move(FrameRate)
         
         #handle dragon mode attempt
@@ -128,12 +128,12 @@ class player(object):
         elif self.moving[2] and self.moving[3]:
             leftright_lock = True
         
-        if updown_lock == False:
+        if not updown_lock:
             #up
             if self.moving[0]:
                 future = self.rect.move(0, -self.yvel*FrameRate)
-                if(future.top<534):
-                    self.rect.top=534
+                if(future.top<400):
+                    self.rect.top=400
                 else:
                     self.rect = future
             #down
@@ -143,7 +143,7 @@ class player(object):
                     self.rect.bottom = 800
                 else:
                     self.rect = future
-        if leftright_lock == False:
+        if not leftright_lock:
             #left
             if self.moving[2]:
                 future = self.rect.move(-self.xvel*FrameRate, 0)
@@ -184,21 +184,21 @@ class player(object):
         if self.shoot == True and self.shoot_cooldown == 0.0:
             if self.shoot_cooldown == 0.0:
                 self.energy +=1
-                if self.dragon == False:
+                if not self.dragon:
                     new_bullet = bullet(self.rect.left+16, self.rect.top, math.pi/2)
                     self.projectiles.append(new_bullet)
-                    self.shoot_cooldown = 1.0
+                    self.shoot_cooldown = 2.0
                 else:
                     new_fireball = fireball(self.rect.left+16, self.rect.top, math.pi/2)
                     self.projectiles.append(new_fireball)
                     self.shoot_cooldown = 1.5
         for i, projectile in enumerate(self.projectiles):
-            if projectile.update(FrameRate) == False:
+            if not projectile.update(FrameRate):
                 self.projectiles.pop(i)
     
     def draw(self, screen):
         """draws koi"""
-        if self.dragon == False:
+        if not self.dragon:
             screen.blit(self.images[0], self.rect)
         else:
             screen.blit(self.images[1], self.rect)

@@ -24,8 +24,6 @@ class debris(object):
     
     def displace(self, bubble_rect):
         self.angle=-math.atan2(self.rect.centery-bubble_rect.centery, self.rect.centerx - bubble_rect.centerx)
-        if self.xvel > -20:
-            self.xvel -= 20
         if self.yvel > -20:
             self.yvel -=20
         
@@ -33,14 +31,17 @@ class debris(object):
     def move(self, FrameRate):
         """moves debris along its trajectory"""
         
+        self.yvel += 0.5
         self.rect.move_ip(math.cos(self.angle)*self.xvel*FrameRate, -math.sin(self.angle)*self.yvel*FrameRate)
 
-        if self.rect.left < 0:
-            return False
-        elif self.rect.right > 600:
-            return False
-        elif self.rect.top < 0:
-            return False
+        #bounce off of the sides of the river
+        if self.rect.left < 100:
+            self.angle -= math.pi/2
+        elif self.rect.right > 500:
+            self.angle += math.pi/2
+        
+        #elif self.rect.top < 0:
+        #    return False
         return True
 
     def draw(self, screen):
