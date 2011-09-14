@@ -6,7 +6,7 @@ class side_bear(generic_bear):
 
     SWIPING = 0
     
-    def __init__(self):
+    def __init__(self, player):
         generic_bear.__init__(self)
         self.image = pygame.image.load("img/side_bear_proxy.png")
         self._target_range = 100
@@ -14,11 +14,12 @@ class side_bear(generic_bear):
         self._sipe_progress = 0
         self._swipe_width = 100
         self.paw_rect = None
+        self.player = player
 
-    def update(self, time_since_last_frame, player):
+    def update(self, time_since_last_frame):
         if (self.state == DEAD):
             return
-        find_target(player)
+        find_target(self.player)
         check_target_acquired()
         update_swipe(time_since_last_frame)
         update_paw_rect()
@@ -44,3 +45,6 @@ class side_bear(generic_bear):
         if (self.state == ACTING):
             if (self.paw_rect.colliderect(player.rect)):
                 hit_player(player)
+                
+    def draw(self, surface):
+        pass
