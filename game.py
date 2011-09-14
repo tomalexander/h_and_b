@@ -79,6 +79,7 @@ class game():
         """Update every frame"""
         self.distance += self.time_since_last_frame * self.worldspeed
         #think about using clock.tick(60) to have a consistent frame rate across different machines
+        #^^^See run(self)
         self.player.update(self.time_since_last_frame)
         #After updating the player, let's deal with enemies
         #1. Check for enemies we need to add
