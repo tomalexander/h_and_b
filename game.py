@@ -136,12 +136,23 @@ class game():
         self.handle_collision(projectiles)
     
     def handle_collision(self, projectiles):
-        for i, trash in enumerate(self.debris_list):
-            if self.player.rect.colliderect(trash.rect):
-                self.player_killed = True
-            for bullet in projectiles:
+        for bullet in projectiles:
+            for i, trash in enumerate(self.debris_list):
+                if self.player.rect.colliderect(trash.rect):
+                    self.player_killed = True
                 if bullet.rect.colliderect(trash.rect):
                     self.debris_list.pop(i)
+            for k, rock in enumerate(self.rock_list):
+                if self.player.rect.colliderect(rock.rect):
+                    self.player_killed = True
+                if bullet.rect.colliderect(rock.rect) and bullet.type == "fireball":
+                    self.rock_list.pop(i)
+            for j, wbear in enumerate(self.wbear_list):
+                if self.player.rect.colliderect(wbear.rect):
+                    self.player_killed = True
+                if bullet.rect.colliderect(wbear.rect) and bullet.type == "fireball":
+                    self.wbear_list.pop(i)
+        
 
     def handle_events(self):
         """Handle events (such as key presses)"""
