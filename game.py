@@ -24,6 +24,7 @@ class game():
         self.wbear_list = []
         self.player = player()
         self.lives = 3
+        self.player = player(self.windowx)
         self.distance = 0
         self.worldspeed = 1 #distance per ms for river image movement
         self.riverimg = pygame.image.load("img/riverproxy.png").convert()
