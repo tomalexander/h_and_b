@@ -33,11 +33,18 @@ class debris(object):
         elif self.rect.top < 0:
             return False
         return True
-        
-    def collide(self, enemies):
-        """collision detection - takes a list of enemy rects"""
-        pass
 
     def draw(self, screen):
         """draws the bullet"""
         screen.blit(self.image, self.rect)
+
+class unbreakable_debris(debris):
+    """unbreakable type debris"""
+    debris.__init__(self)
+    #reset image, scale, and rect
+    self.image = pygame.image.load("img/unbreakable.png")
+    self.scale = random.randrange(1, 5)
+    pygame.transform.scale(self.image, (self.scale*self.image.get_rect().width, self.scale*self.image.get_rect().height))
+    self.rect = self.image.get_rect()
+        
+    

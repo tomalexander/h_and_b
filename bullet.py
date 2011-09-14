@@ -29,10 +29,6 @@ class bullet(object):
         elif self.rect.top < 0:
             return False
         return True
-        
-    def collide(self, enemies):
-        """collision detection - takes a list of enemy rects"""
-        pass
 
     def draw(self, screen):
         """draws the bullet"""
@@ -63,10 +59,6 @@ class fireball(object):
         elif self.rect.top < 0:
             return False
         return True
-    
-    def collide(self, enemies):
-        """collision detection - takes a list of enemy rects"""
-        pass
     
     def draw(self, screen):
         """draws the fireball"""
