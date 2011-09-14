@@ -18,6 +18,7 @@ class water_bear(generic_bear):
         self.jump_multiplier = 0.5
         self.jump_duration = 250
         self.jump_progress = 0
+        self.drift_speed = 100
 
     def update(self, time_since_last_frame):
         if (self.state == self.DEAD):
@@ -29,6 +30,11 @@ class water_bear(generic_bear):
         self.update_swim(time_since_last_frame)
         self.update_home(time_since_last_frame)
         self.check_player_collision(self.player)
+        self.drift(time_since_last_frame)
+
+    def drift(self, time_since_last_frame):
+        y_diff = float(time_since_last_frame) / float(1000) * self.drift_speed
+        self.rect.move_ip(0,y_diff)
 
     def check_prep_time(self, time_since_last_frame):
         if (self.state == self.TARGET_ACQUIRED):
