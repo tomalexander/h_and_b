@@ -139,7 +139,7 @@ class game():
             rc.update(self.time_since_last_frame)
         for sbr in self.sbear_list:
             sbr.update(self.time_since_last_frame)
-        for wbr in self.rock_list:
+        for wbr in self.wbear_list:
             wbr.update(self.time_since_last_frame)
         #3. Remove Enemies that are off screen
         for en in self.debris_list:
