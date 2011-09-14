@@ -21,11 +21,17 @@ class evil_koi(object):
         #animation utilities
         self.frame = 0
         self.windowx = windowx
+        self.checkpoint_left = False
+        self.checkpoint_right = False
         
         
     def update(self, FrameRate):
+        self.automove(FrameRate)
         
     def automove(self, FrameRate):
+        if not self.checkpoint_left:
+        
+        
         
         
         if self.rect.left < 100:
