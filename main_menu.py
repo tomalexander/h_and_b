@@ -19,7 +19,7 @@ class main_menu():
         self.selected = 0
         self._options = [self._start_text, self._options_text, self._exit_text]
         self.clock = pygame.time.Clock()
-        self.image = pygame.image.load("img/riverproxy.png").convert()
+        self.image = pygame.image.load("img/menu_background_proxy.png").convert()
         self.selector = pygame.image.load("img/selector_proxy.png").convert_alpha()
         self._rotate_duration = 1500
         self._rotate_progress = 0
