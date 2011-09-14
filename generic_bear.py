@@ -50,3 +50,8 @@ class generic_bear(object):
 
     def hit_player(self, player):
         pass
+    
+    def drift(self, time_since_last_frame):
+        y_diff = float(time_since_last_frame) / float(1000) * float(self.drift_speed)
+        self.rect.move_ip(0,y_diff)
+        self._original_y += y_diff

@@ -32,10 +32,6 @@ class water_bear(generic_bear):
         self.check_player_collision(self.player)
         self.drift(time_since_last_frame)
 
-    def drift(self, time_since_last_frame):
-        y_diff = float(time_since_last_frame) / float(1000) * float(self.drift_speed)
-        self.rect.move_ip(0,y_diff)
-        self._original_y += y_diff
 
     def check_prep_time(self, time_since_last_frame):
         if (self.state == self.TARGET_ACQUIRED):
