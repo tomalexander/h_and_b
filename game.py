@@ -3,6 +3,7 @@ import pygame
 from player import player
 from main_menu import main_menu
 from key_bindings import key_bindings
+from debris import debris
 
 class game():
     
@@ -14,6 +15,8 @@ class game():
         self.clock = pygame.time.Clock()
         self.set_up_screen()
         self.time_since_last_frame = 0.0
+        self.enemy_text = open("enemies.txt").readlines()
+        self.enemy_data = self.interp_enemies(self.enemy_text)
         self.enemies = []
         self.player = player()
         self.distance = 0
@@ -23,15 +26,25 @@ class game():
         #self.landimgr = pygame.image.load("img/landproxy.png").convert()
         self.landimgr = pygame.transform.rotate(self.landimgl, 180)
         self.key_bindings = key_bindings()
-        pass
-	
-	def load_obstacles(self, filename):
-		pass
+        self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
+
+    def interp_enemies(self, enemy_txt):
+        """translate enemies.txt input into a list of tuples"""
+        new_data = []
+        for entry in enemy_txt:
+            someline = entry.split(',')
+            #print someline
+            new_data.append([int(someline[0]), someline[1], int(someline[2]), int(someline[3])]) #2D Array!
+        #Some test code:
+        #for en in new_data:
+            #print "At time %i, spawn a %s at position (%i, %i)"%(en[0], en[1], en[2], en[3])
+        return new_data
 
     def run(self):
         """Begin running the game"""
         the_menu = main_menu(self)
         the_menu.run(self.screen)
+        self.clock.tick()
         while True:
             self.handle_events()
             self.update()
@@ -59,19 +72,39 @@ class game():
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp, self.windowx, self.windowy))
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp - landrectr.height, self.windowx, self.windowy))
         self.player.draw(self.screen)
+        for e in self.enemies:
+            e.draw(self.screen)
         
     def update(self):
         """Update every frame"""
         self.distance += self.time_since_last_frame * self.worldspeed
         #think about using clock.tick(60) to have a consistent frame rate across different machines
-        if self.time_since_last_frame > 0:
-            self.player.update(self.time_since_last_frame)
-        else:
-            self.player.update(0)
+        self.player.update(self.time_since_last_frame)
+        #After updating the player, let's deal with enemies
+        #1. Check for enemies we need to add
+        for enemy in self.enemy_data:
+            if self.distance > enemy[0]:
+                #Create the enemy, add it to self.enemies
+                #print "It's been %i ms, time to spawn an enemy!"%self.distance
+                if enemy[1] == "debris":
+                    rdyenemy = debris(enemy[2],90)
+                    self.enemies.append(rdyenemy)
+                else:
+                    print "INVALID ENEMY!"
+                    exit_game()
+                #Remove from data
+                self.enemy_data.remove(enemy)
+        #2. Update Enemies
+        for en in self.enemies:
+            en.update(self.time_since_last_frame)
+        #3. Remove Enemies that are off screen
+        for en in self.enemies:
+            if not(self.screen_rect.colliderect(en.rect)):
+                self.enemies.remove(en)
+                #print "killing enemy!"
 
     def handle_events(self):
         """Handle events (such as key presses)"""
-        #TODO: Implement Koi shooting + Dragon Mode Controls
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.exit_game() #If close button clicked

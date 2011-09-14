@@ -14,7 +14,7 @@ class debris(object):
         self.rect.move_ip(x, 0)
         self.angle = ang
         self.xvel = 70
-        self.yvel = 70
+        self.yvel = 1 #was 70, but testing showed it was waaaaaaay too fast, and this is stretching it, lol
 
     def update(self, FrameRate):
         """updates debris"""
