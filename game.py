@@ -158,7 +158,6 @@ class game():
             if self.player.rect.colliderect(trash.rect):
                 self.player_killed = True
                 self.debris_list.pop(i)
-                print "Collision detected"
         for k, rock in enumerate(self.rock_list):
             if self.player.rect.colliderect(rock.rect):
                 self.player_killed = True

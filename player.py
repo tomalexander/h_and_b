@@ -97,23 +97,23 @@ class player(object):
 
     def roll_left(self, FrameRate):
         self.barrel[2] += FrameRate
-        acc = 2
+        acc = 4
         if self.dragon:
-            acc = 4
+            acc = 5
         future = self.rect.move(-self.xvel*acc*FrameRate, 0)
-        if future.left < 75:
-            self.rect.left = 75
+        if future.left < 80:
+            self.rect.left = 80
         else:
             self.rect = future
                 
     def roll_right(self, FrameRate):
         self.barrel[3] += FrameRate
-        acc = 2
+        acc = 4
         if self.dragon:
-            acc = 4
+            acc = 5
         future = self.rect.move(self.xvel*acc*FrameRate, 0)
-        if future.right > 525:
-            self.rect.right = 525
+        if future.right > self.windowx - 160:
+            self.rect.right = self.windowx - 160
         else:
             self.rect = future
     
@@ -186,10 +186,11 @@ class player(object):
                 if self.dragon == False:
                     new_bullet = bullet(self.rect.left+16, self.rect.top, math.pi/2)
                     self.projectiles.append(new_bullet)
+                    self.shoot_cooldown = 1.0
                 else:
                     new_fireball = fireball(self.rect.left+16, self.rect.top, math.pi/2)
                     self.projectiles.append(new_fireball)
-                self.shoot_cooldown = 0.75
+                    self.shoot_cooldown = 1.5
         for i, projectile in enumerate(self.projectiles):
             if projectile.update(FrameRate) == False:
                 self.projectiles.pop(i)
