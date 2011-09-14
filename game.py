@@ -22,7 +22,6 @@ class game():
         self.rock_list = []
         self.sbear_list = []
         self.wbear_list = []
-        self.player = player()
         self.lives = 3
         self.player = player(self.windowx)
         self.distance = 0
@@ -94,7 +93,7 @@ class game():
             self.lives -= 1
             self.player_killed = False
             if self.lives < 0:
-                exit_game()
+                self.exit_game()
         #After updating the player, let's deal with enemies
         #1. Check for enemies we need to add
         for enemy in self.enemy_data:
@@ -142,11 +141,16 @@ class game():
     
     def handle_collision(self, projectiles):
         for i, trash in enumerate(self.debris_list):
+            killdeb = False
             if self.player.rect.colliderect(trash.rect):
                 self.player_killed = True
+                #be sure to kill the debris
+                killdeb = True
             for bullet in projectiles:
                 if bullet.rect.colliderect(trash.rect):
-                    self.debris_list.pop(i)
+                    killdeb = True
+            if killdeb == True:
+                self.debris_list.pop(i)
 
     def handle_events(self):
         """Handle events (such as key presses)"""

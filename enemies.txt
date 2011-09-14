@@ -1,3 +1,6 @@
 1000,debris,140,0
 2000,debris,280,0
 3000,debris,420,0
+4000,debris,140,0
+5000,debris,280,0
+6000,debris,420,0
