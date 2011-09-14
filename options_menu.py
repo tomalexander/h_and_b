@@ -1,5 +1,6 @@
 import pygame
 from key_capture import key_capture
+from key_bindings import key_bindings
 
 class options_menu():
     """The Options Menu"""
@@ -18,11 +19,24 @@ class options_menu():
         self._options_text = self.font.render("OPTIONS 3", 1, (255, 255, 255))
         self.selected = 0
         self._options = [self._start_text, self._options_text, self._exit_text]
+        self.update_options()
         self.clock = pygame.time.Clock()
         self.image = pygame.image.load("img/riverproxy.png").convert()
         self.selector = pygame.image.load("img/selector_proxy.png").convert_alpha()
         self._rotate_duration = 1500
         self._rotate_progress = 0
+
+    def update_options(self):
+        self._options = []
+        self._options.append(self.font.render("Up: " + key_bindings.get_list(self._game.key_bindings.up), 1, (255, 255, 255)))
+        self._options.append(self.font.render("Down: " + key_bindings.get_list(self._game.key_bindings.down), 1, (255, 255, 255)))
+        self._options.append(self.font.render("Left: " + key_bindings.get_list(self._game.key_bindings.left), 1, (255, 255, 255)))
+        self._options.append(self.font.render("Right: " + key_bindings.get_list(self._game.key_bindings.right), 1, (255, 255, 255)))
+        self._options.append(self.font.render("Barrel Roll Left: " + key_bindings.get_list(self._game.key_bindings.barrel_left), 1, (255, 255, 255)))
+        self._options.append(self.font.render("Barrel Roll Right: " + key_bindings.get_list(self._game.key_bindings.barrel_right), 1, (255, 255, 255)))
+        self._options.append(self.font.render("Shoot: " + key_bindings.get_list(self._game.key_bindings.shoot), 1, (255, 255, 255)))
+        self._options.append(self.font.render("Dragon Mode: " + key_bindings.get_list(self._game.key_bindings.dragon), 1, (255, 255, 255)))
+        
 
     def run(self, surface):
         self.state = options_menu.RUNNING
@@ -57,12 +71,15 @@ class options_menu():
         self.draw_background(surface)
         for i,text in enumerate(self._options):
             vertical_space = 40
-            text_pos = text.get_rect(centerx=surface.get_width()/2, centery=surface.get_height()/2 - vertical_space*len(self._options) + vertical_space*i)
+            text_pos = text.get_rect(centerx=surface.get_width()/2, centery=surface.get_height()/2 - vertical_space*len(self._options)/2 + vertical_space*i)
             surface.blit(text, text_pos)
 
         selector_rect = self.selector.get_rect()
-        selector_rect.centerx = surface.get_width()/3
-        selector_rect.centery = surface.get_height()/2 - vertical_space*len(self._options) + vertical_space*self.selected
+        max_width = 0
+        for text_surface in self._options:
+            max_width = max(max_width, text_surface.get_width())
+        selector_rect.centerx = surface.get_width()/2 - max_width/2 - 32
+        selector_rect.centery = surface.get_height()/2 - vertical_space*len(self._options)/2 + vertical_space*self.selected
         surface.blit(self.selector, selector_rect)
 
     def move_down(self):

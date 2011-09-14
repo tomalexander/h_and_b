@@ -12,7 +12,12 @@ class key_bindings():
         self.shoot = [pygame.K_SPACE, None]
         self.dragon = [pygame.K_r, None]
 
-    def get_string(key):
+    @classmethod
+    def get_list(cls, list):
+        return cls.get_string(list[0]) + ", " + cls.get_string(list[1])
+
+    @classmethod
+    def get_string(cls, key):
         if key == None:
             return "None"
         else:
