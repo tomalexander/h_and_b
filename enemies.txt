@@ -5,3 +5,4 @@
 5000,debris,280,0
 6000,debris,420,0
 7000,water_bear,280,0
+8000,side_bear,0,0

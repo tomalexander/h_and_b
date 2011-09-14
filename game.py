@@ -6,6 +6,7 @@ from key_bindings import key_bindings
 from debris import debris
 from generic_bear import generic_bear
 from water_bear import water_bear
+from side_bear import side_bear
 
 import math
 
@@ -194,6 +195,10 @@ class game():
         for j, wbear in enumerate(self.wbear_list):
             if self.player.rect.colliderect(wbear.rect) and self.player.barrel_lock==False:
                 self.player_killed = True
+        for j, sbear in enumerate(self.sbear_list):
+            if sbear.paw_rect is not None and self.player.rect.colliderect(sbear.paw_rect) and self.player.barrel_lock==False:
+                self.player_killed = True
+                sbear.enter_cooldown()
                 #self.wbear_list.pop(j)
 
     def handle_events(self):

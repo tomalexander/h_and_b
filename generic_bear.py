@@ -10,6 +10,7 @@ class generic_bear(object):
     ACTING = 3
     DEAD = 4
     GOING_HOME = 5
+    COOLDOWN = 6
     
     def __init__(self, x_position, y_position):
         self.state = self.WAITING
