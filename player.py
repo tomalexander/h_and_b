@@ -192,7 +192,7 @@ class player(object):
         for i, projectile in enumerate(self.projectiles):
             if projectile.update(FrameRate) == False:
                 self.projectiles.pop(i)
-        
+    
     def draw(self, screen):
         """draws koi"""
         if self.dragon == False:
