@@ -6,24 +6,26 @@ import math
 class debris(object):
     """the debris class"""
     def __init__(self, x, ang):
-        self.image = pygame.image.load("img/debris1proxy.png")
+        self.image = pygame.image.load("img/debrisproxy.png")
         self.scale = random.randrange(1, 5)
         pygame.transform.scale(self.image, (self.scale*self.image.get_rect().width, self.scale*self.image.get_rect().height))
         self.rect = self.image.get_rect()
         #spawn debris at the top of the river
         self.rect.move_ip(x, 0)
         self.angle = ang
-        self.xvel = 70
-        self.yvel = 1 #was 70, but testing showed it was waaaaaaay too fast, and this is stretching it, lol
+        self.xvel = 40
+        self.yvel = 40 #should be fine now
 
     def update(self, FrameRate):
         """updates debris"""
+        FrameRate = FrameRate/100
         return self.move(FrameRate)
         
     def move(self, FrameRate):
         """moves debris along its trajectory"""
-        #self.rect.move_ip(self.xvel*math.cos(self.angle)*FrameRate, self.yvel*math.sin(self.angle)*FrameRate)
-        self.rect.move_ip(0, self.yvel*FrameRate)
+        
+        self.rect.move_ip(math.cos(self.angle)*self.xvel*FrameRate, -math.sin(self.angle)*self.yvel*FrameRate)
+
         if self.rect.left < 0:
             return False
         elif self.rect.right > 600:
