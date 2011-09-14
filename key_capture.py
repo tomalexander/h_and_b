@@ -14,7 +14,7 @@ class key_capture():
         self.font = pygame.font.Font(None, 36)
         self._main_text = self.font.render("Binding " + text + ", Hit any key or Escape", 1, (255, 255, 255))
         self.clock = pygame.time.Clock()
-        self.image = pygame.image.load("img/riverproxy.png").convert()
+        self.image = pygame.image.load("img/menu_background_proxy.png").convert()
         self._rotate_duration = 1500
         self._rotate_progress = 0
         self.value = pygame.K_ESCAPE
