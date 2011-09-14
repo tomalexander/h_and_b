@@ -163,7 +163,10 @@ class game():
         for bullet in projectiles:
             for i, trash in enumerate(self.debris_list):
                 if bullet.rect.colliderect(trash.rect):
-                    self.debris_list.pop(i)
+                    if bullet.type == "fireball":
+                        self.debris_list.pop(i)
+                    else:
+                        trash.displace(bullet.rect)
             for k, rock in enumerate(self.rock_list):
                 if bullet.rect.colliderect(rock.rect) and bullet.type == "fireball":
                     self.rock_list.pop(k)
