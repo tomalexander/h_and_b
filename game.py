@@ -34,6 +34,7 @@ class game():
         self.key_bindings = key_bindings()
         self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
         self.player_killed = False
+        self.font32 = pygame.font.Font(None, 32) #Temp Font
 
     def interp_enemies(self, enemy_txt):
         """translate enemies.txt input into a list of tuples"""
@@ -79,9 +80,21 @@ class game():
         self.screen.blit(self.landimgl, pygame.Rect(0, ydisp - landrectl.height, landrectl.width, landrectl.height))
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp, landrectr.width, landrectr.height))
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp - landrectr.height, landrectr.width, landrectr.height))
+        #Sidebar Stuff
         self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
+        livesnum = self.font32.render("Lives: %i"%self.lives, 1, (255,0,255), (255,255,0))
+        livesrect = livesnum.get_rect()
+        livesrect.center = (self.windowx-40, self.windowy-40)
+        self.screen.blit(livesnum, livesrect)
         self.player.draw(self.screen)
+        #Enemy Draws:
         for e in self.debris_list:
+            e.draw(self.screen)
+        for e in self.rock_list:
+            e.draw(self.screen)
+        for e in self.sbear_list:
+            e.draw(self.screen)
+        for e in self.wbear_list:
             e.draw(self.screen)
         
     def update(self):
