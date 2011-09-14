@@ -37,7 +37,8 @@ class side_bear(generic_bear):
 
     def update_paw_rect():
         if (self.state == ACTING):
-            self.paw_rect = self.rect.copy()
+            if (self.paw_rect == None):
+                self.paw_rect = self.rect.copy()
             self.paw_rect.x = self.rect.x + self.rect.width
             self.paw_rect.width = float(self._swipe_progress)/float(self._swipe_duration) * float(self._swipe_width)
 

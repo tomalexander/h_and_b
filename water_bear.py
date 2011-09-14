@@ -34,7 +34,7 @@ class water_bear(generic_bear):
 
     def drift(self, time_since_last_frame):
         y_diff = float(time_since_last_frame) / float(1000) * float(self.drift_speed)
-        print ydiff
+        print y_diff
         self.rect.move_ip(0,y_diff)
 
     def check_prep_time(self, time_since_last_frame):
