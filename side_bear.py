@@ -9,20 +9,23 @@ class side_bear(generic_bear):
     def __init__(self, player, x_position, y_position):
         generic_bear.__init__(self, x_position, y_position)
         self.image = pygame.image.load("img/side_bear_proxy.png")
+        self.paw_image = pygame.image.load("img/side_bear_proxy.png")
         self._target_range = 100
         self._swipe_duration = 300
         self._sipe_progress = 0
         self._swipe_width = 100
         self.paw_rect = None
         self.player = player
+        self.drift_speed = 100
 
     def update(self, time_since_last_frame):
         if (self.state == DEAD):
             return
-        find_target(self.player)
-        check_target_acquired()
-        update_swipe(time_since_last_frame)
-        update_paw_rect()
+        self.find_target(self.player)
+        self.check_target_acquired()
+        self.update_swipe(time_since_last_frame)
+        self.update_paw_rect()
+        self.drift(time_since_last_frame)
 
     def check_target_acquired(self):
         if (self.state == TARGET_ACQURIED):
@@ -40,12 +43,15 @@ class side_bear(generic_bear):
             if (self.paw_rect == None):
                 self.paw_rect = self.rect.copy()
                 self.paw_rect.x = self.rect.x + self.rect.width
+            self.paw_rect.y = self.rect.y
             self.paw_rect.width = float(self._swipe_progress)/float(self._swipe_duration) * float(self._swipe_width)
 
     def check_player_collision(self, player):
         if (self.state == ACTING):
             if (self.paw_rect.colliderect(player.rect)):
-                hit_player(player)
+                self.hit_player(player)
                 
     def draw(self, surface):
+        surface.blit(self.image, self.rect)
+        surface.blit(self.paw_image, self.paw_rect)
         pass
