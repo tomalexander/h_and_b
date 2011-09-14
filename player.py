@@ -21,7 +21,7 @@ class player(object):
         self.barrel = [False, False, 0.0, 0.0, 0.0]
         #shooting
         self.shoot = False
-        self.shoot_cooldown = 0.0
+        self.shoot_cooldown = 0.75
         self.projectiles = []
         #dragon mode activated
         self.dragon = False
@@ -156,12 +156,9 @@ class player(object):
                     self.rect.right = 525
                 else:
                     self.rect = future
-
-    
     
     #ACTIVATING AND DEACTIVATING DRAGON MODE
     def dragon_mode(self, FrameRate):
-        print("%f"%self.energy)
         #disable dragon mode if they don't have enough energy
         if self.energy < self.dragon_prereq:
             self.dragon = False
@@ -177,12 +174,12 @@ class player(object):
                 self.rect.width = self.images[0].get_rect().width
                 self.rect.height = self.images[0].get_rect().height
 
-    
     def handle_shoot(self, FrameRate):
         self.shoot_cooldown -= FrameRate
         if self.shoot_cooldown < 0.0:
             self.shoot_cooldown = 0.0
-        if self.shoot == True:
+        
+        if self.shoot == True and self.shoot_cooldown == 0.0:
             if self.shoot_cooldown == 0.0:
                 self.energy +=1
                 if self.dragon == False:
@@ -191,7 +188,7 @@ class player(object):
                 else:
                     new_fireball = fireball(self.rect.left+16, self.rect.top, math.pi/2)
                     self.projectiles.append(new_fireball)
-                self.shoot_cooldown = 0.5
+                self.shoot_cooldown = 0.75
         for i, projectile in enumerate(self.projectiles):
             if projectile.update(FrameRate) == False:
                 self.projectiles.pop(i)
