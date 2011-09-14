@@ -4,6 +4,9 @@ from player import player
 from main_menu import main_menu
 from key_bindings import key_bindings
 from debris import debris
+from generic_bear import generic_bear
+from water_bear import water_bear
+
 import math
 
 class game():
@@ -26,7 +29,7 @@ class game():
         self.player = player(self.windowx)
         self.distance = 0
         self.worldspeed = 1 #distance per ms for river image movement
-        self.riverimg = pygame.image.load("img/riverproxy.png").convert()
+        self.riverimg = pygame.image.load("img/bitch i'm a river.png").convert()
         self.landimgl = pygame.image.load("img/landproxy.png").convert()
         #self.landimgr = pygame.image.load("img/landproxy.png").convert()
         self.landimgr = pygame.transform.rotate(self.landimgl, 180)
@@ -74,8 +77,8 @@ class game():
         landrectr = self.landimgr.get_rect()
         barrect = self.sidebarimg.get_rect()
         ydisp = (self.distance/2)%riverrect.height
-        self.screen.blit(self.riverimg, pygame.Rect(0, ydisp, self.windowx, self.windowy))
-        self.screen.blit(self.riverimg, pygame.Rect(0, ydisp - riverrect.height, self.windowx, self.windowy))
+        self.screen.blit(self.riverimg, pygame.Rect(100, ydisp, self.windowx, self.windowy))
+        self.screen.blit(self.riverimg, pygame.Rect(100, ydisp - riverrect.height, self.windowx, self.windowy))
         self.screen.blit(self.landimgl, pygame.Rect(0, ydisp, landrectl.width, landrectl.height))
         self.screen.blit(self.landimgl, pygame.Rect(0, ydisp - landrectl.height, landrectl.width, landrectl.height))
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp, landrectr.width, landrectr.height))
@@ -117,11 +120,13 @@ class game():
                     rdyenemy = debris(enemy[2],-math.pi/2)
                     self.debris_list.append(rdyenemy)
                 elif enemy[1] == "rock":
-                    pass
+                    rdyenemy = rock(enemy[2],-math.pi/2)
+                    self.rock_list.append(rdyenemy)
                 elif enemy[1] == "side_bear":
                     pass
                 elif enemy[1] == "water_bear":
-                    pass
+                    rdyenemy = water_bear(self.player,enemy[2],enemy[3])
+                    self.wbear_list.append(rdyenemy)
                 else:
                     print "INVALID ENEMY!"
                     exit_game()

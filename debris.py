@@ -41,8 +41,8 @@ class debris(object):
 
 class rock(debris):
     """unbreakable type debris"""
-    def __init__(self):
-        debris.__init__(self)
+    def __init__(self, x, ang):
+        debris.__init__(self, x, ang)
         #reset image, scale, and rect
         self.image = pygame.image.load("img/unbreakable.png")
         self.scale = random.randrange(1, 5)
