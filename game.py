@@ -30,9 +30,10 @@ class game():
         self.distance = 0
         self.worldspeed = 1 #distance per ms for river image movement
         self.riverimg = pygame.image.load("img/bitch i'm a river.png").convert()
-        self.landimgl = pygame.image.load("img/landproxy.png").convert()
+        #self.landimgl = pygame.image.load("img/landproxy.png").convert()
         #self.landimgr = pygame.image.load("img/landproxy.png").convert()
-        self.landimgr = pygame.transform.rotate(self.landimgl, 180)
+        #self.landimgr = pygame.transform.rotate(self.landimgl, 180)
+        self.landimg = pygame.image.load("img/grass - no bears.png").convert()
         self.sidebarimg = pygame.image.load("img/sidebarproxy.png").convert()
         self.key_bindings = key_bindings()
         self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
@@ -73,16 +74,15 @@ class game():
         """Draw all the things!"""
         #Currently, the setup is up to two images dealing with the scrolling river
         riverrect = self.riverimg.get_rect()
-        landrectl = self.landimgl.get_rect()
-        landrectr = self.landimgr.get_rect()
+        landrect = self.landimg.get_rect()
         barrect = self.sidebarimg.get_rect()
         ydisp = (self.distance/2)%riverrect.height
         self.screen.blit(self.riverimg, pygame.Rect(100, ydisp, self.windowx, self.windowy))
         self.screen.blit(self.riverimg, pygame.Rect(100, ydisp - riverrect.height, self.windowx, self.windowy))
-        self.screen.blit(self.landimgl, pygame.Rect(0, ydisp, landrectl.width, landrectl.height))
-        self.screen.blit(self.landimgl, pygame.Rect(0, ydisp - landrectl.height, landrectl.width, landrectl.height))
-        self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp, landrectr.width, landrectr.height))
-        self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp - landrectr.height, landrectr.width, landrectr.height))
+        self.screen.blit(self.landimg, pygame.Rect(0, ydisp/2, landrect.width, landrect.height))
+        self.screen.blit(self.landimg, pygame.Rect(0, ydisp/2 - landrect.height, landrect.width, landrect.height))
+        self.screen.blit(self.landimg, pygame.Rect(self.windowx - 180, ydisp/2, landrect.width, landrect.height))
+        self.screen.blit(self.landimg, pygame.Rect(self.windowx - 180, ydisp/2 - landrect.height, landrect.width, landrect.height))
         #Sidebar Stuff
         self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
         livesnum = self.font32.render("Lives: %i"%self.lives, 1, (255,0,255), (255,255,0))
