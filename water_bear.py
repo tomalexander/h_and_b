@@ -18,6 +18,7 @@ class water_bear(generic_bear):
         self.jump_multiplier = 0.5
         self.jump_duration = 250
         self.jump_progress = 0
+        self.drift_speed = 100
 
     def update(self, time_since_last_frame):
         if (self.state == self.DEAD):
@@ -29,6 +30,8 @@ class water_bear(generic_bear):
         self.update_swim(time_since_last_frame)
         self.update_home(time_since_last_frame)
         self.check_player_collision(self.player)
+        self.drift(time_since_last_frame)
+
 
     def check_prep_time(self, time_since_last_frame):
         if (self.state == self.TARGET_ACQUIRED):
@@ -116,4 +119,4 @@ class water_bear(generic_bear):
 
 
     def draw(self, surface):
-        surface.blit(self.image, self.rect)
+        surface.blit(self.image, self.rect, pygame.Rect(0,0,self.rect.width,self.rect.height))

@@ -6,6 +6,7 @@ from key_bindings import key_bindings
 from debris import debris
 from generic_bear import generic_bear
 from water_bear import water_bear
+from side_bear import side_bear
 
 import math
 
@@ -13,7 +14,7 @@ class game():
     
     def __init__(self):
         """Main running function"""
-        self.windowx = 640
+        self.windowx = 680
         self.windowy = 800
         pygame.init()
         self.clock = pygame.time.Clock()
@@ -21,6 +22,9 @@ class game():
         self.time_since_last_frame = 0.0
         self.enemy_text = open("enemies.txt").readlines()
         self.enemy_data = self.interp_enemies(self.enemy_text)
+        self.text_text = open("text_disp.txt").readlines()
+        self.text_data = self.interp_text(self.text_text)
+        self.text_list = []
         self.debris_list = []
         self.rock_list = []
         self.sbear_list = []
@@ -30,25 +34,30 @@ class game():
         self.distance = 0
         self.worldspeed = 1 #distance per ms for river image movement
         self.riverimg = pygame.image.load("img/bitch i'm a river.png").convert()
-        self.landimgl = pygame.image.load("img/landproxy.png").convert()
+        #self.landimgl = pygame.image.load("img/landproxy.png").convert()
         #self.landimgr = pygame.image.load("img/landproxy.png").convert()
-        self.landimgr = pygame.transform.rotate(self.landimgl, 180)
+        #self.landimgr = pygame.transform.rotate(self.landimgl, 180)
+        self.landimg = pygame.image.load("img/grass - no bears.png").convert()
         self.sidebarimg = pygame.image.load("img/sidebarproxy.png").convert()
         self.key_bindings = key_bindings()
         self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
         self.player_killed = False
-        self.font32 = pygame.font.Font(None, 32) #Temp Font
+        self.font24 = pygame.font.Font(None, 24) #Temp Font
 
     def interp_enemies(self, enemy_txt):
-        """translate enemies.txt input into a list of tuples"""
+        """translate enemies.txt input into a list of lists"""
         new_data = []
         for entry in enemy_txt:
             someline = entry.split(',')
-            #print someline
             new_data.append([int(someline[0]), someline[1], int(someline[2]), int(someline[3])]) #2D Array!
-        #Some test code:
-        #for en in new_data:
-            #print "At time %i, spawn a %s at position (%i, %i)"%(en[0], en[1], en[2], en[3])
+        return new_data
+        
+    def interp_text(self, text_txt):
+        """translate text_disp.txt input into a list of lists"""
+        new_data = []
+        for entry in text_txt:
+            someline = entry.split(',')
+            new_data.append([int(someline[0]), someline[1], int(someline[2])]) #2D Array!
         return new_data
 
     def run(self):
@@ -73,22 +82,29 @@ class game():
         """Draw all the things!"""
         #Currently, the setup is up to two images dealing with the scrolling river
         riverrect = self.riverimg.get_rect()
-        landrectl = self.landimgl.get_rect()
-        landrectr = self.landimgr.get_rect()
+        landrect = self.landimg.get_rect()
         barrect = self.sidebarimg.get_rect()
         ydisp = (self.distance/2)%riverrect.height
         self.screen.blit(self.riverimg, pygame.Rect(100, ydisp, self.windowx, self.windowy))
         self.screen.blit(self.riverimg, pygame.Rect(100, ydisp - riverrect.height, self.windowx, self.windowy))
-        self.screen.blit(self.landimgl, pygame.Rect(0, ydisp, landrectl.width, landrectl.height))
-        self.screen.blit(self.landimgl, pygame.Rect(0, ydisp - landrectl.height, landrectl.width, landrectl.height))
-        self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp, landrectr.width, landrectr.height))
-        self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp - landrectr.height, landrectr.width, landrectr.height))
+        self.screen.blit(self.landimg, pygame.Rect(0, ydisp/2, landrect.width, landrect.height))
+        self.screen.blit(self.landimg, pygame.Rect(0, ydisp/2 - landrect.height, landrect.width, landrect.height))
+        self.screen.blit(self.landimg, pygame.Rect(self.windowx - 180, ydisp/2, landrect.width, landrect.height))
+        self.screen.blit(self.landimg, pygame.Rect(self.windowx - 180, ydisp/2 - landrect.height, landrect.width, landrect.height))
         #Sidebar Stuff
         self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
-        livesnum = self.font32.render("Lives: %i"%self.lives, 1, (255,0,255), (255,255,0))
+        livesnum = self.font24.render("Lives: %i"%self.lives, 1, (255,0,255), (255,255,0))
         livesrect = livesnum.get_rect()
         livesrect.center = (self.windowx-40, self.windowy-40)
         self.screen.blit(livesnum, livesrect)
+        energynum = self.font24.render("Energy: %i"%self.player.energy, 1, (255,0,255), (255,255,0))
+        energyrect = energynum.get_rect()
+        energyrect.center = (self.windowx-40, self.windowy-80)
+        self.screen.blit(energynum, energyrect)
+        distnum = self.font24.render("Dist: %i"%self.distance, 1, (255,0,255), (255,255,0))
+        distrect = distnum.get_rect()
+        distrect.center = (self.windowx-40, self.windowy-120)
+        self.screen.blit(distnum, distrect)
         self.player.draw(self.screen)
         #Enemy Draws:
         for e in self.debris_list:
@@ -99,6 +115,12 @@ class game():
             e.draw(self.screen)
         for e in self.wbear_list:
             e.draw(self.screen)
+        #Text Engine
+        for txt in self.text_list:
+            txtsurf = self.font24.render("%s"%txt[0], 1, (255,0,255), (255,255,0))
+            txtrect = txtsurf.get_rect()
+            txtrect.center = (300, self.windowy-40)
+            self.screen.blit(txtsurf, txtrect)
         
     def update(self):
         """Update every frame"""
@@ -123,7 +145,8 @@ class game():
                     rdyenemy = rock(enemy[2],-math.pi/2)
                     self.rock_list.append(rdyenemy)
                 elif enemy[1] == "side_bear":
-                    pass
+                    rdyenemy = side_bear(self.player,enemy[2],enemy[3])
+                    self.sbear_list.append(rdyenemy)
                 elif enemy[1] == "water_bear":
                     rdyenemy = water_bear(self.player,enemy[2],enemy[3])
                     self.wbear_list.append(rdyenemy)
@@ -139,7 +162,7 @@ class game():
             rc.update(self.time_since_last_frame)
         for sbr in self.sbear_list:
             sbr.update(self.time_since_last_frame)
-        for wbr in self.rock_list:
+        for wbr in self.wbear_list:
             wbr.update(self.time_since_last_frame)
         #3. Remove Enemies that are off screen
         for en in self.debris_list:
@@ -154,16 +177,31 @@ class game():
         for wbr in self.wbear_list:
             if not(self.screen_rect.colliderect(wbr.rect)):
                 self.wbear_list.remove(wbr)
+        #Text Engine
+        #1. Look for adding texts
+        for txt in self.text_data:
+            if self.distance > txt[0]:
+                #Add the text into our list
+                self.text_list.append([txt[1], txt[0] + txt[2]])
+                self.text_data.remove(txt)
+        #2. Display the texts (SEE DRAW)
+        #3. Remove Out of date texts
+        for i, txt in enumerate(self.text_list):
+            if self.distance > txt[1]:
+                #print "removing %s at time %i"%(txt[0], txt[1])
+                self.text_list.pop(i)
         #COLLISION
         self.handle_collision(projectiles)
     
     def handle_collision(self, projectiles):
-        
         #check to see if bullets hit anything
         for bullet in projectiles:
             for i, trash in enumerate(self.debris_list):
                 if bullet.rect.colliderect(trash.rect):
-                    self.debris_list.pop(i)
+                    if bullet.type == "fireball":
+                        self.debris_list.pop(i)
+                    else:
+                        trash.displace(bullet.rect)
             for k, rock in enumerate(self.rock_list):
                 if bullet.rect.colliderect(rock.rect) and bullet.type == "fireball":
                     self.rock_list.pop(k)
@@ -181,9 +219,13 @@ class game():
                 self.player_killed = True
                 self.rock_list.pop(k)
         for j, wbear in enumerate(self.wbear_list):
-            if self.player.rect.colliderect(wbear.rect):
+            if self.player.rect.colliderect(wbear.rect) and self.player.barrel_lock==False:
                 self.player_killed = True
-                self.wbear_list.pop(j)
+        for j, sbear in enumerate(self.sbear_list):
+            if sbear.paw_rect is not None and self.player.rect.colliderect(sbear.paw_rect) and self.player.barrel_lock==False:
+                self.player_killed = True
+                sbear.enter_cooldown()
+                #self.wbear_list.pop(j)
 
     def handle_events(self):
         """Handle events (such as key presses)"""

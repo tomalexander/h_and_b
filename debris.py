@@ -14,25 +14,34 @@ class debris(object):
         #spawn debris at the top of the river
         self.rect.move_ip(x, 0)
         self.angle = ang
-        self.xvel = 40
-        self.yvel = 40 #should be fine now
+        self.xvel = 60
+        self.yvel = 60 #should be fine now
 
     def update(self, FrameRate):
         """updates debris"""
         FrameRate = FrameRate/100
         return self.move(FrameRate)
+    
+    def displace(self, bubble_rect):
+        self.angle=-math.atan2(self.rect.centery-bubble_rect.centery, self.rect.centerx - bubble_rect.centerx)
+        if self.yvel > -20:
+            self.yvel -=20
+        
         
     def move(self, FrameRate):
         """moves debris along its trajectory"""
         
+        self.yvel += 0.5
         self.rect.move_ip(math.cos(self.angle)*self.xvel*FrameRate, -math.sin(self.angle)*self.yvel*FrameRate)
 
-        if self.rect.left < 0:
-            return False
-        elif self.rect.right > 600:
-            return False
-        elif self.rect.top < 0:
-            return False
+        #bounce off of the sides of the river
+        if self.rect.left < 100:
+            self.angle -= math.pi/2
+        elif self.rect.right > 500:
+            self.angle += math.pi/2
+        
+        #elif self.rect.top < 0:
+        #    return False
         return True
 
     def draw(self, screen):
@@ -49,5 +58,7 @@ class rock(debris):
         pygame.transform.scale(self.image, (self.scale*self.image.get_rect().width, self.scale*self.image.get_rect().height))
         self.rect = self.image.get_rect()
         self.type == "rock"
+        self.xvel = 50
+        self.yvel = 50
         
     

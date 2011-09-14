@@ -10,6 +10,7 @@ class generic_bear(object):
     ACTING = 3
     DEAD = 4
     GOING_HOME = 5
+    COOLDOWN = 6
     
     def __init__(self, x_position, y_position):
         self.state = self.WAITING
@@ -20,7 +21,7 @@ class generic_bear(object):
         self._target_range = 500
         self._original_x = x_position
         self._original_y = y_position
-        self.rect = pygame.Rect(x_position, y_position, 210, 120)
+        self.rect = pygame.Rect(x_position, y_position, 60, 105)
         self.home_range = 300
 
     def find_target(self, player):
@@ -50,3 +51,8 @@ class generic_bear(object):
 
     def hit_player(self, player):
         pass
+    
+    def drift(self, time_since_last_frame):
+        y_diff = float(time_since_last_frame) / float(1000) * float(self.drift_speed)
+        self.rect.move_ip(0,y_diff)
+        self._original_y += y_diff
