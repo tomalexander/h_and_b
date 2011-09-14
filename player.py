@@ -146,8 +146,8 @@ class player(object):
             #left
             if self.moving[2]:
                 future = self.rect.move(-self.xvel*FrameRate, 0)
-                if(future.left < 75):
-                    self.rect.left = 75
+                if(future.left < 80):
+                    self.rect.left = 80
                 else:
                     self.rect = future
             #right
