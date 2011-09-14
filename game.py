@@ -27,6 +27,7 @@ class game():
         self.landimgr = pygame.transform.rotate(self.landimgl, 180)
         self.key_bindings = key_bindings()
         self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
+        self.player_killed = False
 
     def interp_enemies(self, enemy_txt):
         """translate enemies.txt input into a list of tuples"""
@@ -80,7 +81,7 @@ class game():
         self.distance += self.time_since_last_frame * self.worldspeed
         #think about using clock.tick(60) to have a consistent frame rate across different machines
         #^^^See run(self)
-        self.player.update(self.time_since_last_frame)
+        projectiles = self.player.update(self.time_since_last_frame)
         #After updating the player, let's deal with enemies
         #1. Check for enemies we need to add
         for enemy in self.enemy_data:
@@ -103,6 +104,15 @@ class game():
             if not(self.screen_rect.colliderect(en.rect)):
                 self.enemies.remove(en)
                 #print "killing enemy!"
+        #COLLISION
+        collision(projectiles)
+            
+    
+    def collision(self, projectiles):
+        for anemone in self.enemies:
+            if player.rect.colliderect(anemone.rect)
+                self.player_killed = True
+                
 
     def handle_events(self):
         """Handle events (such as key presses)"""
