@@ -26,6 +26,7 @@ class game():
         self.landimgl = pygame.image.load("img/landproxy.png").convert()
         #self.landimgr = pygame.image.load("img/landproxy.png").convert()
         self.landimgr = pygame.transform.rotate(self.landimgl, 180)
+        self.sidebarimg = pygame.image.load("img/sidebarproxy.png").convert()
         self.key_bindings = key_bindings()
         self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
         self.player_killed = False
@@ -66,13 +67,15 @@ class game():
         riverrect = self.riverimg.get_rect()
         landrectl = self.landimgl.get_rect()
         landrectr = self.landimgr.get_rect()
+        barrect = self.sidebarimg.get_rect()
         ydisp = (self.distance/2)%riverrect.height
         self.screen.blit(self.riverimg, pygame.Rect(0, ydisp, self.windowx, self.windowy))
         self.screen.blit(self.riverimg, pygame.Rect(0, ydisp - riverrect.height, self.windowx, self.windowy))
-        self.screen.blit(self.landimgl, pygame.Rect(0, ydisp, self.windowx, self.windowy))
-        self.screen.blit(self.landimgl, pygame.Rect(0, ydisp - landrectl.height, self.windowx, self.windowy))
-        self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp, self.windowx, self.windowy))
-        self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp - landrectr.height, self.windowx, self.windowy))
+        self.screen.blit(self.landimgl, pygame.Rect(0, ydisp, landrectl.width, landrectl.height))
+        self.screen.blit(self.landimgl, pygame.Rect(0, ydisp - landrectl.height, landrectl.width, landrectl.height))
+        self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp, landrectr.width, landrectr.height))
+        self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp - landrectr.height, landrectr.width, landrectr.height))
+        self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
         self.player.draw(self.screen)
         for e in self.enemies:
             e.draw(self.screen)
@@ -106,12 +109,12 @@ class game():
                 self.enemies.remove(en)
                 #print "killing enemy!"
         #COLLISION
-        collision(projectiles)
+        #collision(projectiles)
             
     
     def collision(self, projectiles):
         for anemone in self.enemies:
-            if player.rect.colliderect(anemone.rect)
+            if self.player.rect.colliderect(anemone.rect):
                 self.player_killed = True
                 
 
