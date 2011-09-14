@@ -20,7 +20,7 @@ class generic_bear(object):
         self._target_range = 500
         self._original_x = x_position
         self._original_y = y_position
-        self.rect = pygame.Rect(x_position, y_position, 210, 120)
+        self.rect = pygame.Rect(x_position, y_position, 60, 105)
         self.home_range = 300
 
     def find_target(self, player):

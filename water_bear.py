@@ -119,4 +119,4 @@ class water_bear(generic_bear):
 
 
     def draw(self, surface):
-        surface.blit(self.image, self.rect)
+        surface.blit(self.image, self.rect, pygame.Rect(0,0,self.rect.width,self.rect.height))
