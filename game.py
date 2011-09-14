@@ -23,6 +23,7 @@ class game():
         self.sbear_list = []
         self.wbear_list = []
         self.player = player()
+        self.lives = 3
         self.distance = 0
         self.worldspeed = 1 #distance per ms for river image movement
         self.riverimg = pygame.image.load("img/riverproxy.png").convert()
@@ -89,7 +90,10 @@ class game():
         projectiles = self.player.update(self.time_since_last_frame)
         #If player is dead, deal with lives
         if self.player_killed == True:
-            pass
+            self.lives -= 1
+            self.player_killed = False
+            if self.lives < 0:
+                exit_game()
         #After updating the player, let's deal with enemies
         #1. Check for enemies we need to add
         for enemy in self.enemy_data:
