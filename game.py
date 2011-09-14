@@ -13,7 +13,7 @@ class game():
     
     def __init__(self):
         """Main running function"""
-        self.windowx = 640
+        self.windowx = 680
         self.windowy = 800
         pygame.init()
         self.clock = pygame.time.Clock()
