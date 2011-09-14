@@ -7,12 +7,12 @@ class key_capture():
     RUNNING = 1
     FINISHED = 2
     
-    def __init__(self, _game):
+    def __init__(self, _game, text):
         self.state = key_capture.WAITING
         self.time_since_last_frame = 0
         self._game = _game
         self.font = pygame.font.Font(None, 36)
-        self._main_text = self.font.render("Hit any key or Escape", 1, (255, 255, 255))
+        self._main_text = self.font.render("Binding " + text + ", Hit any key or Escape", 1, (255, 255, 255))
         self.clock = pygame.time.Clock()
         self.image = pygame.image.load("img/riverproxy.png").convert()
         self._rotate_duration = 1500

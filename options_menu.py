@@ -64,8 +64,51 @@ class options_menu():
                 elif event.key == pygame.K_UP:
                     self.move_up()
                 elif event.key == pygame.K_RETURN:
-                    new_key = key_capture(self._game)
-                    new_key.run(surface)
+                    self.rebind_key(surface)
+                    self.update_options()
+                    
+
+    def rebind_key(self, surface):
+        #editing_list = []
+        editing_name = ""
+        if (self.selected == 0):
+            editing_list = self._game.key_bindings.up
+            editing_name = "Up"
+        if (self.selected == 1):
+            editing_list = self._game.key_bindings.down
+            editing_name = "Down"
+        if (self.selected == 2):
+            editing_list = self._game.key_bindings.left
+            editing_name = "Left"
+        if (self.selected == 3):
+            editing_list = self._game.key_bindings.right
+            editing_name = "Right"
+        if (self.selected == 4):
+            editing_list = self._game.key_bindings.barrel_left
+            editing_name = "Barrel Roll Left"
+        if (self.selected == 5):
+            editing_list = self._game.key_bindings.barrel_right
+            editing_name = "Barrel Roll Right"
+        if (self.selected == 6):
+            editing_list = self._game.key_bindings.shoot
+            editing_name = "Shoot"
+        if (self.selected == 7):
+            editing_list = self._game.key_bindings.dragon
+            editing_name = "Dragon"
+        new_key = key_capture(self._game, "Primary " + editing_name)
+        new_key.run(surface)
+        if (new_key.value == pygame.K_ESCAPE):
+            return
+        del editing_list[:]
+        editing_list.append(new_key.value)
+        second_key = key_capture(self._game, "Secondary " + editing_name)
+        second_key.run(surface)
+        if (second_key.value == pygame.K_ESCAPE):
+            editing_list.append(None)
+            return
+        editing_list.append(second_key.value)
+        print editing_list
+        
 
     def display(self, surface):
         self.draw_background(surface)

@@ -18,7 +18,7 @@ class game():
         self.time_since_last_frame = 0.0
         self.enemy_text = open("enemies.txt").readlines()
         self.enemy_data = self.interp_enemies(self.enemy_text)
-        self.enemies = []
+        self.debris_list = []
         self.player = player()
         self.distance = 0
         self.worldspeed = 1 #distance per ms for river image movement
@@ -77,7 +77,7 @@ class game():
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 160, ydisp - landrectr.height, landrectr.width, landrectr.height))
         self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
         self.player.draw(self.screen)
-        for e in self.enemies:
+        for e in self.debris_list:
             e.draw(self.screen)
         
     def update(self):
@@ -94,29 +94,30 @@ class game():
                 #print "It's been %i ms, time to spawn an enemy!"%self.distance
                 if enemy[1] == "debris":
                     rdyenemy = debris(enemy[2],-math.pi/2)
-                    self.enemies.append(rdyenemy)
+                    self.debris_list.append(rdyenemy)
                 else:
                     print "INVALID ENEMY!"
                     exit_game()
                 #Remove from data
                 self.enemy_data.remove(enemy)
         #2. Update Enemies
-        for en in self.enemies:
+        for en in self.debris_list:
             en.update(self.time_since_last_frame)
         #3. Remove Enemies that are off screen
-        for en in self.enemies:
+        for en in self.debris_list:
             if not(self.screen_rect.colliderect(en.rect)):
-                self.enemies.remove(en)
+                self.debris_list.remove(en)
                 #print "killing enemy!"
         #COLLISION
-        #collision(projectiles)
-            
+        self.handle_collision(projectiles)
     
-    def collision(self, projectiles):
-        for anemone in self.enemies:
-            if self.player.rect.colliderect(anemone.rect):
+    def handle_collision(self, projectiles):
+        for i, trash in enumerate(self.debris_list):
+            if self.player.rect.colliderect(trash.rect):
                 self.player_killed = True
-                
+            for bullet in projectiles:
+                if bullet.rect.colliderect(trash.rect):
+                    self.debris_list.pop(i)
 
     def handle_events(self):
         """Handle events (such as key presses)"""
