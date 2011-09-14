@@ -2,6 +2,9 @@
 import sys
 import pygame
 from player import player
+from debris import debris
+import math
+import random
 
 class Game(object):
     def __init__(self):
@@ -12,12 +15,16 @@ class Game(object):
         self.player = player()
         self.FrameRate = 1
         self.SCREENRECT = pygame.Rect(0, 0, 675, 800)
+        self.debris = False
+        self.debris_list = []
 
     def process_events(self):
         for event in pygame.event.get():
             #PRESSING KEYS
             if event.type == pygame.KEYDOWN:
             #movement
+                if event.key == pygame.K_h:
+                    self.debris = True
                 if event.key == pygame.K_ESCAPE:
                     sys.exit()
                 if event.key == pygame.K_w:
@@ -40,6 +47,8 @@ class Game(object):
             #RELEASING KEYS
             if event.type == pygame.KEYUP:
             #movement
+                if event.key == pygame.K_h:
+                    self.debris = False
                 if event.key == pygame.K_w:
                     self.player.moving[0] = False
                 if event.key == pygame.K_s:
@@ -59,11 +68,18 @@ class Game(object):
     def update(self):
         FrameRate = float(self.clock.tick(60))
         self.player.update(FrameRate)
+        if self.debris == True:
+            new_debris = debris(random.randrange(0, 600), -math.pi/2)
+            self.debris_list.append(new_debris)
+        for thing in self.debris_list:
+            thing.update(FrameRate)
 
     def draw(self):
         background = pygame.Surface(self.SCREENRECT.size).convert()
         background.fill((0, 0, 0))
         self.screen.blit(background, (0, 0))
+        for thing in self.debris_list:
+            thing.draw(self.screen)
         self.player.draw(self.screen)
     
 
