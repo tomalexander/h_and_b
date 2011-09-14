@@ -5,6 +5,7 @@ from main_menu import main_menu
 from key_bindings import key_bindings
 from debris import debris
 import math
+from water_bear import water_bear
 
 class game():
     
@@ -30,6 +31,7 @@ class game():
         self.key_bindings = key_bindings()
         self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
         self.player_killed = False
+        self.bear1 = water_bear(self.player, 100, 700)
 
     def interp_enemies(self, enemy_txt):
         """translate enemies.txt input into a list of tuples"""
@@ -79,6 +81,7 @@ class game():
         self.player.draw(self.screen)
         for e in self.debris_list:
             e.draw(self.screen)
+        self.bear1.draw(self.screen)
         
     def update(self):
         """Update every frame"""
@@ -108,6 +111,7 @@ class game():
             if not(self.screen_rect.colliderect(en.rect)):
                 self.debris_list.remove(en)
                 #print "killing enemy!"
+        self.bear1.update(self.time_since_last_frame)
         #COLLISION
         self.handle_collision(projectiles)
     

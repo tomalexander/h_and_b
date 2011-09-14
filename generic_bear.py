@@ -11,33 +11,35 @@ class generic_bear(object):
     DEAD = 4
     
     def __init__(self, x_position, y_position):
-        self.state = WAITING
+        self.state = self.WAITING
         self._frame = 0
         self._max_hp = 100
         self._health = self._max_hp
         self._target = None
         self._target_range = 500
+        self._original_x = x_position
+        self._original_y = y_position
         self.rect = pygame.Rect(x_position, y_position, 210, 120)
 
     def find_target(self, player):
         if (self._target == None):
-            self.state == WAITING
-        if (self.state != WAITING):
+            self.state == self.WAITING
+        if (self.state != self.WAITING):
             return
-        distance = get_distance_to_player(player)
+        distance = self.get_distance_to_player(player)
         if (distance < self._target_range):
             self._target = player
-            self.state = TARGET_ACQUIRED
+            self.state = self.TARGET_ACQUIRED
 
     def get_distance_to_player(self, player):
-        return get_distance(self.rect.x, self.rect.y, player.rect.x, player.rect.y)
+        return self.get_distance(self.rect.x, self.rect.y, player.rect.x, player.rect.y)
 
     def get_distance(self, x1, y1, x2, y2):
         return sqrt( (y2-y1)**2 + (x2-x1)**2 )
 
     def check_player_collision(self, player):
         if (self.rect.colliderect(player.rect)):
-            hit_player(player)
+            self.hit_player(player)
 
     def hit_player(self, player):
         pass
