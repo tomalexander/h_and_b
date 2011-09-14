@@ -4,6 +4,7 @@ from player import player
 from main_menu import main_menu
 from key_bindings import key_bindings
 from debris import debris
+import math
 
 class game():
     
@@ -88,7 +89,7 @@ class game():
                 #Create the enemy, add it to self.enemies
                 #print "It's been %i ms, time to spawn an enemy!"%self.distance
                 if enemy[1] == "debris":
-                    rdyenemy = debris(enemy[2],90)
+                    rdyenemy = debris(enemy[2],-math.pi/2)
                     self.enemies.append(rdyenemy)
                 else:
                     print "INVALID ENEMY!"
@@ -114,39 +115,39 @@ class game():
                     self.activate_menu()
 		#KOI CONTROLS (pardon the intrusion)
 				#movement
-                if event.key == pygame.K_UP or event.key == pygame.K_w:
+                if event.key in self.key_bindings.up:
                     self.player.moving[0] = True
-                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                if event.key in self.key_bindings.down:
                     self.player.moving[1] = True
-                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+                if event.key in self.key_bindings.left:
                     self.player.moving[2] = True
-                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+                if event.key in self.key_bindings.right:
                     self.player.moving[3] = True
 				#abilities
-                if event.key == pygame.K_q:
+                if event.key in self.key_bindings.barrel_left:
                     self.player.barrel[0] = True
-                if event.key == pygame.K_e:
+                if event.key in self.key_bindings.barrel_right:
                     self.player.barrel[1] = True
-                if event.key == pygame.K_SPACE:
+                if event.key in self.key_bindings.shoot:
                     self.player.shoot = True
-                if event.key == pygame.K_r:
+                if event.key in self.key_bindings.dragon:
                     self.player.dragon = True
             if event.type == pygame.KEYUP:
 				#cancelling movement
-                if event.key == pygame.K_UP or event.key == pygame.K_w:
+                if event.key in self.key_bindings.up:
                     self.player.moving[0] = False
-                if event.key == pygame.K_DOWN or event.key == pygame.K_s:
+                if event.key in self.key_bindings.down:
                     self.player.moving[1] = False
-                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
+                if event.key in self.key_bindings.left:
                     self.player.moving[2] = False
-                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
+                if event.key in self.key_bindings.right:
                     self.player.moving[3] = False
 				#cancelling abilities
-                if event.key == pygame.K_q:
+                if event.key in self.key_bindings.barrel_left:
                     self.player.barrel[0] = True
-                if event.key == pygame.K_e:
+                if event.key in self.key_bindings.barrel_right:
                     self.player.barrel[1] = True
-                if event.key == pygame.K_SPACE:
+                if event.key in self.key_bindings.shoot:
                     self.player.shoot = False
 
     def activate_menu(self):
