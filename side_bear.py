@@ -6,8 +6,8 @@ class side_bear(generic_bear):
 
     SWIPING = 0
     
-    def __init__(self, player):
-        generic_bear.__init__(self)
+    def __init__(self, player, x_position, y_position):
+        generic_bear.__init__(self, x_position, y_position)
         self.image = pygame.image.load("img/side_bear_proxy.png")
         self._target_range = 100
         self._swipe_duration = 300
