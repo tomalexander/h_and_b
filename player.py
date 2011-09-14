@@ -5,7 +5,7 @@ import math
 
 class player(object):
     """the player's koi fish"""
-    def __init__(self):
+    def __init__(self, windowx):
         #pygame.sprite.Sprite.__init__(self) #call Sprite initializer
         self.images = [pygame.image.load("img/koiproxy.png"), pygame.image.load("img/dragonproxy.png")]
         self.rect = self.images[0].get_rect()
@@ -29,6 +29,7 @@ class player(object):
         self.dragon_prereq = 300
         #animation utilities
         self.frame = 0
+        self.windowx = windowx
 		
     def update(self, FrameRate):
         """handles input"""
@@ -152,8 +153,8 @@ class player(object):
             #right
             elif self.moving[3]:
                 future = self.rect.move(self.xvel*FrameRate, 0)
-                if(future.right > 525):
-                    self.rect.right = 525
+                if(future.right > self.windowx-160):
+                    self.rect.right = self.windowx-160
                 else:
                     self.rect = future
     

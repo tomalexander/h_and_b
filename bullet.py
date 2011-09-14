@@ -11,6 +11,7 @@ class bullet(object):
         #spawn bullet where koi fired it from
         self.rect.move_ip(x, y)
         self.angle = ang
+        self.type = "bubble"
         self.xvel = 70
         self.yvel = 70
 
@@ -39,6 +40,7 @@ class fireball(object):
     def __init__(self, x, y, ang):
         self.image = pygame.image.load("img/fireballproxy.png")
         self.rect = self.image.get_rect()
+        self.type = "fireball"
         #spawn bullet where dragon fired it from
         self.rect.move_ip(x, y)
         self.angle = ang

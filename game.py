@@ -22,7 +22,7 @@ class game():
         self.rock_list = []
         self.sbear_list = []
         self.wbear_list = []
-        self.player = player()
+        self.player = player(self.windowx)
         self.distance = 0
         self.worldspeed = 1 #distance per ms for river image movement
         self.riverimg = pygame.image.load("img/riverproxy.png").convert()
