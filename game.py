@@ -19,6 +19,9 @@ class game():
         self.enemy_text = open("enemies.txt").readlines()
         self.enemy_data = self.interp_enemies(self.enemy_text)
         self.debris_list = []
+        self.rock_list = []
+        self.sbear_list = []
+        self.wbear_list = []
         self.player = player()
         self.distance = 0
         self.worldspeed = 1 #distance per ms for river image movement
@@ -83,9 +86,10 @@ class game():
     def update(self):
         """Update every frame"""
         self.distance += self.time_since_last_frame * self.worldspeed
-        #think about using clock.tick(60) to have a consistent frame rate across different machines
-        #^^^See run(self)
         projectiles = self.player.update(self.time_since_last_frame)
+        #If player is dead, deal with lives
+        if self.player_killed == True:
+            pass
         #After updating the player, let's deal with enemies
         #1. Check for enemies we need to add
         for enemy in self.enemy_data:
@@ -95,6 +99,12 @@ class game():
                 if enemy[1] == "debris":
                     rdyenemy = debris(enemy[2],-math.pi/2)
                     self.debris_list.append(rdyenemy)
+                elif enemy[1] == "rock":
+                    pass
+                elif enemy[1] == "side_bear":
+                    pass
+                elif enemy[1] == "water_bear":
+                    pass
                 else:
                     print "INVALID ENEMY!"
                     exit_game()
@@ -103,11 +113,25 @@ class game():
         #2. Update Enemies
         for en in self.debris_list:
             en.update(self.time_since_last_frame)
+        for rc in self.rock_list:
+            rc.update(self.time_since_last_frame)
+        for sbr in self.sbear_list:
+            sbr.update(self.time_since_last_frame)
+        for wbr in self.rock_list:
+            wbr.update(self.time_since_last_frame)
         #3. Remove Enemies that are off screen
         for en in self.debris_list:
             if not(self.screen_rect.colliderect(en.rect)):
                 self.debris_list.remove(en)
-                #print "killing enemy!"
+        for rc in self.rock_list:
+            if not(self.screen_rect.colliderect(rc.rect)):
+                self.rock_list.remove(rc)
+        for sbr in self.sbear_list:
+            if not(self.screen_rect.colliderect(sbr.rect)):
+                self.sbear_list.remove(sbr)
+        for wbr in self.wbear_list:
+            if not(self.screen_rect.colliderect(wbr.rect)):
+                self.wbear_list.remove(wbr)
         #COLLISION
         self.handle_collision(projectiles)
     
