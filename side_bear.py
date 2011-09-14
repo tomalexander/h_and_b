@@ -39,7 +39,7 @@ class side_bear(generic_bear):
         if (self.state == ACTING):
             if (self.paw_rect == None):
                 self.paw_rect = self.rect.copy()
-            self.paw_rect.x = self.rect.x + self.rect.width
+                self.paw_rect.x = self.rect.x + self.rect.width
             self.paw_rect.width = float(self._swipe_progress)/float(self._swipe_duration) * float(self._swipe_width)
 
     def check_player_collision(self, player):
