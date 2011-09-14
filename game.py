@@ -187,7 +187,7 @@ class game():
         #3. Remove Out of date texts
         for i, txt in enumerate(self.text_list):
             if self.distance > txt[1]:
-                print "removing %s at time %i"%(txt[0], txt[1])
+                #print "removing %s at time %i"%(txt[0], txt[1])
                 self.text_list.pop(i)
         #COLLISION
         self.handle_collision(projectiles)
