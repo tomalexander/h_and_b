@@ -21,6 +21,9 @@ class game():
         self.time_since_last_frame = 0.0
         self.enemy_text = open("enemies.txt").readlines()
         self.enemy_data = self.interp_enemies(self.enemy_text)
+        self.text_text = open("text_disp.txt").readlines()
+        self.text_data = self.interp_text(self.text_text)
+        self.text_list = []
         self.debris_list = []
         self.rock_list = []
         self.sbear_list = []
@@ -41,15 +44,19 @@ class game():
         self.font24 = pygame.font.Font(None, 24) #Temp Font
 
     def interp_enemies(self, enemy_txt):
-        """translate enemies.txt input into a list of tuples"""
+        """translate enemies.txt input into a list of lists"""
         new_data = []
         for entry in enemy_txt:
             someline = entry.split(',')
-            #print someline
             new_data.append([int(someline[0]), someline[1], int(someline[2]), int(someline[3])]) #2D Array!
-        #Some test code:
-        #for en in new_data:
-            #print "At time %i, spawn a %s at position (%i, %i)"%(en[0], en[1], en[2], en[3])
+        return new_data
+        
+    def interp_text(self, text_txt):
+        """translate text_disp.txt input into a list of lists"""
+        new_data = []
+        for entry in text_txt:
+            someline = entry.split(',')
+            new_data.append([int(someline[0]), someline[1], int(someline[2])]) #2D Array!
         return new_data
 
     def run(self):
@@ -107,6 +114,12 @@ class game():
             e.draw(self.screen)
         for e in self.wbear_list:
             e.draw(self.screen)
+        #Text Engine
+        for txt in self.text_list:
+            txtsurf = self.font24.render("%s"%txt[0], 1, (255,0,255), (255,255,0))
+            txtrect = txtsurf.get_rect()
+            txtrect.center = (300, self.windowy-40)
+            self.screen.blit(txtsurf, txtrect)
         
     def update(self):
         """Update every frame"""
@@ -163,6 +176,19 @@ class game():
         for wbr in self.wbear_list:
             if not(self.screen_rect.colliderect(wbr.rect)):
                 self.wbear_list.remove(wbr)
+        #Text Engine
+        #1. Look for adding texts
+        for txt in self.text_data:
+            if self.distance > txt[0]:
+                #Add the text into our list
+                self.text_list.append([txt[1], txt[0] + txt[2]])
+                self.text_data.remove(txt)
+        #2. Display the texts (SEE DRAW)
+        #3. Remove Out of date texts
+        for i, txt in enumerate(self.text_list):
+            if self.distance > txt[1]:
+                print "removing %s at time %i"%(txt[0], txt[1])
+                self.text_list.pop(i)
         #COLLISION
         self.handle_collision(projectiles)
     
