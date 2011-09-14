@@ -9,6 +9,7 @@ class generic_bear(object):
     PREPARING = 2
     ACTING = 3
     DEAD = 4
+    GOING_HOME = 5
     
     def __init__(self, x_position, y_position):
         self.state = self.WAITING
@@ -20,6 +21,7 @@ class generic_bear(object):
         self._original_x = x_position
         self._original_y = y_position
         self.rect = pygame.Rect(x_position, y_position, 210, 120)
+        self.home_range = 300
 
     def find_target(self, player):
         if (self._target == None):
@@ -30,6 +32,11 @@ class generic_bear(object):
         if (distance < self._target_range):
             self._target = player
             self.state = self.TARGET_ACQUIRED
+
+    def far_from_home(self):
+        distance = self.get_distance(self.rect.centerx, self.rect.centery, self._original_x, self._original_y)
+        if (distance > self.home_range):
+            self.state = self.GOING_HOME
 
     def get_distance_to_player(self, player):
         return self.get_distance(self.rect.x, self.rect.y, player.rect.x, player.rect.y)
