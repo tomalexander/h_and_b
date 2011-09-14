@@ -131,7 +131,8 @@ class game():
                     rdyenemy = rock(enemy[2],-math.pi/2)
                     self.rock_list.append(rdyenemy)
                 elif enemy[1] == "side_bear":
-                    pass
+                    rdyenemy = side_bear(self.player,enemy[2],enemy[3])
+                    self.sbear_list.append(rdyenemy)
                 elif enemy[1] == "water_bear":
                     rdyenemy = water_bear(self.player,enemy[2],enemy[3])
                     self.wbear_list.append(rdyenemy)
@@ -166,7 +167,6 @@ class game():
         self.handle_collision(projectiles)
     
     def handle_collision(self, projectiles):
-        
         #check to see if bullets hit anything
         for bullet in projectiles:
             for i, trash in enumerate(self.debris_list):
@@ -192,9 +192,9 @@ class game():
                 self.player_killed = True
                 self.rock_list.pop(k)
         for j, wbear in enumerate(self.wbear_list):
-            if self.player.rect.colliderect(wbear.rect):
+            if self.player.rect.colliderect(wbear.rect) and self.player.barrel_lock==False:
                 self.player_killed = True
-                self.wbear_list.pop(j)
+                #self.wbear_list.pop(j)
 
     def handle_events(self):
         """Handle events (such as key presses)"""

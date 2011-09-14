@@ -19,6 +19,7 @@ class player(object):
         self.moving = [False, False, False, False]
         #barrel roll controls [q pressed, e pressed, time since q, time since e, cooldown]
         self.barrel = [False, False, 0.0, 0.0, 0.0]
+        self.barrel_lock = False
         #shooting
         self.shoot = False
         self.shoot_cooldown = 0.75
@@ -38,8 +39,8 @@ class player(object):
         self.energy += 1
         
         #we're going to move if we aren't in the middle of a roll
-        lock = self.barrel_roll(FrameRate)
-        if lock == False:
+        self.barrel_lock = self.barrel_roll(FrameRate)
+        if self.barrel_lock == False:
             self.move(FrameRate)
         
         #handle dragon mode attempt
@@ -101,8 +102,8 @@ class player(object):
         if self.dragon:
             acc = 5
         future = self.rect.move(-self.xvel*acc*FrameRate, 0)
-        if future.left < 80:
-            self.rect.left = 80
+        if future.left < 100:
+            self.rect.left = 100
         else:
             self.rect = future
                 
@@ -112,8 +113,8 @@ class player(object):
         if self.dragon:
             acc = 5
         future = self.rect.move(self.xvel*acc*FrameRate, 0)
-        if future.right > self.windowx - 160:
-            self.rect.right = self.windowx - 160
+        if future.right > self.windowx - 180:
+            self.rect.right = self.windowx - 180
         else:
             self.rect = future
     
@@ -146,15 +147,15 @@ class player(object):
             #left
             if self.moving[2]:
                 future = self.rect.move(-self.xvel*FrameRate, 0)
-                if(future.left < 80):
-                    self.rect.left = 80
+                if(future.left < 100):
+                    self.rect.left = 100
                 else:
                     self.rect = future
             #right
             elif self.moving[3]:
                 future = self.rect.move(self.xvel*FrameRate, 0)
-                if(future.right > self.windowx-160):
-                    self.rect.right = self.windowx-160
+                if(future.right > self.windowx-180):
+                    self.rect.right = self.windowx-180
                 else:
                     self.rect = future
     
@@ -169,7 +170,7 @@ class player(object):
             self.rect.height = self.images[1].get_rect().height
             self.dragon_cooldown += FrameRate
             #deactivate dragon mode
-            if self.dragon_cooldown > 25.0:
+            if self.dragon_cooldown > 50.0:
                 self.energy = 0
                 self.dragon = False
                 self.rect.width = self.images[0].get_rect().width
