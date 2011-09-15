@@ -31,12 +31,13 @@ class debris(object):
     def move(self, FrameRate):
         """moves debris along its trajectory"""
         
-        self.yvel += 0.5
+        if self.yvel < 60:
+            self.yvel += 5
         self.rect.move_ip(math.cos(self.angle)*self.xvel*FrameRate, -math.sin(self.angle)*self.yvel*FrameRate)
 
         #bounce off of the sides of the river
         if self.rect.left < 100:
-            self.angle -= math.pi/2
+            self.angle += math.pi/2
         elif self.rect.right > 500:
             self.angle += math.pi/2
         

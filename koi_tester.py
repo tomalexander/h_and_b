@@ -5,17 +5,19 @@ from player import player
 from debris import debris
 import math
 import random
+from evil_koi import evil_koi
 
 class Game(object):
     def __init__(self):
         """initializes the game"""
         pygame.init()
-        self.screen = pygame.display.set_mode((675, 800))
+        self.screen = pygame.display.set_mode((680, 800))
         self.clock = pygame.time.Clock()
-        self.player = player()
+        self.player = player(680)
         self.FrameRate = 1
-        self.SCREENRECT = pygame.Rect(0, 0, 675, 800)
+        self.SCREENRECT = pygame.Rect(0, 0, 680, 800)
         self.debris = False
+        self.evil_koi = evil_koi(680)
         self.debris_list = []
 
     def process_events(self):
@@ -68,6 +70,7 @@ class Game(object):
     def update(self):
         FrameRate = float(self.clock.tick(60))
         self.player.update(FrameRate)
+        self.evil_koi.update(FrameRate)
         if self.debris == True:
             new_debris = debris(random.randrange(0, 600), -math.pi/2)
             self.debris_list.append(new_debris)
@@ -81,6 +84,7 @@ class Game(object):
         for thing in self.debris_list:
             thing.draw(self.screen)
         self.player.draw(self.screen)
+        self.evil_koi.draw(self.screen)
     
 
 g = Game()
