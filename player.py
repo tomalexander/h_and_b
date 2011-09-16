@@ -182,16 +182,15 @@ class player(object):
             self.shoot_cooldown = 0.0
         
         if self.shoot == True and self.shoot_cooldown == 0.0:
-            if self.shoot_cooldown == 0.0:
-                self.energy +=1
-                if not self.dragon:
-                    new_bullet = bullet(self.rect.left+16, self.rect.top, math.pi/2)
-                    self.projectiles.append(new_bullet)
-                    self.shoot_cooldown = 2.0
-                else:
-                    new_fireball = fireball(self.rect.left+16, self.rect.top, math.pi/2)
-                    self.projectiles.append(new_fireball)
-                    self.shoot_cooldown = 1.5
+            self.energy +=1
+            if not self.dragon:
+                new_bullet = bullet(self.rect.left+16, self.rect.top, math.pi/2)
+                self.projectiles.append(new_bullet)
+                self.shoot_cooldown = 2.0
+            else:
+                new_fireball = fireball(self.rect.left+16, self.rect.top, math.pi/2)
+                self.projectiles.append(new_fireball)
+                self.shoot_cooldown = 1.5
         for i, projectile in enumerate(self.projectiles):
             if not projectile.update(FrameRate):
                 self.projectiles.pop(i)

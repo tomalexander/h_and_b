@@ -7,6 +7,7 @@ from debris import debris
 from generic_bear import generic_bear
 from water_bear import water_bear
 from side_bear import side_bear
+from evil_koi import evil_koi
 
 import math
 
@@ -43,6 +44,9 @@ class game():
         self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
         self.player_killed = False
         self.font24 = pygame.font.Font(None, 24) #Temp Font
+        #final boss stuff
+        self.bad_koi = evil_koi(self.windowx)
+        self.bad_projectiles = []
 
     def interp_enemies(self, enemy_txt):
         """translate enemies.txt input into a list of lists"""
@@ -209,6 +213,8 @@ class game():
             for j, wbear in enumerate(self.wbear_list):
                 if bullet.rect.colliderect(wbear.rect) and bullet.type == "fireball":
                     self.wbear_list.pop(j)
+            if bullet.rect.colliderect(self.bad_koi.rect):
+                self.bad_koi.take_damage()
 
         #do player collision
         for i, trash in enumerate(self.debris_list):
@@ -226,7 +232,11 @@ class game():
             if sbear.paw_rect is not None and self.player.rect.colliderect(sbear.paw_rect) and self.player.barrel_lock==False:
                 self.player_killed = True
                 sbear.enter_cooldown()
-                #self.wbear_list.pop(j)
+        for x, bullet in enumerate(self.bad_projectiles):
+            if bullet.rect.colliderect(self.player.rect):
+                self.player_killed = True
+        if self.bad_koi.rect.colliderect(self.player.rect):
+            self.player_killed = True
 
     def handle_events(self):
         """Handle events (such as key presses)"""
