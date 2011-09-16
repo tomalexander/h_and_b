@@ -235,6 +235,8 @@ class game():
         for x, bullet in enumerate(self.bad_projectiles):
             if bullet.rect.colliderect(self.player.rect):
                 self.player_killed = True
+        if self.bad_koi.rect.colliderect(self.player.rect):
+            self.player_killed = True
 
     def handle_events(self):
         """Handle events (such as key presses)"""

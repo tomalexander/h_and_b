@@ -44,8 +44,8 @@ class fireball(object):
         #spawn bullet where dragon fired it from
         self.rect.move_ip(x, y)
         self.angle = ang
-        self.xvel = 70
-        self.yvel = 70
+        self.xvel = 150
+        self.yvel = 150
     
     def update(self, FrameRate):
         """updates fireball"""

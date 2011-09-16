@@ -19,29 +19,79 @@ class evil_koi(object):
         self.bad_projectiles = []
         #dragon mode activated
         self.dragon = False
-        self.dragon_cooldown = 0.0
-        self.dragon_prereq = 300
         #animation utilities
         self.frame = 0
         self.windowx = windowx
-        self.checkpoint_left = False
-        self.checkpoint_right = False
         #boss battle flags
-        self.health = 100
+        self.health = 50#100
+        self.retreated = False
+        self.chargecooldown = 1.0
+        self.strafedir = False
         
         
     def update(self, FrameRate):
         FrameRate = FrameRate/100
+        
+        #first boss stage
         if self.health > 60:
             self.automove(FrameRate)
             self.shoot(FrameRate)
+        #second boss stage
         elif self.health > 30:
-            pass #secondary boss stage goes here
+            self.dragon = True
+            self.xvel = 70
+            self.yvel = 70
+            if not self.retreated:
+                self.retreat(FrameRate)
+            else:
+                if self.chargecooldown > 0:
+                    self.chargecooldown -= FrameRate
+                    self.strafe(FrameRate)
+                    self.shoot(FrameRate)
+                else:    
+                    self.charge(FrameRate)
+        #third boss stage
         else:
-            pass #final boss stage goes here
+            pass
         
-            
+        #update bullets        
+        for i, projectile in enumerate(self.bad_projectiles):
+            if not projectile.update(FrameRate):
+                self.projectiles.pop(i)
+        
         return self.bad_projectiles
+
+    def strafe(self, FrameRate):
+        if self.strafedir:
+            self.rect.move_ip(self.xvel*FrameRate, 0)
+        else:
+            self.rect.move_ip(-self.xvel*FrameRate, 0)
+        
+        if self.rect.left < 100:
+            self.rect.left = 100
+            self.strafedir = True
+        elif self.rect.right > 500:
+            self.rect.right = 500
+            self.strafedir = False
+        
+        
+    def charge(self, FrameRate):
+        self.rect.move_ip(0, self.yvel*2*FrameRate)
+        
+        if self.rect.bottom >= 800:
+            self.chargecooldown = 5.0
+            self.rect.bottom = 800
+            self.retreated = False
+        
+    
+    def retreat(self, FrameRate):
+        #self.angle = math.atan2(self.rect.centery - 0, self.rect.centerx - 300)
+        #self.rect.move_ip(self.xvel*FrameRate*math.cos(self.angle), -self.yvel*FrameRate*math.sin(self.angle))
+        self.rect.move_ip(0, -self.yvel*FrameRate)
+        
+        if self.rect.top <= 0:
+            self.rect.top = 0
+            self.retreated = True
         
     def automove(self, FrameRate):
         self.rect.move_ip(self.xvel*FrameRate*math.cos(self.angle), -self.yvel*FrameRate*math.sin(self.angle))
@@ -81,9 +131,7 @@ class evil_koi(object):
                 new_fireball = fireball(self.rect.left+16, self.rect.bottom, -math.pi/2)
                 self.bad_projectiles.append(new_fireball)
                 self.shoot_cooldown = 1.5
-        for i, projectile in enumerate(self.bad_projectiles):
-            if not projectile.update(FrameRate):
-                self.projectiles.pop(i)
+
 
     def draw(self, screen):
         """draws evil koi"""
