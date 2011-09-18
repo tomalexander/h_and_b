@@ -30,6 +30,7 @@ class game():
         self.rock_list = []
         self.sbear_list = []
         self.wbear_list = []
+        self.boss = None
         self.lives = 3
         self.player = player(self.windowx)
         self.distance = 0
@@ -102,11 +103,11 @@ class game():
         #Lives
         for i in range(self.lives):
             self.screen.blit(self.heartimg, pygame.Rect(self.windowx - 80 + 8+24*i, self.windowy - 20, 16, 16))
-        energynum = self.font24.render("Energy: %i"%self.player.energy, 1, (255,0,255), (255,255,0))
+        energynum = self.font24.render("E: %i"%self.player.energy, 1, (255,0,255), (255,255,0))
         energyrect = energynum.get_rect()
         energyrect.center = (self.windowx-40, self.windowy-80)
         self.screen.blit(energynum, energyrect)
-        distnum = self.font24.render("Dist: %i"%self.distance, 1, (255,0,255), (255,255,0))
+        distnum = self.font24.render("D: %i"%self.distance, 1, (255,0,255), (255,255,0))
         distrect = distnum.get_rect()
         distrect.center = (self.windowx-40, self.windowy-120)
         self.screen.blit(distnum, distrect)
@@ -120,6 +121,8 @@ class game():
             e.draw(self.screen)
         for e in self.wbear_list:
             e.draw(self.screen)
+        if self.boss != None:
+            self.boss.draw(self.screen)
         #Text Engine
         for txt in self.text_list:
             txtsurf = self.font24.render("%s"%txt[0], 1, (255,0,255), (255,255,0))
@@ -161,6 +164,8 @@ class game():
                 elif enemy[1] == "water_bear":
                     rdyenemy = water_bear(self.player,enemy[2],enemy[3])
                     self.wbear_list.append(rdyenemy)
+                elif enemy[1] == "evil_koi":
+                    self.boss = evil_koi(300)
                 else:
                     print "INVALID ENEMY!"
                     self.exit_game()
@@ -175,6 +180,8 @@ class game():
             sbr.update(self.time_since_last_frame)
         for wbr in self.wbear_list:
             wbr.update(self.time_since_last_frame)
+        if self.boss != None:
+            self.boss.update(self.time_since_last_frame)
         #3. Remove Enemies that are off screen
         for en in self.debris_list:
             if not(self.screen_rect.colliderect(en.rect)):
