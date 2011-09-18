@@ -40,6 +40,7 @@ class game():
         #self.landimgr = pygame.transform.rotate(self.landimgl, 180)
         self.landimg = pygame.image.load("img/grass - no bears.png").convert()
         self.sidebarimg = pygame.image.load("img/sidebarproxy.png").convert()
+        self.heartimg = pygame.image.load("img/heart.png").convert_alpha()
         self.key_bindings = key_bindings()
         self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
         self.player_killed = False
@@ -98,10 +99,9 @@ class game():
         self.screen.blit(self.landimg, pygame.Rect(self.windowx - 180, ydisp2 - landrect.height, landrect.width, landrect.height))
         #Sidebar Stuff
         self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
-        livesnum = self.font24.render("Lives: %i"%self.lives, 1, (255,0,255), (255,255,0))
-        livesrect = livesnum.get_rect()
-        livesrect.center = (self.windowx-40, self.windowy-40)
-        self.screen.blit(livesnum, livesrect)
+        #Lives
+        for i in range(self.lives):
+            self.screen.blit(self.heartimg, pygame.Rect(self.windowx - 80 + 8+24*i, self.windowy - 20, 16, 16))
         energynum = self.font24.render("Energy: %i"%self.player.energy, 1, (255,0,255), (255,255,0))
         energyrect = energynum.get_rect()
         energyrect.center = (self.windowx-40, self.windowy-80)
@@ -136,6 +136,12 @@ class game():
             self.lives -= 1
             self.player_killed = False
             if self.lives < 0:
+                txtsurf = self.font24.render("GAME OVER", 1, (255,0,255), (255,255,0))
+                txtrect = txtsurf.get_rect()
+                txtrect.center = (300, self.windowy/2)
+                self.screen.blit(txtsurf, txtrect)
+                pygame.display.flip()
+                pygame.time.wait(2000)
                 self.exit_game()
         #After updating the player, let's deal with enemies
         #1. Check for enemies we need to add
