@@ -157,7 +157,7 @@ class game():
                     self.wbear_list.append(rdyenemy)
                 else:
                     print "INVALID ENEMY!"
-                    exit_game()
+                    self.exit_game()
                 #Remove from data
                 self.enemy_data.remove(enemy)
         #2. Update Enemies
