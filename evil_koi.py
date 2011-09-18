@@ -23,7 +23,7 @@ class evil_koi(object):
         self.frame = 0
         self.windowx = windowx
         #boss battle flags
-        self.health = 50#100
+        self.health = 100
         self.retreated = False
         self.chargecooldown = 1.0
         self.strafedir = False
