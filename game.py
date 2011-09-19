@@ -107,22 +107,6 @@ class game():
         self.screen.blit(self.landimgl, pygame.Rect(0, ydisp2 - landrectl.height, landrectl.width, landrectl.height))
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2, landrectr.width, landrectr.height))
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2 - landrectr.height, landrectr.width, landrectr.height))
-        #Have to draw side bears before side bar to cut overlap, sorry for messing up your code
-        for e in self.sbear_list:
-            e.draw(self.screen)
-        #Sidebar Stuff
-        self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
-        #Lives
-        for i in range(self.lives):
-            self.screen.blit(self.heartimg, pygame.Rect(self.windowx - 80 + 8+24*i, self.windowy - 20, 16, 16))
-        energynum = self.font24.render("E: %i"%self.player.energy, 1, (255,0,255), (255,255,0))
-        energyrect = energynum.get_rect()
-        energyrect.center = (self.windowx-40, self.windowy-80)
-        self.screen.blit(energynum, energyrect)
-        distnum = self.font24.render("D: %i"%self.distance, 1, (255,0,255), (255,255,0))
-        distrect = distnum.get_rect()
-        distrect.center = (self.windowx-40, self.windowy-120)
-        self.screen.blit(distnum, distrect)
         #Player
         if self.distance > self.last_death + self.immortal_time or self.deaddraw:
             self.player.draw(self.screen)
@@ -137,8 +121,23 @@ class game():
             e.draw(self.screen)
         for e in self.wbear_list:
             e.draw(self.screen)
+        for e in self.sbear_list:
+            e.draw(self.screen)
         if self.boss != None:
             self.boss.draw(self.screen)
+        #Sidebar Stuff
+        self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
+        #Lives
+        for i in range(self.lives):
+            self.screen.blit(self.heartimg, pygame.Rect(self.windowx - 80 + 8+24*i, self.windowy - 20, 16, 16))
+        energynum = self.font24.render("E: %i"%self.player.energy, 1, (255,0,255), (255,255,0))
+        energyrect = energynum.get_rect()
+        energyrect.center = (self.windowx-40, self.windowy-80)
+        self.screen.blit(energynum, energyrect)
+        distnum = self.font24.render("D: %i"%self.distance, 1, (255,0,255), (255,255,0))
+        distrect = distnum.get_rect()
+        distrect.center = (self.windowx-40, self.windowy-120)
+        self.screen.blit(distnum, distrect)
         #Text Engine
         for txt in self.text_list:
             txtsurf = self.font24.render("%s"%txt[0], 1, (255,0,255), (255,255,0))
