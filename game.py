@@ -30,6 +30,7 @@ class game():
         self.rock_list = []
         self.sbear_list = []
         self.wbear_list = []
+        self.boss = None
         self.lives = 3
         self.player = player(self.windowx)
         self.distance = 0
@@ -38,8 +39,10 @@ class game():
         #self.landimgl = pygame.image.load("img/landproxy.png").convert()
         #self.landimgr = pygame.image.load("img/landproxy.png").convert()
         #self.landimgr = pygame.transform.rotate(self.landimgl, 180)
-        self.landimg = pygame.image.load("img/grass - no bears.png").convert()
+        self.landimgl = pygame.image.load("img/good_grass_left.png").convert_alpha()
+        self.landimgr = pygame.image.load("img/good_grass_right.png").convert_alpha()
         self.sidebarimg = pygame.image.load("img/sidebarproxy.png").convert()
+        self.heartimg = pygame.image.load("img/heart.png").convert_alpha()
         self.key_bindings = key_bindings()
         self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
         self.player_killed = False
@@ -86,27 +89,27 @@ class game():
         """Draw all the things!"""
         #Currently, the setup is up to two images dealing with the scrolling river
         riverrect = self.riverimg.get_rect()
-        landrect = self.landimg.get_rect()
+        landrectl = self.landimgl.get_rect()
+        landrectr = self.landimgr.get_rect()
         barrect = self.sidebarimg.get_rect()
         ydisp = (self.distance/2)%riverrect.height
         ydisp2 = (self.distance/4)%riverrect.height
         self.screen.blit(self.riverimg, pygame.Rect(100, ydisp, self.windowx, self.windowy))
         self.screen.blit(self.riverimg, pygame.Rect(100, ydisp - riverrect.height, self.windowx, self.windowy))
-        self.screen.blit(self.landimg, pygame.Rect(0, ydisp2, landrect.width, landrect.height))
-        self.screen.blit(self.landimg, pygame.Rect(0, ydisp2 - landrect.height, landrect.width, landrect.height))
-        self.screen.blit(self.landimg, pygame.Rect(self.windowx - 180, ydisp2, landrect.width, landrect.height))
-        self.screen.blit(self.landimg, pygame.Rect(self.windowx - 180, ydisp2 - landrect.height, landrect.width, landrect.height))
+        self.screen.blit(self.landimgl, pygame.Rect(0, ydisp2, landrectl.width, landrectl.height))
+        self.screen.blit(self.landimgl, pygame.Rect(0, ydisp2 - landrectl.height, landrectl.width, landrectl.height))
+        self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2, landrectr.width, landrectr.height))
+        self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2 - landrectr.height, landrectr.width, landrectr.height))
         #Sidebar Stuff
         self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
-        livesnum = self.font24.render("Lives: %i"%self.lives, 1, (255,0,255), (255,255,0))
-        livesrect = livesnum.get_rect()
-        livesrect.center = (self.windowx-40, self.windowy-40)
-        self.screen.blit(livesnum, livesrect)
-        energynum = self.font24.render("Energy: %i"%self.player.energy, 1, (255,0,255), (255,255,0))
+        #Lives
+        for i in range(self.lives):
+            self.screen.blit(self.heartimg, pygame.Rect(self.windowx - 80 + 8+24*i, self.windowy - 20, 16, 16))
+        energynum = self.font24.render("E: %i"%self.player.energy, 1, (255,0,255), (255,255,0))
         energyrect = energynum.get_rect()
         energyrect.center = (self.windowx-40, self.windowy-80)
         self.screen.blit(energynum, energyrect)
-        distnum = self.font24.render("Dist: %i"%self.distance, 1, (255,0,255), (255,255,0))
+        distnum = self.font24.render("D: %i"%self.distance, 1, (255,0,255), (255,255,0))
         distrect = distnum.get_rect()
         distrect.center = (self.windowx-40, self.windowy-120)
         self.screen.blit(distnum, distrect)
@@ -120,6 +123,8 @@ class game():
             e.draw(self.screen)
         for e in self.wbear_list:
             e.draw(self.screen)
+        if self.boss != None:
+            self.boss.draw(self.screen)
         #Text Engine
         for txt in self.text_list:
             txtsurf = self.font24.render("%s"%txt[0], 1, (255,0,255), (255,255,0))
@@ -136,6 +141,12 @@ class game():
             self.lives -= 1
             self.player_killed = False
             if self.lives < 0:
+                txtsurf = self.font24.render("GAME OVER", 1, (255,0,255), (255,255,0))
+                txtrect = txtsurf.get_rect()
+                txtrect.center = (300, self.windowy/2)
+                self.screen.blit(txtsurf, txtrect)
+                pygame.display.flip()
+                pygame.time.wait(2000)
                 self.exit_game()
         #After updating the player, let's deal with enemies
         #1. Check for enemies we need to add
@@ -155,6 +166,8 @@ class game():
                 elif enemy[1] == "water_bear":
                     rdyenemy = water_bear(self.player,enemy[2],enemy[3])
                     self.wbear_list.append(rdyenemy)
+                elif enemy[1] == "evil_koi":
+                    self.boss = evil_koi(300)
                 else:
                     print "INVALID ENEMY!"
                     self.exit_game()
@@ -169,6 +182,8 @@ class game():
             sbr.update(self.time_since_last_frame)
         for wbr in self.wbear_list:
             wbr.update(self.time_since_last_frame)
+        if self.boss != None:
+            self.boss.update(self.time_since_last_frame)
         #3. Remove Enemies that are off screen
         for en in self.debris_list:
             if not(self.screen_rect.colliderect(en.rect)):
