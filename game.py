@@ -103,6 +103,9 @@ class game():
         self.screen.blit(self.landimgl, pygame.Rect(0, ydisp2 - landrectl.height, landrectl.width, landrectl.height))
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2, landrectr.width, landrectr.height))
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2 - landrectr.height, landrectr.width, landrectr.height))
+        #Have to draw side bears before side bar to cut overlap, sorry for messing up your code
+        for e in self.sbear_list:
+            e.draw(self.screen)
         #Sidebar Stuff
         self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
         #Lives
@@ -121,8 +124,6 @@ class game():
         for e in self.debris_list:
             e.draw(self.screen)
         for e in self.rock_list:
-            e.draw(self.screen)
-        for e in self.sbear_list:
             e.draw(self.screen)
         for e in self.wbear_list:
             e.draw(self.screen)
