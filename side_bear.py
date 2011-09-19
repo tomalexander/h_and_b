@@ -5,6 +5,8 @@ class side_bear(generic_bear):
     """The bears that are on the side of the river"""
 
     SWIPING = 0
+    LEFT = -1
+    RIGHT = 1
     
     def __init__(self, player, x_position, y_position):
         generic_bear.__init__(self, x_position, y_position)
@@ -20,6 +22,10 @@ class side_bear(generic_bear):
         self.drift_speed = 100
         self.cooldown_duration = 1000
         self.cooldown_progress = 0
+        if (self.rect.x < 400):
+            self.attack_direction = self.RIGHT
+        else:
+            self.attack_direction = self.LEFT
 
     def update(self, time_since_last_frame):
         if (self.state == self.DEAD):
@@ -58,9 +64,14 @@ class side_bear(generic_bear):
         if (self.state == self.ACTING):
             if (self.paw_rect == None):
                 self.paw_rect = self.rect.copy()
-                self.paw_rect.x = self.rect.x + self.rect.width
+                if (self.attack_direction == self.RIGHT):
+                    self.paw_rect.x = self.rect.x + self.rect.width
+                if (self.attack_direction == self.LEFT):
+                    self.paw_rect.x = self.rect.x
             self.paw_rect.y = self.rect.y
             self.paw_rect.width = float(self._swipe_progress)/float(self._swipe_duration) * float(self._swipe_width)
+            if (self.attack_direction == self.LEFT):
+                self.paw_rect.x = self.rect.x - self.paw_rect.width
             self.paw_rect.height = self._swipe_height
 
     def check_player_collision(self, player):
