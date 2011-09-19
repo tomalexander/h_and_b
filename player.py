@@ -7,7 +7,7 @@ class player(object):
     """the player's koi fish"""
     def __init__(self, windowx):
         #pygame.sprite.Sprite.__init__(self) #call Sprite initializer
-        self.images = [pygame.image.load("img/koi.png"), pygame.image.load("img/dragonproxy.png")]
+        self.images = [pygame.image.load("img/koi.png"), pygame.image.load("img/dragon_sheet.png")]
         self.rect = self.images[0].get_rect()
         self.rect.width = 32
         self.energy = 0
@@ -196,12 +196,17 @@ class player(object):
             self.rect.width = self.images[1].get_rect().width
             self.rect.height = self.images[1].get_rect().height
             self.dragon_cooldown += FrameRate
+            if self.dragon_cooldown % 30 < 15:
+                self.frame = 1
+            else:
+                self.frame = 0
             #deactivate dragon mode
             if self.dragon_cooldown > 50.0:
                 self.energy = 0
+                self.frame = 0
                 self.dragon = False
                 self.dragon_cooldown = 0
-                self.rect.width = self.images[0].get_rect().width
+                self.rect.width = 32
                 self.rect.height = self.images[0].get_rect().height
 
     def handle_shoot(self, FrameRate):
@@ -228,7 +233,8 @@ class player(object):
         if not self.dragon:
             screen.blit(self.images[0], self.rect, pygame.Rect(32*(self.frame), 0, 32, 64))
         else:
-            screen.blit(self.images[1], self.rect)
+            screen.blit(self.images[1], self.rect, pygame.Rect(48*(self.frame), 0, 48, 96))
+
         for projectile in self.projectiles:
             projectile.draw(screen)
 
