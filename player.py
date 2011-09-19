@@ -110,9 +110,9 @@ class player(object):
             self.frame = 0
         
         #handle actual movement
-        acc = 1
+        acc = 1.3
         if self.dragon:
-            acc = 1
+            acc = 1.5
         future = self.rect.move(-self.xvel*acc*FrameRate, 0)
         if future.left < 100:
             self.rect.left = 100
@@ -133,9 +133,9 @@ class player(object):
             self.frame = 0
         
         #handle actual movement
-        acc = 1
+        acc = 1.3
         if self.dragon:
-            acc = 1
+            acc = 1.5
         future = self.rect.move(self.xvel*acc*FrameRate, 0)
         if future.right > self.windowx - 180:
             self.rect.right = self.windowx - 180

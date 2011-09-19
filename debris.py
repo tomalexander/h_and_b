@@ -6,9 +6,9 @@ import math
 class debris(object):
     """the debris class"""
     def __init__(self, x, ang):
-        self.image = pygame.image.load("img/debrisproxy.png")
-        self.scale = random.randrange(1, 5)
-        pygame.transform.scale(self.image, (self.scale*self.image.get_rect().width, self.scale*self.image.get_rect().height))
+        self.image = pygame.image.load("img/logforqueendavid.png")
+        self.scale = random.randrange(1, 2)
+        self.image = pygame.transform.scale(self.image, (self.scale*self.image.get_rect().width, self.scale*self.image.get_rect().height))
         self.rect = self.image.get_rect()
         self.type = "debris"
         #spawn debris at the top of the river
@@ -16,6 +16,8 @@ class debris(object):
         self.angle = ang
         self.xvel = 60
         self.yvel = 60 #should be fine now
+        self.spinning = 0
+        self.original = self.image
 
     def update(self, FrameRate):
         """updates debris"""
@@ -26,6 +28,10 @@ class debris(object):
         self.angle=-math.atan2(self.rect.centery-bubble_rect.centery, self.rect.centerx - bubble_rect.centerx)
         if self.yvel > -20:
             self.yvel -=20
+        if self.angle > 0 and self.angle < math.pi/2:
+            self.spinning = 1
+        else:
+            self.spinning = -1
         
         
     def move(self, FrameRate):
@@ -47,6 +53,7 @@ class debris(object):
 
     def draw(self, screen):
         """draws the bullet"""
+        self.image = pygame.transform.rotate(self.image, self.spinning*math.pi/2)
         screen.blit(self.image, self.rect)
 
 class rock(debris):
@@ -56,7 +63,7 @@ class rock(debris):
         #reset image, scale, and rect
         self.image = pygame.image.load("img/unbreakable.png")
         self.scale = random.randrange(1, 5)
-        pygame.transform.scale(self.image, (self.scale*self.image.get_rect().width, self.scale*self.image.get_rect().height))
+        self.image = pygame.transform.scale(self.image, (self.scale*self.image.get_rect().width, self.scale*self.image.get_rect().height))
         self.rect = self.image.get_rect()
         self.type == "rock"
         self.xvel = 50
