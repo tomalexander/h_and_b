@@ -116,7 +116,12 @@ class water_bear(generic_bear):
         x_multiplier *= x_percent
         y_multiplier *= y_percent
         self.rect.move_ip(distance_to_move*x_multiplier,distance_to_move*y_multiplier)
+        if (self.get_distance(self.rect.x, self.rect.y, self._original_x, self._original_y) < 20):
+            self.state = self.WAITING
 
 
     def draw(self, surface):
         surface.blit(self.image, self.rect, pygame.Rect(0,0,self.rect.width,self.rect.height))
+
+    def force_going_home(self):
+        self.state = self.GOING_HOME
