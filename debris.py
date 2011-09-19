@@ -28,6 +28,7 @@ class debris(object):
         FrameRate = FrameRate/100
         self.collided = False
         self.frame += 1
+        
         while self.angle > 2*math.pi or self.angle < -2*math.pi:
             if self.angle > 2*math.pi:
                 self.angle -= 2*math.pi
@@ -37,6 +38,8 @@ class debris(object):
         return self.move(FrameRate)
     
     def displace(self, bubble_rect):
+        if type == "Rock":
+            return
         self.angle=-math.atan2(self.rect.centery-bubble_rect.centery, self.rect.centerx - bubble_rect.centerx)
         if self.yvel > -20:
             self.yvel -=20
@@ -55,19 +58,20 @@ class debris(object):
 
         #bounce off of the sides of the river
         if self.rect.left < 100:
-            print self.angle
-            self.angle -= math.pi/4
-            self.spinning = -self.spinning
-        elif self.rect.right > 500:
             self.angle += math.pi/4
             self.spinning = -self.spinning
+            self.rect.left = 100
+        elif self.rect.right > 500:
+            self.angle -= math.pi/4
+            self.spinning = -self.spinning
+            self.rect.right = 500
         
         return True
 
     def draw(self, screen):
         """draws the debris"""
         if self.frame % 30 == 0:
-            self.image = pygame.transform.rotate(self.image, self.spinning*math.pi/2)
+            self.image = pygame.transform.rotate(self.image, self.spinning*math.pi/4)
         screen.blit(self.image, self.rect)
 
 class rock(debris):

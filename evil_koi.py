@@ -41,6 +41,10 @@ class evil_koi(object):
             self.dragon = True
             self.xvel = 70
             self.yvel = 70
+            self.strafe(FrameRate)
+            self.shoot(FrameRate)
+        #third boss stage
+        else:
             if not self.retreated:
                 self.retreat(FrameRate)
             else:
@@ -50,9 +54,7 @@ class evil_koi(object):
                     self.shoot(FrameRate)
                 else:    
                     self.charge(FrameRate)
-        #third boss stage
-        else:
-            pass
+            
         
         #update bullets        
         for i, projectile in enumerate(self.bad_projectiles):
