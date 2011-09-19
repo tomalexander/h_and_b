@@ -86,5 +86,25 @@ class rock(debris):
         self.type == "rock"
         self.xvel = 50
         self.yvel = 50
+        self.ang = -math.pi/2
+        self.spinning = False
         
+        
+    def update(self, FrameRate):
+        """updates rock"""
+        FrameRate = FrameRate/100
+        self.collided = False
+        self.frame += 1     
+        
+        return self.move(FrameRate)
     
+    def move(self, FrameRate):
+        """moves rock along its trajectory"""
+        
+        self.rect.move_ip(math.cos(self.angle)*self.xvel*FrameRate, -math.sin(self.angle)*self.yvel*FrameRate)
+
+        #bounce off of the sides of the river
+        if self.rect.left < 100:
+            self.rect.left = 100
+        elif self.rect.right > 500:
+            self.rect.right = 500
