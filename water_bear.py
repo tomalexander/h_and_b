@@ -116,7 +116,7 @@ class water_bear(generic_bear):
         x_multiplier *= x_percent
         y_multiplier *= y_percent
         self.rect.move_ip(distance_to_move*x_multiplier,distance_to_move*y_multiplier)
-        if (self.get_distance(self.rect.x, self.rect.y, self._original_x, self._original_y) < 10):
+        if (self.get_distance(self.rect.x, self.rect.y, self._original_x, self._original_y) < 20):
             self.state = self.WAITING
 
 
