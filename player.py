@@ -63,6 +63,9 @@ class player(object):
         #check to see if we even have enough energy
         if self.energy < 50:
             return False
+        #optional: take out dragon's barrel roll
+        if self.dragon:
+            return False
         #contradictory input received and we're not in the middle of anything
         if self.barrel[0] and self.barrel[1] and self.barrel[2]==0 and self.barrel[3]==0:
             return False
@@ -121,7 +124,6 @@ class player(object):
                 
     def roll_right(self, FrameRate):
         self.barrel[3] += FrameRate
-        print self.barrel[3]
         #handle animation
         if self.barrel[3] < 1.25:
             self.frame = 1

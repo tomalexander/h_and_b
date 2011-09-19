@@ -28,6 +28,12 @@ class debris(object):
         FrameRate = FrameRate/100
         self.collided = False
         self.frame += 1
+        while self.angle > 2*math.pi or self.angle < -2*math.pi:
+            if self.angle > 2*math.pi:
+                self.angle -= 2*math.pi
+            if self.angle < -2*math.pi:
+                self.angle += 2*math.pi        
+        
         return self.move(FrameRate)
     
     def displace(self, bubble_rect):
@@ -49,7 +55,8 @@ class debris(object):
 
         #bounce off of the sides of the river
         if self.rect.left < 100:
-            self.angle += math.pi/4
+            print self.angle
+            self.angle -= math.pi/4
             self.spinning = -self.spinning
         elif self.rect.right > 500:
             self.angle += math.pi/4
