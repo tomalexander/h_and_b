@@ -7,8 +7,9 @@ class player(object):
     """the player's koi fish"""
     def __init__(self, windowx):
         #pygame.sprite.Sprite.__init__(self) #call Sprite initializer
-        self.images = [pygame.image.load("img/koiproxy.png"), pygame.image.load("img/dragonproxy.png")]
+        self.images = [pygame.image.load("img/koi.png"), pygame.image.load("img/dragonproxy.png")]
         self.rect = self.images[0].get_rect()
+        self.rect.width = 32
         self.energy = 0
         #move koi to the middle of the screen
         self.rect.move_ip(284, 534)
@@ -69,7 +70,7 @@ class player(object):
         if self.barrel[2]>0.0 or (self.barrel[0] and self.barrel[3]==0.0 and self.barrel[4]==0.0):
             self.barrel[0] = False
             #check to see if we're done, otherwise continue
-            if self.barrel[2] >= 1.0:
+            if self.barrel[2] >= 5.0:
                 #reset utilites
                 self.barrel[4] = 1.0
                 self.barrel[2] = 0.0
@@ -82,7 +83,7 @@ class player(object):
         elif self.barrel[3]>0.0 or(self.barrel[1] and self.barrel[2]==0.0 and self.barrel[4]==0.0):
             #again, check if done, otherwise continue
             self.barrel[1] = False
-            if self.barrel[3] >= 1.0:
+            if self.barrel[3] >= 5.0:
                 #reset utilities
                 self.barrel[4] = 1.0
                 self.barrel[3] = 0.0
@@ -98,9 +99,20 @@ class player(object):
 
     def roll_left(self, FrameRate):
         self.barrel[2] += FrameRate
-        acc = 4
+        #handle animation
+        if self.barrel[2] < 1.25:
+            self.frame = 3
+        elif self.barrel[2] < 2.50:
+            self.frame = 2
+        elif self.barrel[2] < 3.75:
+            self.frame = 1
+        else:
+            self.frame = 0
+        
+        #handle actual movement
+        acc = 1
         if self.dragon:
-            acc = 5
+            acc = 1
         future = self.rect.move(-self.xvel*acc*FrameRate, 0)
         if future.left < 100:
             self.rect.left = 100
@@ -109,9 +121,21 @@ class player(object):
                 
     def roll_right(self, FrameRate):
         self.barrel[3] += FrameRate
-        acc = 4
+        print self.barrel[3]
+        #handle animation
+        if self.barrel[3] < 1.25:
+            self.frame = 1
+        elif self.barrel[3] < 2.50:
+            self.frame = 2
+        elif self.barrel[3] < 3.75:
+            self.frame = 3
+        else:
+            self.frame = 0
+        
+        #handle actual movement
+        acc = 1
         if self.dragon:
-            acc = 5
+            acc = 1
         future = self.rect.move(self.xvel*acc*FrameRate, 0)
         if future.right > self.windowx - 180:
             self.rect.right = self.windowx - 180
@@ -198,7 +222,7 @@ class player(object):
     def draw(self, screen):
         """draws koi"""
         if not self.dragon:
-            screen.blit(self.images[0], self.rect)
+            screen.blit(self.images[0], self.rect, pygame.Rect(32*(self.frame), 0, 32, 64))
         else:
             screen.blit(self.images[1], self.rect)
         for projectile in self.projectiles:
