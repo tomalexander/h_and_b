@@ -35,7 +35,7 @@ class game():
         self.boss = None
         self.lives = 3
         self.last_death = 0
-        self.immortal_time = 1000
+        self.immortal_time = 2000
         self.player = player(self.windowx)
         self.distance = 0
         self.worldspeed = 1 #distance per ms for river image movement
@@ -50,6 +50,8 @@ class game():
         self.key_bindings = key_bindings()
         self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
         self.player_killed = False
+        self.deaddraw = True
+        self.deaddrawnum = 0 #a counter to make the player flicker when respawning
         self.font24 = pygame.font.Font(None, 24) #Temp Font
         #final boss stuff
         #self.bad_koi = evil_koi(self.windowx)
@@ -121,7 +123,13 @@ class game():
         distrect = distnum.get_rect()
         distrect.center = (self.windowx-40, self.windowy-120)
         self.screen.blit(distnum, distrect)
-        self.player.draw(self.screen)
+        #Player
+        if self.distance > self.last_death + self.immortal_time or self.deaddraw:
+            self.player.draw(self.screen)
+        self.deaddrawnum += 1
+        if self.deaddrawnum > 10:
+            self.deaddrawnum = 0
+            self.deaddraw = not(self.deaddraw)
         #Enemy Draws:
         for e in self.debris_list:
             e.draw(self.screen)
