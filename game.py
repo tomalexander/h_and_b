@@ -243,6 +243,7 @@ class game():
         for j, wbear in enumerate(self.wbear_list):
             if self.player.rect.colliderect(wbear.rect) and self.player.barrel_lock==False:
                 self.player_killed = True
+                #Bear cooldown/deletion goes here
         for j, sbear in enumerate(self.sbear_list):
             if sbear.paw_rect is not None and self.player.rect.colliderect(sbear.paw_rect) and self.player.barrel_lock==False:
                 self.player_killed = True
