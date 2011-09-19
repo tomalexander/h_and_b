@@ -9,6 +9,8 @@ class debris(object):
         self.image = pygame.image.load("img/logforqueendavid.png")
         self.scale = random.randrange(1, 2)
         self.image = pygame.transform.scale(self.image, (self.scale*self.image.get_rect().width, self.scale*self.image.get_rect().height))
+        self.scale = random.randrange(1, 5)
+        pygame.transform.scale(self.image, (self.scale*self.image.get_rect().width, self.scale*self.image.get_rect().height))
         self.rect = self.image.get_rect()
         self.type = "debris"
         #spawn debris at the top of the river

@@ -38,7 +38,7 @@ class bullet(object):
 class fireball(object):
     """the fireball class"""
     def __init__(self, x, y, ang):
-        self.image = pygame.image.load("img/fireballproxy.png")
+        self.image = pygame.image.load("img/fireball.png")
         self.rect = self.image.get_rect()
         self.type = "fireball"
         #spawn bullet where dragon fired it from

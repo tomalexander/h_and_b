@@ -167,7 +167,7 @@ class game():
                     rdyenemy = water_bear(self.player,enemy[2],enemy[3])
                     self.wbear_list.append(rdyenemy)
                 elif enemy[1] == "evil_koi":
-                    self.boss = evil_koi(enemy[2])
+                    self.boss = evil_koi(self.windowx)
                 else:
                     print "INVALID ENEMY!"
                     self.exit_game()
@@ -243,6 +243,7 @@ class game():
         for j, wbear in enumerate(self.wbear_list):
             if self.player.rect.colliderect(wbear.rect) and self.player.barrel_lock==False:
                 self.player_killed = True
+                #Bear cooldown/deletion goes here
         for j, sbear in enumerate(self.sbear_list):
             if sbear.paw_rect is not None and self.player.rect.colliderect(sbear.paw_rect) and self.player.barrel_lock==False:
                 self.player_killed = True

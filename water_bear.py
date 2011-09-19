@@ -9,7 +9,7 @@ class water_bear(generic_bear):
     
     def __init__(self, player, x_position, y_position):
         generic_bear.__init__(self, x_position, y_position)
-        self.image = pygame.image.load("img/water_bear_proxy.png")
+        self.image = pygame.image.load("img/panda_swim_down.png")
         self._max_preperation_time = 500
         self._preperation_time = self._max_preperation_time
         self.substate = None
