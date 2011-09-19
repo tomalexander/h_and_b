@@ -243,11 +243,13 @@ class game():
                 self.debris_list.pop(i)
             #have debris collide with other debris
             for log in self.debris_list:
-                if log.rect.colliderect(trash.rect):
+                if log.rect.colliderect(trash.rect) and not log.collided:
                     log.angle = -log.angle
                     log.spinning = -log.spinning
                     trash.angle = -trash.angle
                     trash.spinning = -trash.spinning
+                    log.collided = True
+                    trash.collided = True
         for k, rock in enumerate(self.rock_list):
             if self.player.rect.colliderect(rock.rect):
                 self.player_killed = True

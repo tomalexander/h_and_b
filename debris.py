@@ -21,10 +21,12 @@ class debris(object):
         self.spinning = 0
         self.original = self.image
         self.frame = 0
+        self.collided = False
 
     def update(self, FrameRate):
         """updates debris"""
         FrameRate = FrameRate/100
+        self.collided = False
         self.frame += 1
         return self.move(FrameRate)
     
@@ -47,10 +49,10 @@ class debris(object):
 
         #bounce off of the sides of the river
         if self.rect.left < 100:
-            self.angle += math.pi/2
+            self.angle += math.pi/4
             self.spinning = -self.spinning
         elif self.rect.right > 500:
-            self.angle += math.pi/2
+            self.angle += math.pi/4
             self.spinning = -self.spinning
         
         return True
@@ -66,8 +68,8 @@ class rock(debris):
     def __init__(self, x, ang):
         debris.__init__(self, x, ang)
         #reset image, scale, and rect
-        self.image = pygame.image.load("img/unbreakable.png")
-        self.scale = random.randrange(1, 5)
+        self.image = pygame.image.load("img/Rock.png")
+        self.scale = random.randrange(1, 3)
         self.image = pygame.transform.scale(self.image, (self.scale*self.image.get_rect().width, self.scale*self.image.get_rect().height))
         self.rect = self.image.get_rect()
         self.type == "rock"
