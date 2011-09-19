@@ -32,6 +32,8 @@ class game():
         self.wbear_list = []
         self.boss = None
         self.lives = 3
+        self.last_death = 0
+        self.immortal_time = 1000
         self.player = player(self.windowx)
         self.distance = 0
         self.worldspeed = 1 #distance per ms for river image movement
@@ -138,16 +140,18 @@ class game():
         projectiles = self.player.update(self.time_since_last_frame)
         #If player is dead, deal with lives
         if self.player_killed == True:
-            self.lives -= 1
-            self.player_killed = False
-            if self.lives < 0:
-                txtsurf = self.font24.render("GAME OVER", 1, (255,0,255), (255,255,0))
-                txtrect = txtsurf.get_rect()
-                txtrect.center = (300, self.windowy/2)
-                self.screen.blit(txtsurf, txtrect)
-                pygame.display.flip()
-                pygame.time.wait(2000)
-                self.exit_game()
+            if self.distance > self.last_death + self.immortal_time:
+                self.last_death = self.distance
+                self.lives -= 1
+                self.player_killed = False
+                if self.lives < 0:
+                    txtsurf = self.font24.render("GAME OVER", 1, (255,0,255), (255,255,0))
+                    txtrect = txtsurf.get_rect()
+                    txtrect.center = (300, self.windowy/2)
+                    self.screen.blit(txtsurf, txtrect)
+                    pygame.display.flip()
+                    pygame.time.wait(2000)
+                    self.exit_game()
         #After updating the player, let's deal with enemies
         #1. Check for enemies we need to add
         for enemy in self.enemy_data:
