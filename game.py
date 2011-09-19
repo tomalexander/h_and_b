@@ -152,6 +152,8 @@ class game():
                     pygame.display.flip()
                     pygame.time.wait(2000)
                     self.exit_game()
+            else:
+                self.player_killed = False
         #After updating the player, let's deal with enemies
         #1. Check for enemies we need to add
         for enemy in self.enemy_data:
@@ -261,7 +263,6 @@ class game():
         for j, sbear in enumerate(self.sbear_list):
             if sbear.paw_rect is not None and self.player.rect.colliderect(sbear.paw_rect) and self.player.barrel_lock==False:
                 self.player_killed = True
-                sbear.enter_cooldown()
         for x, bullet in enumerate(self.bad_projectiles):
             if bullet.rect.colliderect(self.player.rect):
                 self.player_killed = True
