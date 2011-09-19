@@ -245,9 +245,9 @@ class game():
                 self.player_killed = True
                 self.rock_list.pop(k)
         for j, wbear in enumerate(self.wbear_list):
-            if self.player.rect.colliderect(wbear.rect) and self.player.barrel_lock==False:
+            if wbear.state != wbear.GOING_HOME and self.player.rect.colliderect(wbear.rect) and self.player.barrel_lock==False:
                 self.player_killed = True
-                #Bear cooldown/deletion goes here
+                wbear.force_going_home()
         for j, sbear in enumerate(self.sbear_list):
             if sbear.paw_rect is not None and self.player.rect.colliderect(sbear.paw_rect) and self.player.barrel_lock==False:
                 self.player_killed = True
