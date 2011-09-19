@@ -38,6 +38,8 @@ class debris(object):
         return self.move(FrameRate)
     
     def displace(self, bubble_rect):
+        if type == "Rock":
+            return
         self.angle=-math.atan2(self.rect.centery-bubble_rect.centery, self.rect.centerx - bubble_rect.centerx)
         if self.yvel > -20:
             self.yvel -=20

@@ -4,6 +4,7 @@ from player import player
 from main_menu import main_menu
 from key_bindings import key_bindings
 from debris import debris
+from debris import rock
 from generic_bear import generic_bear
 from water_bear import water_bear
 from side_bear import side_bear
