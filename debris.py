@@ -6,7 +6,7 @@ import math
 class debris(object):
     """the debris class"""
     def __init__(self, x, ang):
-        self.image = pygame.image.load("img/debrisproxy.png")
+        self.image = pygame.image.load("img/logforqueendavid.png")
         self.scale = random.randrange(1, 5)
         pygame.transform.scale(self.image, (self.scale*self.image.get_rect().width, self.scale*self.image.get_rect().height))
         self.rect = self.image.get_rect()

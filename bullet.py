@@ -6,7 +6,7 @@ class bullet(object):
     """the bullet class"""
     def __init__(self, x, y, ang):
         #pygame.sprite.Sprite.__init__(self) #call Sprite initializer
-        self.image = pygame.image.load("img/bulletproxy.png")
+        self.image = pygame.image.load("img/BUBBLE.png")
         self.rect = self.image.get_rect()
         #spawn bullet where koi fired it from
         self.rect.move_ip(x, y)
@@ -38,7 +38,7 @@ class bullet(object):
 class fireball(object):
     """the fireball class"""
     def __init__(self, x, y, ang):
-        self.image = pygame.image.load("img/fireballproxy.png")
+        self.image = pygame.image.load("img/fireball.png")
         self.rect = self.image.get_rect()
         self.type = "fireball"
         #spawn bullet where dragon fired it from
