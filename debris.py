@@ -20,10 +20,12 @@ class debris(object):
         self.yvel = 60 #should be fine now
         self.spinning = 0
         self.original = self.image
+        self.frame = 0
 
     def update(self, FrameRate):
         """updates debris"""
         FrameRate = FrameRate/100
+        self.frame += 1
         return self.move(FrameRate)
     
     def displace(self, bubble_rect):
@@ -55,7 +57,8 @@ class debris(object):
 
     def draw(self, screen):
         """draws the bullet"""
-        self.image = pygame.transform.rotate(self.image, self.spinning*math.pi/2)
+        if self.frame % 30 == 0:
+            self.image = pygame.transform.rotate(self.image, self.spinning*math.pi/2)
         screen.blit(self.image, self.rect)
 
 class rock(debris):
