@@ -187,6 +187,7 @@ class player(object):
     
     #ACTIVATING AND DEACTIVATING DRAGON MODE
     def dragon_mode(self, FrameRate):
+
         #disable dragon mode if they don't have enough energy
         if self.energy < self.dragon_prereq:
             self.dragon = False
@@ -199,6 +200,7 @@ class player(object):
             if self.dragon_cooldown > 50.0:
                 self.energy = 0
                 self.dragon = False
+                self.dragon_cooldown = 0
                 self.rect.width = self.images[0].get_rect().width
                 self.rect.height = self.images[0].get_rect().height
 
