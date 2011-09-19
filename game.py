@@ -9,6 +9,7 @@ from generic_bear import generic_bear
 from water_bear import water_bear
 from side_bear import side_bear
 from evil_koi import evil_koi
+from sound import game_music
 
 import math
 
@@ -53,6 +54,7 @@ class game():
         #final boss stuff
         #self.bad_koi = evil_koi(self.windowx)
         self.bad_projectiles = []
+        self.music = game_music()
 
     def interp_enemies(self, enemy_txt):
         """translate enemies.txt input into a list of lists"""
