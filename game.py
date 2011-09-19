@@ -35,7 +35,7 @@ class game():
         self.player = player(self.windowx)
         self.distance = 0
         self.worldspeed = 1 #distance per ms for river image movement
-        self.riverimg = pygame.image.load("img/bitch i'm a river.png").convert()
+        self.riverimg = pygame.image.load("img/river1.png").convert()
         #self.landimgl = pygame.image.load("img/landproxy.png").convert()
         #self.landimgr = pygame.image.load("img/landproxy.png").convert()
         #self.landimgr = pygame.transform.rotate(self.landimgl, 180)
@@ -48,7 +48,7 @@ class game():
         self.player_killed = False
         self.font24 = pygame.font.Font(None, 24) #Temp Font
         #final boss stuff
-        self.bad_koi = evil_koi(self.windowx)
+        #self.bad_koi = evil_koi(self.windowx)
         self.bad_projectiles = []
 
     def interp_enemies(self, enemy_txt):
@@ -183,7 +183,7 @@ class game():
         for wbr in self.wbear_list:
             wbr.update(self.time_since_last_frame)
         if self.boss != None:
-            self.boss.update(self.time_since_last_frame)
+            self.bad_projectiles = self.boss.update(self.time_since_last_frame)
         #3. Remove Enemies that are off screen
         for en in self.debris_list:
             if not(self.screen_rect.colliderect(en.rect)):
@@ -228,8 +228,8 @@ class game():
             for j, wbear in enumerate(self.wbear_list):
                 if bullet.rect.colliderect(wbear.rect) and bullet.type == "fireball":
                     self.wbear_list.pop(j)
-            if bullet.rect.colliderect(self.bad_koi.rect):
-                self.bad_koi.take_damage()
+            if self.boss != None and bullet.rect.colliderect(self.boss.rect):
+                self.boss.take_damage()
 
         #do player collision
         for i, trash in enumerate(self.debris_list):
@@ -250,7 +250,7 @@ class game():
         for x, bullet in enumerate(self.bad_projectiles):
             if bullet.rect.colliderect(self.player.rect):
                 self.player_killed = True
-        if self.bad_koi.rect.colliderect(self.player.rect):
+        if self.boss != None and self.boss.rect.colliderect(self.player.rect):
             self.player_killed = True
 
     def handle_events(self):
