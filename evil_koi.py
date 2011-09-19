@@ -10,7 +10,7 @@ class evil_koi(object):
         self.rect = self.images[0].get_rect()
         self.energy = 0
         #move evil koi to the middle of the screen
-        self.rect.move_ip(250, 0)
+        self.rect.x = 250
         self.xvel = 35
         self.yvel = 35
         self.angle = 5*math.pi/4
