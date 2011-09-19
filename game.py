@@ -167,7 +167,7 @@ class game():
                     rdyenemy = water_bear(self.player,enemy[2],enemy[3])
                     self.wbear_list.append(rdyenemy)
                 elif enemy[1] == "evil_koi":
-                    self.boss = evil_koi(300)
+                    self.boss = evil_koi(enemy[2])
                 else:
                     print "INVALID ENEMY!"
                     self.exit_game()

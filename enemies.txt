@@ -6,4 +6,4 @@
 6000,debris,420,0
 7000,water_bear,280,0
 8000,side_bear,0,0
-13000,evil_koi,0,0
+13000,evil_koi,300,0
