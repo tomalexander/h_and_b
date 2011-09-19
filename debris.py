@@ -48,15 +48,15 @@ class debris(object):
         #bounce off of the sides of the river
         if self.rect.left < 100:
             self.angle += math.pi/2
+            self.spinning = -self.spinning
         elif self.rect.right > 500:
             self.angle += math.pi/2
+            self.spinning = -self.spinning
         
-        #elif self.rect.top < 0:
-        #    return False
         return True
 
     def draw(self, screen):
-        """draws the bullet"""
+        """draws the debris"""
         if self.frame % 30 == 0:
             self.image = pygame.transform.rotate(self.image, self.spinning*math.pi/2)
         screen.blit(self.image, self.rect)

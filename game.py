@@ -230,12 +230,20 @@ class game():
                     self.wbear_list.pop(j)
             if self.boss != None and bullet.rect.colliderect(self.boss.rect):
                 self.boss.take_damage()
+        
 
         #do player collision
         for i, trash in enumerate(self.debris_list):
             if self.player.rect.colliderect(trash.rect):
                 self.player_killed = True
                 self.debris_list.pop(i)
+            #have debris collide with other debris
+            for log in self.debris_list:
+                if log.rect.colliderect(trash.rect):
+                    log.angle = -log.angle
+                    log.spinning = -log.spinning
+                    trash.angle = -trash.angle
+                    trash.spinning = -trash.spinning
         for k, rock in enumerate(self.rock_list):
             if self.player.rect.colliderect(rock.rect):
                 self.player_killed = True
