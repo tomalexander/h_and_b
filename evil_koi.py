@@ -15,7 +15,7 @@ class evil_koi(object):
         self.yvel = 35
         self.angle = 5*math.pi/4
         #CONTROL LOCKS
-        self.shoot_cooldown = 0.75
+        self.shoot_cooldown = 4.0
         self.bad_projectiles = []
         #dragon mode activated
         self.dragon = False
@@ -126,11 +126,11 @@ class evil_koi(object):
             if not self.dragon:
                 new_bullet = bullet(self.rect.left+16, self.rect.bottom, -math.pi/2)
                 self.bad_projectiles.append(new_bullet)
-                self.shoot_cooldown = 2.0
+                self.shoot_cooldown = 6.0
             else:
                 new_fireball = fireball(self.rect.left+16, self.rect.bottom, -math.pi/2)
                 self.bad_projectiles.append(new_fireball)
-                self.shoot_cooldown = 1.5
+                self.shoot_cooldown = 4.0
 
 
     def draw(self, screen):
