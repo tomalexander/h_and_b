@@ -193,8 +193,8 @@ class player(object):
             self.dragon = False
         #activate dragon mode
         else:
-            self.rect.width = self.images[1].get_rect().width
-            self.rect.height = self.images[1].get_rect().height
+            self.rect.width = 48
+            self.rect.height = 96
             self.dragon_cooldown += FrameRate
             if self.dragon_cooldown % 30 < 15:
                 self.frame = 1
