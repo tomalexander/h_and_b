@@ -7,10 +7,10 @@ class player(object):
     """the player's koi fish"""
     def __init__(self, windowx):
         #pygame.sprite.Sprite.__init__(self) #call Sprite initializer
-        self.images = [pygame.image.load("img/koi.png"), pygame.image.load("img/dragon_sheet.png")]
+        self.images = [pygame.image.load("img/koi.png"), pygame.image.load("img/dragon_sheet.png"), pygame.image.load("img/transform.png")]
         self.rect = self.images[0].get_rect()
         self.rect.width = 32
-        self.energy = 0
+        self.energy = 0.0
         #move koi to the middle of the screen
         self.rect.move_ip(284, 534)
         self.xvel = 35
@@ -27,6 +27,8 @@ class player(object):
         self.projectiles = []
         #dragon mode activated
         self.dragon = False
+        self.dragon_prescene = 0
+        self.dragon_pre_lock = False
         self.dragon_cooldown = 0.0
         self.dragon_prereq = 300
         #animation utilities
@@ -37,9 +39,9 @@ class player(object):
         """handles input"""
         FrameRate = FrameRate/100
         
-        self.energy += 1
-        if self.energy > 300:
-            self.energy = 300
+        self.energy += 0.5
+        if self.energy > 300.0:
+            self.energy = 300.0
         
         #we're going to move if we aren't in the middle of a roll
         self.barrel_lock = self.barrel_roll(FrameRate)
@@ -48,7 +50,7 @@ class player(object):
         
         #handle dragon mode attempt
         if self.dragon == True:
-            self.dragon_mode(FrameRate)
+            self.pre_dragon(FrameRate)
         
         #handle shooting
         self.handle_shoot(FrameRate)
@@ -64,12 +66,18 @@ class player(object):
             self.barrel[4] = 0.0
         #check to see if we even have enough energy
         if self.energy < 50:
+            self.barrel[0] = False
+            self.barrel[1] = False
             return False
         #optional: take out dragon's barrel roll
         if self.dragon:
+            self.barrel[0] = False
+            self.barrel[1] = False
             return False
         #contradictory input received and we're not in the middle of anything
         if self.barrel[0] and self.barrel[1] and self.barrel[2]==0 and self.barrel[3]==0:
+            self.barrel[0] = False
+            self.barrel[1] = False
             return False
         #check to see if a left-roll is in progress or if we're free to start one
         if self.barrel[2]>0.0 or (self.barrel[0] and self.barrel[3]==0.0 and self.barrel[4]==0.0):
@@ -187,9 +195,26 @@ class player(object):
                 else:
                     self.rect = future
     
+    def pre_dragon(self, FrameRate):
+        #disable dragon mode if they don't have enough energy
+        if self.energy < self.dragon_prereq:
+            self.dragon = False
+        if self.dragon_prescene >= 30:
+            self.dragon_mode(FrameRate)
+        #start dragon transform sequence
+        self.dragon_prescene += 1
+        self.rect.width = 48
+        self.rect.height = 96
+        
+        #animations!
+        if self.dragon_prescene % 10 < 5:
+            self.frame = 0
+        else:
+            self.frame = 1
+    
     #ACTIVATING AND DEACTIVATING DRAGON MODE
     def dragon_mode(self, FrameRate):
-
+        self.dragon_pre_lock = True
         #disable dragon mode if they don't have enough energy
         if self.energy < self.dragon_prereq:
             self.dragon = False
@@ -198,18 +223,21 @@ class player(object):
             self.rect.width = 48
             self.rect.height = 96
             self.dragon_cooldown += FrameRate
+            #do animations
             if self.dragon_cooldown % 30 < 15:
                 self.frame = 1
             else:
                 self.frame = 0
             #deactivate dragon mode
             if self.dragon_cooldown > 50.0:
-                self.energy = 0
+                self.energy = 0.0
                 self.frame = 0
                 self.dragon = False
                 self.dragon_cooldown = 0
                 self.rect.width = 32
                 self.rect.height = self.images[0].get_rect().height
+                self.dragon_prescene = 0
+                self.dragon_pre_lock = False
 
     def handle_shoot(self, FrameRate):
         self.shoot_cooldown -= FrameRate
@@ -235,6 +263,8 @@ class player(object):
         #screen.fill((255,255,255), self.rect)
         if not self.dragon:
             screen.blit(self.images[0], self.rect, pygame.Rect(32*(self.frame), 0, 32, 64))
+        elif self.dragon and not self.dragon_pre_lock:
+            screen.blit(self.images[2], self.rect, pygame.Rect(48*(self.frame), 0, 48, 96))
         else:
             screen.blit(self.images[1], self.rect, pygame.Rect(48*(self.frame), 0, 48, 96))
 
