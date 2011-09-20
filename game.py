@@ -10,6 +10,7 @@ from water_bear import water_bear
 from side_bear import side_bear
 from evil_koi import evil_koi
 from sound import game_music
+from generic_bar import generic_bar
 
 import math
 
@@ -35,7 +36,7 @@ class game():
         self.boss = None
         self.lives = 3
         self.last_death = 0
-        self.immortal_time = 1000
+        self.immortal_time = 2000
         self.player = player(self.windowx)
         self.distance = 0
         self.worldspeed = 1 #distance per ms for river image movement
@@ -50,11 +51,15 @@ class game():
         self.key_bindings = key_bindings()
         self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
         self.player_killed = False
+        self.deaddraw = True
+        self.deaddrawnum = 0 #a counter to make the player flicker when respawning
         self.font24 = pygame.font.Font(None, 24) #Temp Font
         #final boss stuff
         #self.bad_koi = evil_koi(self.windowx)
         self.bad_projectiles = []
         self.music = game_music()
+        self.distance_bar = generic_bar(0, 20000, (0,0,0), (255,255,255), 620, 100, 20, 300)
+        self.energy_bar = generic_bar(0, 400, (255,0,0), (255,255,255), 645, 100, 20, 300)
 
     def interp_enemies(self, enemy_txt):
         """translate enemies.txt input into a list of lists"""
@@ -105,23 +110,13 @@ class game():
         self.screen.blit(self.landimgl, pygame.Rect(0, ydisp2 - landrectl.height, landrectl.width, landrectl.height))
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2, landrectr.width, landrectr.height))
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2 - landrectr.height, landrectr.width, landrectr.height))
-        #Have to draw side bears before side bar to cut overlap, sorry for messing up your code
-        for e in self.sbear_list:
-            e.draw(self.screen)
-        #Sidebar Stuff
-        self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
-        #Lives
-        for i in range(self.lives):
-            self.screen.blit(self.heartimg, pygame.Rect(self.windowx - 80 + 8+24*i, self.windowy - 20, 16, 16))
-        energynum = self.font24.render("E: %i"%self.player.energy, 1, (255,0,255), (255,255,0))
-        energyrect = energynum.get_rect()
-        energyrect.center = (self.windowx-40, self.windowy-80)
-        self.screen.blit(energynum, energyrect)
-        distnum = self.font24.render("D: %i"%self.distance, 1, (255,0,255), (255,255,0))
-        distrect = distnum.get_rect()
-        distrect.center = (self.windowx-40, self.windowy-120)
-        self.screen.blit(distnum, distrect)
-        self.player.draw(self.screen)
+        #Player
+        if self.distance > self.last_death + self.immortal_time or self.deaddraw:
+            self.player.draw(self.screen)
+        self.deaddrawnum += 1
+        if self.deaddrawnum > 10:
+            self.deaddrawnum = 0
+            self.deaddraw = not(self.deaddraw)
         #Enemy Draws:
         for e in self.debris_list:
             e.draw(self.screen)
@@ -129,8 +124,20 @@ class game():
             e.draw(self.screen)
         for e in self.wbear_list:
             e.draw(self.screen)
+        for e in self.sbear_list:
+            e.draw(self.screen)
         if self.boss != None:
             self.boss.draw(self.screen)
+        #Sidebar Stuff
+        self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
+        #Lives
+        for i in range(self.lives):
+            self.screen.blit(self.heartimg, pygame.Rect(self.windowx - 80 + 8+24*i, self.windowy - 20, 16, 16))
+        self.distance_bar.set_value(self.distance)
+        self.distance_bar.draw(self.screen)
+        self.energy_bar.set_value(self.player.energy)
+        self.energy_bar.draw(self.screen)
+        self.player.draw(self.screen)
         #Text Engine
         for txt in self.text_list:
             txtsurf = self.font24.render("%s"%txt[0], 1, (255,0,255), (255,255,0))

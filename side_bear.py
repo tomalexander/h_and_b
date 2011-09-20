@@ -16,8 +16,8 @@ class side_bear(generic_bear):
         self._target_range = 300
         self._swipe_duration = 1000
         self._swipe_progress = 0
-        self._swipe_width = 100
-        self._swipe_height = 100
+        self._swipe_width = 50
+        self._swipe_height = 90
         self.paw_rect = None
         self.player = player
         self.drift_speed = 100
@@ -55,13 +55,18 @@ class side_bear(generic_bear):
 
         if (self.attack_direction == self.RIGHT):
             self.paw_rect.x = self.rect.x + self.rect.width - self.paw_rect.width
+            if (self.paw_state == self.PAW_DOWN):
+                self.paw_rect.x -= 10
         else:
             self.paw_rect.x = self.rect.x
+            if (self.paw_state == self.PAW_DOWN):
+                self.paw_rect.x += 10
         self.paw_rect.y = self.rect.y
         if (self.paw_state == self.PAW_DOWN):
             self.paw_rect.y += self.paw_rect.height
 
     def draw(self, surface):
+        surface.fill((255,255,255), self.paw_rect)
         if (self.paw_state == self.PAW_UP):
             surface.blit(self.image, self.rect, pygame.Rect(0,0,self.rect.width, self.rect.height))
         else:
