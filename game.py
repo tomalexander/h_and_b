@@ -36,7 +36,7 @@ class game():
         self.boss = None
         self.lives = 3
         self.last_death = 0
-        self.immortal_time = 1000
+        self.immortal_time = 2000
         self.player = player(self.windowx)
         self.distance = 0
         self.worldspeed = 1 #distance per ms for river image movement
@@ -51,6 +51,8 @@ class game():
         self.key_bindings = key_bindings()
         self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
         self.player_killed = False
+        self.deaddraw = True
+        self.deaddrawnum = 0 #a counter to make the player flicker when respawning
         self.font24 = pygame.font.Font(None, 24) #Temp Font
         #final boss stuff
         #self.bad_koi = evil_koi(self.windowx)
@@ -108,9 +110,24 @@ class game():
         self.screen.blit(self.landimgl, pygame.Rect(0, ydisp2 - landrectl.height, landrectl.width, landrectl.height))
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2, landrectr.width, landrectr.height))
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2 - landrectr.height, landrectr.width, landrectr.height))
-        #Have to draw side bears before side bar to cut overlap, sorry for messing up your code
+        #Player
+        if self.distance > self.last_death + self.immortal_time or self.deaddraw:
+            self.player.draw(self.screen)
+        self.deaddrawnum += 1
+        if self.deaddrawnum > 10:
+            self.deaddrawnum = 0
+            self.deaddraw = not(self.deaddraw)
+        #Enemy Draws:
+        for e in self.debris_list:
+            e.draw(self.screen)
+        for e in self.rock_list:
+            e.draw(self.screen)
+        for e in self.wbear_list:
+            e.draw(self.screen)
         for e in self.sbear_list:
             e.draw(self.screen)
+        if self.boss != None:
+            self.boss.draw(self.screen)
         #Sidebar Stuff
         self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
         #Lives
@@ -121,15 +138,6 @@ class game():
         self.energy_bar.set_value(self.player.energy)
         self.energy_bar.draw(self.screen)
         self.player.draw(self.screen)
-        #Enemy Draws:
-        for e in self.debris_list:
-            e.draw(self.screen)
-        for e in self.rock_list:
-            e.draw(self.screen)
-        for e in self.wbear_list:
-            e.draw(self.screen)
-        if self.boss != None:
-            self.boss.draw(self.screen)
         #Text Engine
         for txt in self.text_list:
             txtsurf = self.font24.render("%s"%txt[0], 1, (255,0,255), (255,255,0))
