@@ -35,7 +35,7 @@ class game():
         self.wbear_list = []
         self.boss = None
         self.lives = 3
-        self.last_death = 0
+        self.last_death = -2000
         self.immortal_time = 2000
         self.player = player(self.windowx)
         self.distance = 0
@@ -139,7 +139,7 @@ class game():
         self.distance_bar.draw(self.screen)
         self.energy_bar.set_value(self.player.energy)
         self.energy_bar.draw(self.screen)
-        self.player.draw(self.screen)
+        #self.player.draw(self.screen)
         #Text Engine
         for txt in self.text_list:
             txtsurf = self.font24.render("%s"%txt[0], 1, (255,0,255), (255,255,0))
