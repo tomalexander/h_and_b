@@ -59,7 +59,7 @@ class game():
         self.bad_projectiles = []
         self.music = game_music()
         self.distance_bar = generic_bar(0, 20000, (0,0,0), (255,255,255), 620, 100, 20, 300)
-        self.energy_bar = generic_bar(0, 400, (255,0,0), (255,255,255), 645, 100, 20, 300)
+        self.energy_bar = generic_bar(0, 300, (255,0,0), (255,255,255), 645, 100, 20, 300)
 
     def interp_enemies(self, enemy_txt):
         """translate enemies.txt input into a list of lists"""
@@ -154,6 +154,7 @@ class game():
             if self.distance > self.last_death + self.immortal_time:
                 self.last_death = self.distance
                 self.lives -= 1
+                self.music.play_drop()
                 self.player_killed = False
                 if self.lives < 0:
                     txtsurf = self.font24.render("GAME OVER", 1, (255,0,255), (255,255,0))
@@ -307,6 +308,8 @@ class game():
                     self.player.shoot = True
                 if event.key in self.key_bindings.dragon:
                     self.player.dragon = True
+                    if self.player.energy >= self.player.dragon_prereq:
+                        self.music.play_rawr()
             if event.type == pygame.KEYUP:
 				#cancelling movement
                 if event.key in self.key_bindings.up:
@@ -323,6 +326,10 @@ class game():
                 if event.key in self.key_bindings.barrel_right:
                     self.player.barrel[1] = True
                 if event.key in self.key_bindings.shoot:
+                    if (self.player.dragon):
+                        pass
+                    else:
+                        self.music.play_drop()
                     self.player.shoot = False
 
     def activate_menu(self):
