@@ -20,7 +20,7 @@ class side_bear(generic_bear):
         self._swipe_height = 90
         self.paw_rect = None
         self.player = player
-        self.drift_speed = 100
+        self.drift_speed = 250
         if (self.rect.x < 400):
             self.attack_direction = self.RIGHT
         else:

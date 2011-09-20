@@ -159,7 +159,7 @@ class game():
                 self.music.play_hit()
                 self.player_killed = False
                 if self.lives < 0:
-                    txtsurf = self.font32.render("GAME OVER", 1, (255,0,255), (255,255,0))
+                    txtsurf = self.font32.render("GAME OVER", 1, (255,255,255), (0,0,0))
                     txtrect = txtsurf.get_rect()
                     txtrect.center = (300, self.windowy/2)
                     self.screen.blit(txtsurf, txtrect)
