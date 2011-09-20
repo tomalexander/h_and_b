@@ -93,9 +93,11 @@
 157000,debris,280,0
 159000,debris,420,0
 161000,debris,140,0
-162000,side_bear,440,066000,debris,420,0
+162000,side_bear,440,0
+166000,debris,420,0
 167000,rock,300,0
-169000,water_bear,280,0
+168000,water_bear,140,0
+169000,water_bear,350,0
 171000,side_bear,-40,0
 172000,debris,280,0
 174000,rock,150,0
@@ -107,8 +109,9 @@
 182000,debris,420,0
 184000,side_bear,-40,0
 185000,debris,280,0
+185000,water_bear,140,0
 186000,debris,140,0
-187000,water_bear,280,0
+187000,water_bear,350,0
 190000,side_bear,440,0
 191000,debris,420,0
 193000,rock,200,0
