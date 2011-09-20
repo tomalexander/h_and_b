@@ -154,7 +154,7 @@ class game():
             if self.distance > self.last_death + self.immortal_time:
                 self.last_death = self.distance
                 self.lives -= 1
-                self.music.play_drop()
+                self.music.play_hit()
                 self.player_killed = False
                 if self.lives < 0:
                     txtsurf = self.font24.render("GAME OVER", 1, (255,0,255), (255,255,0))
@@ -327,7 +327,7 @@ class game():
                     self.player.barrel[1] = True
                 if event.key in self.key_bindings.shoot:
                     if (self.player.dragon):
-                        pass
+                        self.music.play_fireball()
                     else:
                         self.music.play_drop()
                     self.player.shoot = False
