@@ -7,7 +7,7 @@ class player(object):
     """the player's koi fish"""
     def __init__(self, windowx):
         #pygame.sprite.Sprite.__init__(self) #call Sprite initializer
-        self.images = [pygame.image.load("img/koi.png"), pygame.image.load("img/dragon_sheet.png")]
+        self.images = [pygame.image.load("img/koi.png"), pygame.image.load("img/dragon_sheet.png"), pygame.image.load("img/transform.png")]
         self.rect = self.images[0].get_rect()
         self.rect.width = 32
         self.energy = 0
@@ -27,6 +27,8 @@ class player(object):
         self.projectiles = []
         #dragon mode activated
         self.dragon = False
+        self.dragon_prescene = 0
+        self.dragon_pre_lock = False
         self.dragon_cooldown = 0.0
         self.dragon_prereq = 300
         #animation utilities
@@ -48,7 +50,7 @@ class player(object):
         
         #handle dragon mode attempt
         if self.dragon == True:
-            self.dragon_mode(FrameRate)
+            self.pre_dragon(FrameRate)
         
         #handle shooting
         self.handle_shoot(FrameRate)
@@ -187,9 +189,28 @@ class player(object):
                 else:
                     self.rect = future
     
+    def pre_dragon(self, FrameRate):
+        #disable dragon mode if they don't have enough energy
+        if self.energy < self.dragon_prereq:
+            self.dragon = False
+        if self.dragon_prescene >= 30:
+            self.dragon_mode(FrameRate)
+        #start dragon transform sequence
+        self.dragon_prescene += 1
+        self.rect.width = 48
+        self.rect.height = 96
+        
+        #animations!
+        if self.dragon_prescene % 10 < 5:
+            self.frame = 0
+        else:
+            self.frame = 1
+        
+
+    
     #ACTIVATING AND DEACTIVATING DRAGON MODE
     def dragon_mode(self, FrameRate):
-
+        self.dragon_pre_lock = True
         #disable dragon mode if they don't have enough energy
         if self.energy < self.dragon_prereq:
             self.dragon = False
@@ -198,6 +219,7 @@ class player(object):
             self.rect.width = 48
             self.rect.height = 96
             self.dragon_cooldown += FrameRate
+            #do animations
             if self.dragon_cooldown % 30 < 15:
                 self.frame = 1
             else:
@@ -210,6 +232,8 @@ class player(object):
                 self.dragon_cooldown = 0
                 self.rect.width = 32
                 self.rect.height = self.images[0].get_rect().height
+                self.dragon_prescene = 0
+                self.dragon_pre_lock = False
 
     def handle_shoot(self, FrameRate):
         self.shoot_cooldown -= FrameRate
@@ -235,6 +259,8 @@ class player(object):
         #screen.fill((255,255,255), self.rect)
         if not self.dragon:
             screen.blit(self.images[0], self.rect, pygame.Rect(32*(self.frame), 0, 32, 64))
+        elif self.dragon and not self.dragon_pre_lock:
+            screen.blit(self.images[2], self.rect, pygame.Rect(48*(self.frame), 0, 48, 96))
         else:
             screen.blit(self.images[1], self.rect, pygame.Rect(48*(self.frame), 0, 48, 96))
 
