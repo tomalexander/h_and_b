@@ -121,6 +121,7 @@ class water_bear(generic_bear):
 
 
     def draw(self, surface):
+        surface.fill((255,255,255), self.rect)
         surface.blit(self.image, self.rect, pygame.Rect(0,0,self.rect.width,self.rect.height))
 
     def force_going_home(self):
