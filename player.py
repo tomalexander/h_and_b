@@ -10,7 +10,7 @@ class player(object):
         self.images = [pygame.image.load("img/koi.png"), pygame.image.load("img/dragon_sheet.png"), pygame.image.load("img/transform.png")]
         self.rect = self.images[0].get_rect()
         self.rect.width = 32
-        self.energy = 0
+        self.energy = 0.0
         #move koi to the middle of the screen
         self.rect.move_ip(284, 534)
         self.xvel = 35
@@ -39,9 +39,9 @@ class player(object):
         """handles input"""
         FrameRate = FrameRate/100
         
-        self.energy += 1
-        if self.energy > 300:
-            self.energy = 300
+        self.energy += 0.5
+        if self.energy > 300.0:
+            self.energy = 300.0
         
         #we're going to move if we aren't in the middle of a roll
         self.barrel_lock = self.barrel_roll(FrameRate)
@@ -66,12 +66,18 @@ class player(object):
             self.barrel[4] = 0.0
         #check to see if we even have enough energy
         if self.energy < 50:
+            self.barrel[0] = False
+            self.barrel[1] = False
             return False
         #optional: take out dragon's barrel roll
         if self.dragon:
+            self.barrel[0] = False
+            self.barrel[1] = False
             return False
         #contradictory input received and we're not in the middle of anything
         if self.barrel[0] and self.barrel[1] and self.barrel[2]==0 and self.barrel[3]==0:
+            self.barrel[0] = False
+            self.barrel[1] = False
             return False
         #check to see if a left-roll is in progress or if we're free to start one
         if self.barrel[2]>0.0 or (self.barrel[0] and self.barrel[3]==0.0 and self.barrel[4]==0.0):
@@ -205,8 +211,6 @@ class player(object):
             self.frame = 0
         else:
             self.frame = 1
-        
-
     
     #ACTIVATING AND DEACTIVATING DRAGON MODE
     def dragon_mode(self, FrameRate):
@@ -226,7 +230,7 @@ class player(object):
                 self.frame = 0
             #deactivate dragon mode
             if self.dragon_cooldown > 50.0:
-                self.energy = 0
+                self.energy = 0.0
                 self.frame = 0
                 self.dragon = False
                 self.dragon_cooldown = 0
