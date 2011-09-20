@@ -84,6 +84,7 @@ class rock(debris):
         self.image = pygame.transform.scale(self.image, (self.scale*self.image.get_rect().width, self.scale*self.image.get_rect().height))
         self.rect = self.image.get_rect()
         self.type == "rock"
+        self.rect.x = x
         self.xvel = 50
         self.yvel = 50
         self.ang = -math.pi/2

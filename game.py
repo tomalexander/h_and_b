@@ -252,7 +252,7 @@ class game():
 
         #do player collision
         for i, trash in enumerate(self.debris_list):
-            if self.player.rect.colliderect(trash.rect):
+            if self.player.rect.colliderect(trash.rect) and not self.player.barrel_lock:
                 self.player_killed = True
                 self.debris_list.pop(i)
             #have debris collide with other debris
@@ -264,22 +264,23 @@ class game():
                     trash.spinning = -trash.spinning
                     log.collided = True
                     trash.collided = True
-        for k, rock in enumerate(self.rock_list):
-            if self.player.rect.colliderect(rock.rect):
+        if not self.player.barrel_lock:
+            for k, rock in enumerate(self.rock_list):
+                if self.player.rect.colliderect(rock.rect):
+                    self.player_killed = True
+                    self.rock_list.pop(k)
+            for j, wbear in enumerate(self.wbear_list):
+                if wbear.state != wbear.GOING_HOME and self.player.rect.colliderect(wbear.rect) and self.player.barrel_lock==False:
+                    self.player_killed = True
+                    wbear.force_going_home()
+            for j, sbear in enumerate(self.sbear_list):
+                if sbear.paw_rect is not None and self.player.rect.colliderect(sbear.paw_rect) and self.player.barrel_lock==False:
+                    self.player_killed = True
+            for x, bullet in enumerate(self.bad_projectiles):
+                if bullet.rect.colliderect(self.player.rect):
+                    self.player_killed = True
+            if self.boss != None and self.boss.rect.colliderect(self.player.rect):
                 self.player_killed = True
-                self.rock_list.pop(k)
-        for j, wbear in enumerate(self.wbear_list):
-            if wbear.state != wbear.GOING_HOME and self.player.rect.colliderect(wbear.rect) and self.player.barrel_lock==False:
-                self.player_killed = True
-                wbear.force_going_home()
-        for j, sbear in enumerate(self.sbear_list):
-            if sbear.paw_rect is not None and self.player.rect.colliderect(sbear.paw_rect) and self.player.barrel_lock==False:
-                self.player_killed = True
-        for x, bullet in enumerate(self.bad_projectiles):
-            if bullet.rect.colliderect(self.player.rect):
-                self.player_killed = True
-        if self.boss != None and self.boss.rect.colliderect(self.player.rect):
-            self.player_killed = True
 
     def handle_events(self):
         """Handle events (such as key presses)"""
