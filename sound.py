@@ -5,6 +5,7 @@ class game_music():
     def __init__(self):
         self.background = pygame.mixer.music.load("sound/background.ogg")
         pygame.mixer.music.play(-1, 0.0)
+        pygame.mixer.music.set_volume(0.5)
         self.drop = [pygame.mixer.Sound("sound/30341__junggle__waterdrop24.wav"), pygame.mixer.Sound("sound/drop1.ogg"), pygame.mixer.Sound("sound/drop2.ogg"), pygame.mixer.Sound("sound/drop3.ogg"), pygame.mixer.Sound("sound/drop4.ogg"), pygame.mixer.Sound("sound/drop5.ogg")]
         self.rawr = [pygame.mixer.Sound("sound/4511__noisecollector__dragon7.wav"), pygame.mixer.Sound("sound/85568__joelaudio__dragon-roar.wav")]
         self.hit = [pygame.mixer.Sound("sound/38156__jcambs1990__stomp-that.ogg")]

@@ -16,13 +16,15 @@ class main_menu():
         self._start_text = self.font.render("Start Game", 1, (255, 255, 255))
         self._exit_text = self.font.render("Exit Game", 1, (255, 255, 255))
         self._options_text = self.font.render("Options", 1, (255, 255, 255))
+        self._restart_text = self.font.render("Restart Game", 1, (255, 255, 255))
         self.selected = 0
-        self._options = [self._start_text, self._options_text, self._exit_text]
+        self._options = [self._start_text, self._options_text, self._exit_text, self._restart_text]
         self.clock = pygame.time.Clock()
         self.image = pygame.image.load("img/menu_background_proxy.png").convert()
         self.selector = pygame.image.load("img/selector_proxy.png").convert_alpha()
         self._rotate_duration = 1500
         self._rotate_progress = 0
+        self.restart_game = False
 
     def run(self, surface):
         self.state = main_menu.RUNNING
@@ -57,6 +59,9 @@ class main_menu():
                         sub_menu.run(surface)
                     if (self.selected == 2): #end game
                         self._game.exit_game()
+                    if (self.selected == 3):
+                        self.restart_game = True
+                        self.state = main_menu.FINISHED
 
     def display(self, surface):
         self.draw_background(surface)

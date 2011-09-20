@@ -53,13 +53,14 @@ class game():
         self.player_killed = False
         self.deaddraw = True
         self.deaddrawnum = 0 #a counter to make the player flicker when respawning
-        self.font24 = pygame.font.Font(None, 24) #Temp Font
+        self.font32 = pygame.font.Font(None, 32) #Temp Font
         #final boss stuff
         #self.bad_koi = evil_koi(self.windowx)
         self.bad_projectiles = []
         self.music = game_music()
         self.distance_bar = generic_bar(0, 20000, (0,0,0), (255,255,255), 620, 100, 20, 300)
         self.energy_bar = generic_bar(0, 300, (255,0,0), (255,255,255), 645, 100, 20, 300)
+        self.dont_exit = True
 
     def interp_enemies(self, enemy_txt):
         """translate enemies.txt input into a list of lists"""
@@ -77,12 +78,13 @@ class game():
             new_data.append([int(someline[0]), someline[1], int(someline[2])]) #2D Array!
         return new_data
 
-    def run(self):
+    def run(self, already_run):
         """Begin running the game"""
-        the_menu = main_menu(self)
-        the_menu.run(self.screen)
+        if (not already_run):
+            the_menu = main_menu(self)
+            the_menu.run(self.screen)
         self.clock.tick()
-        while True:
+        while self.dont_exit:
             self.handle_events()
             self.update()
             self.draw()
@@ -140,7 +142,7 @@ class game():
         #self.player.draw(self.screen)
         #Text Engine
         for txt in self.text_list:
-            txtsurf = self.font24.render("%s"%txt[0], 1, (255,0,255), (255,255,0))
+            txtsurf = self.font32.render("%s"%txt[0], 1, (255,255,255), (0,0,0))
             txtrect = txtsurf.get_rect()
             txtrect.center = (300, self.windowy-40)
             self.screen.blit(txtsurf, txtrect)
@@ -157,7 +159,7 @@ class game():
                 self.music.play_hit()
                 self.player_killed = False
                 if self.lives < 0:
-                    txtsurf = self.font24.render("GAME OVER", 1, (255,0,255), (255,255,0))
+                    txtsurf = self.font32.render("GAME OVER", 1, (255,255,255), (0,0,0))
                     txtrect = txtsurf.get_rect()
                     txtrect.center = (300, self.windowy/2)
                     self.screen.blit(txtsurf, txtrect)
@@ -337,6 +339,8 @@ class game():
     def activate_menu(self):
         m = main_menu(self)
         m.run(self.screen)
+        if (m.restart_game):
+            self.dont_exit = False
                     
     def exit_game(self):
         """Exit the game"""
