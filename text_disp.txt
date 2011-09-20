@@ -1,11 +1,17 @@
-0,Hello World! Press spacebar to attack!,1000
-1000,Try hitting this log,2000
-3000,Your bubble can only move logs. It can't destroy them.,2000
-5000,Avoid the panda! Roll to the left or right by pressing Q or E,2000
-7500,Press R to enter dragon mode!,2000
-10000,Your shot is more powerful while in dragon form!,2000
-12500,Large pandas are unaffected by your attacks,2000
-15000,You can destroy rocks using your dragon form's fireball attack,2000
-17000,Rolling and entering dragon form both require energy,2000
-19000,Use your energy wisely and you may reach the end!,2000
-22000,Good luck!,2000
+0,Welcome to Koi!,1000
+1000,For all of your life you have lived in a small pond...,2000
+3000,But unescapable urges have struck!,2000
+5000,It's Mating Season!,2000
+9000,So now you find yourself swimming upstream...,2000
+10000,...looking for a suitable lady koi!,2000
+12000,But there are many obstacles in the way!,1000
+14000,Quick! Press spacebar to blow bubbles at the log!,2000
+16000,Your bubble can only move logs. It can't destroy them.,2000
+18000,Avoid the panda! Roll to the left or right by pressing Q or E,2000
+20000,Press R to enter dragon mode!,2000
+22000,Your shot is more powerful while in dragon form!,2000
+24000,Large pandas are unaffected by your attacks,2000
+26000,You can destroy rocks using your dragon form's fireball attack,2000
+28000,Rolling and entering dragon form both require energy,2000
+30000,Use your energy wisely and you may reach the end!,2000
+32000,Good luck!,2000

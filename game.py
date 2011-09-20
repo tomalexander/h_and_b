@@ -34,7 +34,7 @@ class game():
         self.sbear_list = []
         self.wbear_list = []
         self.boss = None
-        self.lives = 3
+        self.lives = 6
         self.last_death = -2000
         self.immortal_time = 2000
         self.player = player(self.windowx)
@@ -134,7 +134,7 @@ class game():
         self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
         #Lives
         for i in range(self.lives):
-            self.screen.blit(self.heartimg, pygame.Rect(self.windowx - 80 + 8+24*i, self.windowy - 20, 16, 16))
+            self.screen.blit(self.heartimg, pygame.Rect(self.windowx - 80 + 8+24*(i%3), self.windowy - 44 +24*(i/3), 16, 16))
         self.distance_bar.set_value(self.distance)
         self.distance_bar.draw(self.screen)
         self.energy_bar.set_value(self.player.energy)
