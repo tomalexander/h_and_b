@@ -10,6 +10,7 @@ from water_bear import water_bear
 from side_bear import side_bear
 from evil_koi import evil_koi
 from sound import game_music
+from generic_bar import generic_bar
 
 import math
 
@@ -55,6 +56,8 @@ class game():
         #self.bad_koi = evil_koi(self.windowx)
         self.bad_projectiles = []
         self.music = game_music()
+        self.distance_bar = generic_bar(0, 20000, (0,0,0), (255,255,255), 620, 100, 20, 300)
+        self.energy_bar = generic_bar(0, 400, (255,0,0), (255,255,255), 645, 100, 20, 300)
 
     def interp_enemies(self, enemy_txt):
         """translate enemies.txt input into a list of lists"""
@@ -113,14 +116,10 @@ class game():
         #Lives
         for i in range(self.lives):
             self.screen.blit(self.heartimg, pygame.Rect(self.windowx - 80 + 8+24*i, self.windowy - 20, 16, 16))
-        energynum = self.font24.render("E: %i"%self.player.energy, 1, (255,0,255), (255,255,0))
-        energyrect = energynum.get_rect()
-        energyrect.center = (self.windowx-40, self.windowy-80)
-        self.screen.blit(energynum, energyrect)
-        distnum = self.font24.render("D: %i"%self.distance, 1, (255,0,255), (255,255,0))
-        distrect = distnum.get_rect()
-        distrect.center = (self.windowx-40, self.windowy-120)
-        self.screen.blit(distnum, distrect)
+        self.distance_bar.set_value(self.distance)
+        self.distance_bar.draw(self.screen)
+        self.energy_bar.set_value(self.player.energy)
+        self.energy_bar.draw(self.screen)
         self.player.draw(self.screen)
         #Enemy Draws:
         for e in self.debris_list:
