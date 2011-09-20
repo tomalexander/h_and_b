@@ -290,6 +290,7 @@ class game():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.activate_menu()
+                    self.clock.tick()
 		#KOI CONTROLS (pardon the intrusion)
 				#movement
                 if event.key in self.key_bindings.up:
