@@ -38,6 +38,8 @@ class player(object):
         FrameRate = FrameRate/100
         
         self.energy += 1
+        if self.energy > 300:
+            self.energy = 300
         
         #we're going to move if we aren't in the middle of a roll
         self.barrel_lock = self.barrel_roll(FrameRate)
