@@ -1,2 +1,11 @@
-1000,Hello World!,1000
-3000,More Testing!,500
+0,Hello World! Press spacebar to attack!,1000
+1000,Try hitting this log,2000
+3000,Your bubble can only move logs. It can't destroy them.,2000
+5000,Avoid the panda! Roll to the left or right by pressing Q or R,2000
+7500,Press R to enter dragon mode!,2000
+10000,Your shot is more powerful while in dragon form!,2000
+12500,Large pandas are unaffected by your attacks,2000
+15000,You can destroy rocks using your dragon form's fireball attack,2000
+17000,Rolling and entering dragon form both require energy,2000
+19000,Use your energy wisely and you may reach the end!,2000
+22000,Good luck!,2000
