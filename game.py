@@ -60,6 +60,7 @@ class game():
         self.music = game_music()
         self.distance_bar = generic_bar(0, 20000, (0,0,0), (255,255,255), 620, 100, 20, 300)
         self.energy_bar = generic_bar(0, 300, (255,0,0), (255,255,255), 645, 100, 20, 300)
+        self.dont_exit = True
 
     def interp_enemies(self, enemy_txt):
         """translate enemies.txt input into a list of lists"""
@@ -77,12 +78,13 @@ class game():
             new_data.append([int(someline[0]), someline[1], int(someline[2])]) #2D Array!
         return new_data
 
-    def run(self):
+    def run(self, already_run):
         """Begin running the game"""
-        the_menu = main_menu(self)
-        the_menu.run(self.screen)
+        if (not already_run):
+            the_menu = main_menu(self)
+            the_menu.run(self.screen)
         self.clock.tick()
-        while True:
+        while self.dont_exit:
             self.handle_events()
             self.update()
             self.draw()
@@ -337,6 +339,8 @@ class game():
     def activate_menu(self):
         m = main_menu(self)
         m.run(self.screen)
+        if (m.restart_game):
+            self.dont_exit = False
                     
     def exit_game(self):
         """Exit the game"""
