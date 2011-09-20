@@ -53,7 +53,7 @@ class game():
         self.player_killed = False
         self.deaddraw = True
         self.deaddrawnum = 0 #a counter to make the player flicker when respawning
-        self.font24 = pygame.font.Font(None, 24) #Temp Font
+        self.font32 = pygame.font.Font(None, 32) #Temp Font
         #final boss stuff
         #self.bad_koi = evil_koi(self.windowx)
         self.bad_projectiles = []
@@ -140,7 +140,7 @@ class game():
         #self.player.draw(self.screen)
         #Text Engine
         for txt in self.text_list:
-            txtsurf = self.font24.render("%s"%txt[0], 1, (255,0,255), (255,255,0))
+            txtsurf = self.font32.render("%s"%txt[0], 1, (255,255,255), (0,0,0))
             txtrect = txtsurf.get_rect()
             txtrect.center = (300, self.windowy-40)
             self.screen.blit(txtsurf, txtrect)
@@ -157,7 +157,7 @@ class game():
                 self.music.play_hit()
                 self.player_killed = False
                 if self.lives < 0:
-                    txtsurf = self.font24.render("GAME OVER", 1, (255,0,255), (255,255,0))
+                    txtsurf = self.font32.render("GAME OVER", 1, (255,0,255), (255,255,0))
                     txtrect = txtsurf.get_rect()
                     txtrect.center = (300, self.windowy/2)
                     self.screen.blit(txtsurf, txtrect)
