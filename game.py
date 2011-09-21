@@ -142,9 +142,9 @@ class game():
         #self.player.draw(self.screen)
         #Text Engine
         for txt in self.text_list:
-            txtsurf = self.font32.render("%s"%txt[0], 1, (255,255,255), (0,0,0))
+            txtsurf = self.font32.render("%s"%txt[0], 1, (0,0,0))
             txtrect = txtsurf.get_rect()
-            txtrect.center = (300, self.windowy-40)
+            txtrect.center = (300, self.windowy-160)
             self.screen.blit(txtsurf, txtrect)
         
     def update(self):
@@ -159,7 +159,7 @@ class game():
                 self.music.play_hit()
                 self.player_killed = False
                 if self.lives < 0:
-                    txtsurf = self.font32.render("GAME OVER", 1, (255,255,255), (0,0,0))
+                    txtsurf = self.font32.render("GAME OVER", 1, (0,0,0))
                     txtrect = txtsurf.get_rect()
                     txtrect.center = (300, self.windowy/2)
                     self.screen.blit(txtsurf, txtrect)
