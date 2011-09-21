@@ -36,6 +36,7 @@ class player(object):
         self.frame = 0
         self.windowx = windowx
         self.game = game
+        self.death_time = 0.0
 		
     def update(self, FrameRate):
         """handles input"""
@@ -275,6 +276,15 @@ class player(object):
         
         if self.rect.top > 400:
             self.rect.top = 400
+    
+    def death_animation(self, FrameRate):
+        FrameRate = FrameRate/100
+        self.death_time += FrameRate
+        if self.death_time < 1.25:
+            self.frame = 1
+        else:
+            self.frame = 2
+        
     
     def draw(self, screen):
         """draws koi"""

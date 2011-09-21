@@ -5,10 +5,10 @@ class lady_koi(object):
     """the player's koi fish"""
     def __init__(self, windowx):
         #pygame.sprite.Sprite.__init__(self) #call Sprite initializer
-        self.image = pygame.image.load("img/koi_f.png")
+        self.image = pygame.image.load("img/koi_f.png").convert_alpha()
         self.rect = self.image.get_rect()
         #move koi to the middle of the screen
-        self.rect.move_ip(284, 0)
+        self.rect.move_ip(300, 0)
         self.xvel = 35
         self.yvel = 35
         self.windowx = windowx
