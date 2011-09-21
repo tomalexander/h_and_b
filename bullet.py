@@ -46,6 +46,9 @@ class fireball(object):
         self.angle = ang
         self.xvel = 150
         self.yvel = 150
+        if ang == -math.pi/2:
+            self.image = pygame.transform.flip(self.image, False, True)
+        
     
     def update(self, FrameRate):
         """updates fireball"""
