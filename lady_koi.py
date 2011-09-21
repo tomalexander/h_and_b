@@ -22,7 +22,7 @@ class lady_koi(object):
    
     #MOVEMENT
     def move(self, FrameRate):
-        if self.rect.bottom > 400
+        if self.rect.bottom > 400:
             self.rect.move_ip(0, self.xvel*FrameRate)
         
         
