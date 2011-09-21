@@ -11,6 +11,7 @@ from side_bear import side_bear
 from evil_koi import evil_koi
 from sound import game_music
 from generic_bar import generic_bar
+from lady_koi import lady_koi
 
 import math
 
