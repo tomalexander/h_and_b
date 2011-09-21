@@ -109,7 +109,7 @@ class game():
 
     def set_up_screen(self):
         """Initialize the window"""
-        self.screen = pygame.display.set_mode((self.windowx, self.windowy))
+        self.screen = pygame.display.set_mode((self.windowx, self.windowy), pygame.FULLSCREEN)
         pygame.display.set_caption("Finding Nema")
         pygame.mouse.set_visible(0)
     
