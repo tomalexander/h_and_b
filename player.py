@@ -31,6 +31,7 @@ class player(object):
         self.dragon_pre_lock = False
         self.dragon_cooldown = 0.0
         self.dragon_prereq = 300
+        self.dragon_flag = False
         #animation utilities
         self.frame = 0
         self.windowx = windowx
@@ -198,7 +199,7 @@ class player(object):
     
     def pre_dragon(self, FrameRate):
         #disable dragon mode if they don't have enough energy
-        if self.energy < self.dragon_prereq:
+        if self.energy < self.dragon_prereq and not self.dragon_flag:
             self.dragon = False
             return
         if self.dragon_prescene >= 30:
@@ -218,29 +219,28 @@ class player(object):
     #ACTIVATING AND DEACTIVATING DRAGON MODE
     def dragon_mode(self, FrameRate):
         self.dragon_pre_lock = True
-        #disable dragon mode if they don't have enough energy
-        if self.energy < self.dragon_prereq:
-            self.dragon = False
+        self.dragon_flag = True
         #activate dragon mode
+        self.rect.width = 48
+        self.rect.height = 96
+        self.dragon_cooldown += FrameRate
+        self.energy -= 6.5
+        #do animations
+        if self.dragon_cooldown % 30 < 15:
+            self.frame = 1
         else:
-            self.rect.width = 48
-            self.rect.height = 96
-            self.dragon_cooldown += FrameRate
-            #do animations
-            if self.dragon_cooldown % 30 < 15:
-                self.frame = 1
-            else:
-                self.frame = 0
-            #deactivate dragon mode
-            if self.dragon_cooldown > 50.0:
-                self.energy = 0.0
-                self.frame = 0
-                self.dragon = False
-                self.dragon_cooldown = 0
-                self.rect.width = 32
-                self.rect.height = self.images[0].get_rect().height
-                self.dragon_prescene = 0
-                self.dragon_pre_lock = False
+            self.frame = 0
+        #deactivate dragon mode
+        if self.dragon_cooldown > 50.0:
+            self.energy = 0.0
+            self.frame = 0
+            self.dragon = False
+            self.dragon_cooldown = 0
+            self.rect.width = 32
+            self.rect.height = self.images[0].get_rect().height
+            self.dragon_prescene = 0
+            self.dragon_flag = False
+            self.dragon_pre_lock = False
 
     def handle_shoot(self, FrameRate):
         self.shoot_cooldown -= FrameRate
@@ -248,7 +248,6 @@ class player(object):
             self.shoot_cooldown = 0.0
         
         if self.shoot == True and self.shoot_cooldown == 0.0:
-            self.energy +=1
             if not self.dragon:
                 self.game.music.play_drop()
                 new_bullet = bullet(self.rect.left+16, self.rect.top, math.pi/2)
