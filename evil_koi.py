@@ -125,7 +125,7 @@ class evil_koi(object):
             if not self.dragon:
                 new_bullet = bullet(self.rect.left+16, self.rect.bottom, -math.pi/2)
                 self.bad_projectiles.append(new_bullet)
-                self.shoot_cooldown = 6.0d
+                self.shoot_cooldown = 6.0
             else:
                 new_fireball = fireball(self.rect.left+16, self.rect.bottom, -math.pi/2)
                 self.bad_projectiles.append(new_fireball)

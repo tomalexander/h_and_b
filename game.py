@@ -272,7 +272,7 @@ class game():
     
     def handle_collision(self, projectiles):
         #check to see if bullets hit anything
-        for bullet in projectiles:
+        for b, bullet in enumerate(projectiles):
             for i, trash in enumerate(self.debris_list):
                 if bullet.rect.colliderect(trash.rect):
                     if bullet.type == "fireball":
@@ -291,7 +291,7 @@ class game():
                     projectiles.pop(i)
                 else:
                     self.boss.take_damage(5)
-                    projectiles.pop(i)
+                    projectiles.pop(b)
         
 
         #do player collision
@@ -311,6 +311,10 @@ class game():
             for wbear in self.wbear_list:
                 if trash.rect.colliderect(wbear.rect):
                     trash.displace(wbear.rect)
+            for sbear in self.sbear_list:
+                if trash.rect.colliderect(sbear.rect):
+                    trash.displace(sbear.rect)
+            
         if not self.player.barrel_lock:
             for k, rock in enumerate(self.rock_list):
                 if self.player.rect.colliderect(rock.rect):
