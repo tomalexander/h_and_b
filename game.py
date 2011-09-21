@@ -34,6 +34,9 @@ class game():
         self.sbear_list = []
         self.wbear_list = []
         self.boss = None
+        self.boss_killed = False
+        self.boss_spawned = False
+        self.lady_spawned = False
         self.lives = 6
         self.last_death = -2000
         self.immortal_time = 2000
@@ -188,6 +191,7 @@ class game():
                     self.wbear_list.append(rdyenemy)
                 elif enemy[1] == "evil_koi":
                     self.boss = evil_koi(self.windowx)
+                    self.boss_spawned = True
                 else:
                     print "INVALID ENEMY!"
                     self.exit_game()
@@ -204,6 +208,13 @@ class game():
             wbr.update(self.time_since_last_frame)
         if self.boss != None:
             self.bad_projectiles = self.boss.update(self.time_since_last_frame)
+            if self.boss.health <= 0:
+                self.boss_killed = True
+                self.boss = None
+        #If self.boss_killed, then spawn a lady koi
+        if self.boss_killed and not(self.lady_spawned):
+            lady_koi(self.windowx)
+            self.lady_spawned = True
         #3. Remove Enemies that are off screen
         for en in self.debris_list:
             if not(self.screen_rect.colliderect(en.rect)):
@@ -293,27 +304,27 @@ class game():
                 if event.key == pygame.K_ESCAPE:
                     self.activate_menu()
                     self.clock.tick()
-		#KOI CONTROLS (pardon the intrusion)
-				#movement
-                if event.key in self.key_bindings.up:
-                    self.player.moving[0] = True
-                if event.key in self.key_bindings.down:
-                    self.player.moving[1] = True
-                if event.key in self.key_bindings.left:
-                    self.player.moving[2] = True
-                if event.key in self.key_bindings.right:
-                    self.player.moving[3] = True
-				#abilities
-                if event.key in self.key_bindings.barrel_left:
-                    self.player.barrel[0] = True
-                if event.key in self.key_bindings.barrel_right:
-                    self.player.barrel[1] = True
-                if event.key in self.key_bindings.shoot:
-                    self.player.shoot = True
-                if event.key in self.key_bindings.dragon:
-                    self.player.dragon = True
-                    if self.player.energy >= self.player.dragon_prereq:
-                        self.music.play_rawr()
+                if not(self.boss_killed):
+                    #movement
+                    if event.key in self.key_bindings.up:
+                        self.player.moving[0] = True
+                    if event.key in self.key_bindings.down:
+                        self.player.moving[1] = True
+                    if event.key in self.key_bindings.left:
+                        self.player.moving[2] = True
+                    if event.key in self.key_bindings.right:
+                        self.player.moving[3] = True
+                    #abilities
+                    if event.key in self.key_bindings.barrel_left:
+                        self.player.barrel[0] = True
+                    if event.key in self.key_bindings.barrel_right:
+                        self.player.barrel[1] = True
+                    if event.key in self.key_bindings.shoot:
+                        self.player.shoot = True
+                    if event.key in self.key_bindings.dragon:
+                        self.player.dragon = True
+                        if self.player.energy >= self.player.dragon_prereq:
+                            self.music.play_rawr()
             if event.type == pygame.KEYUP:
 				#cancelling movement
                 if event.key in self.key_bindings.up:
