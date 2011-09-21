@@ -17,7 +17,7 @@ class lady_koi(object):
         """handles input"""
         FrameRate = FrameRate/100
         
-        move(FrameRate):
+        self.move(FrameRate)
 
    
     #MOVEMENT
