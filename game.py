@@ -300,7 +300,7 @@ class game():
                 if bullet.rect.colliderect(trash.rect):
                     if bullet.type == "fireball":
                         self.debris_list.pop(i)
-                        for i in range(30):
+                        for i in range(300):
                             self.particle_list.append(fire_particle(self, bullet.rect.centerx, bullet.rect.centery))
                     else:
                         trash.displace(bullet.rect)
@@ -310,7 +310,7 @@ class game():
                 if bullet.rect.colliderect(rock.rect):
                     if bullet.type == "fireball":
                         self.rock_list.pop(k)
-                        for i in range(30):
+                        for i in range(300):
                             self.particle_list.append(fire_particle(self, bullet.rect.centerx, bullet.rect.centery))
                     else:
                         for i in range(30):
@@ -319,7 +319,7 @@ class game():
                 if bullet.rect.colliderect(wbear.rect):
                     if bullet.type == "fireball":
                         self.wbear_list.pop(j)
-                        for i in range(30):
+                        for i in range(300):
                             self.particle_list.append(fire_particle(self, bullet.rect.centerx, bullet.rect.centery))
                     else:
                         for i in range(30):
@@ -328,7 +328,7 @@ class game():
                 if bullet.type == "fireball":
                     self.boss.take_damage(10)
                     projectiles.pop(b)
-                    for i in range(30):
+                    for i in range(300):
                             self.particle_list.append(fire_particle(self, bullet.rect.centerx, bullet.rect.centery))
                 else:
                     self.boss.take_damage(5)
