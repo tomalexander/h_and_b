@@ -51,7 +51,7 @@ class game():
         #self.landimgr = pygame.transform.rotate(self.landimgl, 180)
         self.landimgl = pygame.image.load("img/good_grass_left.png").convert_alpha()
         self.landimgr = pygame.image.load("img/good_grass_right.png").convert_alpha()
-        self.sidebarimg = pygame.image.load("img/sidebarproxy.png").convert()
+        self.sidebarimg = pygame.image.load("img/sidebar.png").convert()
         self.heartimg = pygame.image.load("img/heart.png").convert_alpha()
         self.key_bindings = key_bindings()
         self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
@@ -120,7 +120,7 @@ class game():
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2, landrectr.width, landrectr.height))
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2 - landrectr.height, landrectr.width, landrectr.height))
         #Player
-        if self.distance > self.last_death + self.immortal_time or self.deaddraw:
+        if self.distance > self.last_death + self.immortal_time or self.deaddraw or self.killedforealz:
             self.player.draw(self.screen)
         self.deaddrawnum += 1
         if self.deaddrawnum > 10:
