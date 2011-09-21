@@ -13,6 +13,7 @@
 40000,You can use R to go into DRAGON MODE!,3000
 43000,Use it to destroy obstacles in your way!,2000
 45000,(This uses energy so watch out!),2000
+53000,Oh no! A wall of rocks!,2000
 60000,As you go further upstream... Look Out!,2000
 62000,There are vicious pandas on the shores!,2000
 90000,What is that?! Pandas in the water?!,3000
