@@ -288,7 +288,7 @@ class game():
             if self.boss != None and bullet.rect.colliderect(self.boss.rect):
                 if bullet.type == "fireball":
                     self.boss.take_damage(10)
-                    projectiles.pop(i)
+                    projectiles.pop(b)
                 else:
                     self.boss.take_damage(5)
                     projectiles.pop(b)
