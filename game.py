@@ -39,7 +39,7 @@ class game():
         self.boss_spawned = False
         self.lady_spawned = False
         self.lady_koi = None
-        self.lives = 60
+        self.lives = 6
         self.last_death = -2000
         self.immortal_time = 2000
         self.player = player(self.windowx, self)
@@ -56,6 +56,7 @@ class game():
         self.key_bindings = key_bindings()
         self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
         self.player_killed = False
+        self.killedforealz = False
         self.deaddraw = True
         self.deaddrawnum = 0 #a counter to make the player flicker when respawning
         self.font32 = pygame.font.Font(None, 32) #Temp Font
@@ -158,9 +159,29 @@ class game():
     def update(self):
         """Update every frame"""
         self.distance += self.time_since_last_frame * self.worldspeed
-        projectiles = self.player.update(self.time_since_last_frame)
+        projectiles = []
+        if self.lives < 0:
+            self.player.death_animation(self.time_since_last_frame)
+        else:
+            projectiles = self.player.update(self.time_since_last_frame)
+        if self.lives < 0 and self.death_time + 2000 < self.distance:
+            txtsurf = self.font32.render("GAME OVER", 1, (0,0,0))
+            txtrect = txtsurf.get_rect()
+            txtrect.center = (300, self.windowy/2)
+            self.screen.blit(txtsurf, txtrect)
+            pygame.display.flip()
+            pygame.time.wait(2000)
+            self.exit_game()
         if self.boss_killed:
             self.player.move_to_mid(self.time_since_last_frame)
+        if self.lady_spawned and self.lady_time + 2000 < self.distance:
+            txtsurf = self.font32.render("YOU WIN", 1, (0,0,0))
+            txtrect = txtsurf.get_rect()
+            txtrect.center = (300, self.windowy/2)
+            self.screen.blit(txtsurf, txtrect)
+            pygame.display.flip()
+            pygame.time.wait(2000)
+            self.exit_game()
         #If player is dead, deal with lives
         if self.player_killed == True:
             if self.distance > self.last_death + self.immortal_time:
@@ -168,14 +189,9 @@ class game():
                 self.lives -= 1
                 self.music.play_hit()
                 self.player_killed = False
-                if self.lives < 0:
-                    txtsurf = self.font32.render("GAME OVER", 1, (0,0,0))
-                    txtrect = txtsurf.get_rect()
-                    txtrect.center = (300, self.windowy/2)
-                    self.screen.blit(txtsurf, txtrect)
-                    pygame.display.flip()
-                    pygame.time.wait(2000)
-                    self.exit_game()
+                if self.lives < 0 and not(self.killedforealz):
+                    self.death_time = self.distance
+                    self.killedforealz = True
             else:
                 self.player_killed = False
         #After updating the player, let's deal with enemies
