@@ -12,11 +12,13 @@ class main_menu():
         self.state = main_menu.WAITING
         self.time_since_last_frame = 0
         self._game = _game
+        self.title_font = pygame.font.Font("fonts/Aquanaut.ttf", 96)
         self.font = pygame.font.Font("fonts/SVBasicManual.ttf", 36)
         self._start_text = self.font.render("Start Game", 1, (255, 255, 255))
         self._exit_text = self.font.render("Exit Game", 1, (255, 255, 255))
         self._options_text = self.font.render("Options", 1, (255, 255, 255))
         self._restart_text = self.font.render("Restart Game", 1, (255, 255, 255))
+        self._title_text = self.title_font.render("Finding Nema", 1, (255,255,255))
         self.selected = 0
         self._options = [self._start_text, self._options_text, self._exit_text, self._restart_text]
         self.clock = pygame.time.Clock()
@@ -65,6 +67,8 @@ class main_menu():
 
     def display(self, surface):
         self.draw_background(surface)
+        self.title_pos = self._title_text.get_rect(centerx=surface.get_width()/2, centery=surface.get_height()/8)
+        surface.blit(self._title_text, self.title_pos)
         for i,text in enumerate(self._options):
             vertical_space = 40
             text_pos = text.get_rect(centerx=surface.get_width()/2, centery=surface.get_height()/2 - vertical_space*len(self._options) + vertical_space*i)
