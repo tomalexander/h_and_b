@@ -262,7 +262,7 @@ class player(object):
     
     def draw(self, screen):
         """draws koi"""
-        screen.fill((255,255,255), self.rect)
+        #screen.fill((255,255,255), self.rect)
         if not self.dragon:
             screen.blit(self.images[0], self.rect, pygame.Rect(32*(self.frame), 0, 32, 64))
         elif self.dragon and not self.dragon_pre_lock:

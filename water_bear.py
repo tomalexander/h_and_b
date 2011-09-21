@@ -127,7 +127,7 @@ class water_bear(generic_bear):
             self.image = self.original_image
 
     def draw(self, surface):
-        surface.fill((255,255,255), self.rect)
+        #surface.fill((255,255,255), self.rect)
         self.rotate_bear()
         surface.blit(self.image, self.rect, pygame.Rect(0,0,self.rect.width,self.rect.height))
 
