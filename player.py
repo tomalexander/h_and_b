@@ -263,6 +263,17 @@ class player(object):
             if not projectile.update(FrameRate):
                 self.projectiles.pop(i)
     
+    def move_to_mid(self, FrameRate):
+        FrameRate = FrameRate/100
+    
+        if self.rect.left > 300:
+            self.rect.move_ip(-xvel*FrameRate, yvel*FrameRate)
+        elif self.rect.left < 300:
+            self.rect.move_ip(xvel*FrameRate, yvel*FrameRate)
+            
+        if self.rect.top > 400:
+            self.rect.top = 400
+    
     def draw(self, screen):
         """draws koi"""
         #screen.fill((255,255,255), self.rect)
