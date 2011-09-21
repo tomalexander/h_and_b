@@ -88,7 +88,7 @@ class player(object):
                 #reset utilites
                 self.barrel[4] = 1.0
                 self.barrel[2] = 0.0
-                self.energy -= 50
+                self.energy -= 100
                 return False
             else:
                 #advance animation
@@ -101,7 +101,7 @@ class player(object):
                 #reset utilities
                 self.barrel[4] = 1.0
                 self.barrel[3] = 0.0
-                self.energy -= 50
+                self.energy -= 100
                 return False
             else:
                 #advance animation
