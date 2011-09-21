@@ -14,11 +14,8 @@ class options_menu():
         self.time_since_last_frame = 0
         self._game = _game
         self.font = pygame.font.Font(None, 36)
-        self._start_text = self.font.render("OPTIONS 1", 1, (255, 255, 255))
-        self._exit_text = self.font.render("OPTIONS 2", 1, (255, 255, 255))
-        self._options_text = self.font.render("OPTIONS 3", 1, (255, 255, 255))
         self.selected = 0
-        self._options = [self._start_text, self._options_text, self._exit_text]
+        self._options = []
         self.update_options()
         self.clock = pygame.time.Clock()
         self.image = pygame.image.load("img/menu_background_proxy.png").convert()
