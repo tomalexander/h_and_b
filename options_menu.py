@@ -13,7 +13,7 @@ class options_menu():
         self.state = options_menu.WAITING
         self.time_since_last_frame = 0
         self._game = _game
-        self.font = pygame.font.Font(None, 36)
+        self.font = pygame.font.Font("fonts/SVBasicManual.ttf", 36)
         self.selected = 0
         self._options = []
         self.update_options()

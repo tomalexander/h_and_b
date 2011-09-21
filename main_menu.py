@@ -12,7 +12,7 @@ class main_menu():
         self.state = main_menu.WAITING
         self.time_since_last_frame = 0
         self._game = _game
-        self.font = pygame.font.Font(None, 36)
+        self.font = pygame.font.Font("fonts/SVBasicManual.ttf", 36)
         self._start_text = self.font.render("Start Game", 1, (255, 255, 255))
         self._exit_text = self.font.render("Exit Game", 1, (255, 255, 255))
         self._options_text = self.font.render("Options", 1, (255, 255, 255))
