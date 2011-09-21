@@ -2,10 +2,11 @@ import pygame
 
 class generic_bar():
     """Vertical Bar Class"""
-    def __init__(self, value, maximum, bar_color, border_color, x_position, y_position, width, height):
+    def __init__(self, value, maximum, bar_color, full_bar_color, border_color, x_position, y_position, width, height):
         self.value = value
         self.maximum = maximum
         self.bar_color = bar_color
+        self.full_bar_color = full_bar_color
         self.border_color = border_color
         self.border_rect = pygame.Rect(x_position, y_position, width, height)
         self.bar_rect = self.border_rect.copy()
@@ -38,5 +39,8 @@ class generic_bar():
 
     def draw(self, surface):
         self.update_bar_rect()
-        surface.fill(self.bar_color, self.bar_rect)
+        if (self.value < self.maximum):
+            surface.fill(self.bar_color, self.bar_rect)
+        else:
+            surface.fill(self.full_bar_color, self.bar_rect)
         pygame.draw.rect(surface, self.border_color, self.border_rect, self.border_width)
