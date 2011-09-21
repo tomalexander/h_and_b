@@ -14,6 +14,7 @@ from generic_bar import generic_bar
 from lady_koi import lady_koi
 from fire_particle import fire_particle
 from water_particle import water_particle
+from rock_particle import rock_particle
 
 import math
 
@@ -74,6 +75,7 @@ class game():
         self.lady_time = 0
         self.fire_particle_image = pygame.image.load("img/fire_particle.png").convert_alpha()
         self.water_particle_image = pygame.image.load("img/water_particle.png").convert_alpha()
+        self.rock_particle_image = pygame.image.load("img/rock_particle.png").convert_alpha()
 
     def interp_enemies(self, enemy_txt):
         """translate enemies.txt input into a list of lists"""
@@ -312,6 +314,8 @@ class game():
                         self.rock_list.pop(k)
                         for i in range(300):
                             self.particle_list.append(fire_particle(self, bullet.rect.centerx, bullet.rect.centery))
+                        for i in range(400):
+                            self.particle_list.append(rock_particle(self, rock.rect.centerx, rock.rect.centery))
                     else:
                         for i in range(30):
                             self.particle_list.append(water_particle(self, bullet.rect.centerx, bullet.rect.centery))
