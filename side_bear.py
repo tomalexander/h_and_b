@@ -66,7 +66,7 @@ class side_bear(generic_bear):
             self.paw_rect.y += self.paw_rect.height
 
     def draw(self, surface):
-        surface.fill((255,255,255), self.paw_rect)
+        #surface.fill((255,255,255), self.paw_rect)
         if (self.paw_state == self.PAW_UP):
             surface.blit(self.image, self.rect, pygame.Rect(0,0,self.rect.width, self.rect.height))
         else:
