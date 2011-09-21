@@ -323,9 +323,11 @@ class game():
                     self.player_killed = True
             for x, bullet in enumerate(self.bad_projectiles):
                 if bullet.rect.colliderect(self.player.rect):
-                    self.player_killed = True
+                    if bullet.type != "fireball" and self.player.dragon:
+                        pass
+                    else:
+                        self.player_killed = True
             if self.boss != None and self.boss.rect.colliderect(self.player.rect):
-                self.player_killed = True
 
     def handle_events(self):
         """Handle events (such as key presses)"""

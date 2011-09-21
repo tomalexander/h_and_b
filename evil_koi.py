@@ -23,7 +23,7 @@ class evil_koi(object):
         self.frame = 0
         self.windowx = windowx
         #boss battle flags
-        self.health = 100
+        self.health = 300
         self.retreated = False
         self.chargecooldown = 1.0
         self.strafedir = False
@@ -34,11 +34,11 @@ class evil_koi(object):
         FrameRate = FrameRate/100
         
         #first boss stage
-        if self.health > 60:
+        if self.health > 200:
             self.automove(FrameRate)
             self.shoot(FrameRate)
         #second boss stage
-        elif self.health > 30:
+        elif self.health > 100:
             self.dragon = True
             self.xvel = 35
             self.yvel = 35
