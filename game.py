@@ -61,7 +61,8 @@ class game():
         self.killedforealz = False
         self.deaddraw = True
         self.deaddrawnum = 0 #a counter to make the player flicker when respawning
-        self.font32 = pygame.font.Font(None, 32) #Temp Font
+        #self.font32 = pygame.font.Font(None, 32) #Temp Font
+        self.font32 = pygame.font.Font("fonts/SVBasicManual.ttf", 20)
         self.aqua32 = pygame.font.Font("fonts/Aquanaut.ttf", 40)
         #final boss stuff
         #self.bad_koi = evil_koi(self.windowx)
@@ -157,8 +158,8 @@ class game():
         txtsurf2 = self.aqua32.render("Nema", 1, (0,0,0))
         txtrect = txtsurf.get_rect()
         txtrect2 = txtsurf2.get_rect()
-        txtrect.center = (self.windowx-40, 20)
-        txtrect2.center = (self.windowx-40, 60)
+        txtrect.center = (self.windowx-40, 25)
+        txtrect2.center = (self.windowx-40, 55)
         self.screen.blit(txtsurf, txtrect)
         self.screen.blit(txtsurf2, txtrect2)
         #Text Engine
