@@ -250,12 +250,12 @@ class player(object):
         if self.shoot == True and self.shoot_cooldown == 0.0:
             self.energy +=1
             if not self.dragon:
-                self.game.play_drop()
+                self.game.music.play_drop()
                 new_bullet = bullet(self.rect.left+16, self.rect.top, math.pi/2)
                 self.projectiles.append(new_bullet)
                 self.shoot_cooldown = 2.0
             else:
-                self.game.play_fireball()
+                self.game.music.play_fireball()
                 new_fireball = fireball(self.rect.left+16, self.rect.top, math.pi/2)
                 self.projectiles.append(new_fireball)
                 self.shoot_cooldown = 1.5
