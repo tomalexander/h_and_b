@@ -39,7 +39,7 @@ class game():
         self.boss_spawned = False
         self.lady_spawned = False
         self.lady_koi = None
-        self.lives = 6
+        self.lives = 60
         self.last_death = -2000
         self.immortal_time = 2000
         self.player = player(self.windowx, self)
@@ -308,12 +308,16 @@ class game():
                     trash.spinning = -trash.spinning
                     log.collided = True
                     trash.collided = True
+            #...and everything else
             for wbear in self.wbear_list:
                 if trash.rect.colliderect(wbear.rect):
                     trash.displace(wbear.rect)
             for sbear in self.sbear_list:
                 if trash.rect.colliderect(sbear.rect):
                     trash.displace(sbear.rect)
+            for rock in self.rock_list:
+                if trash.rect.colliderect(rock.rect):
+                    trash.displace(rock.rect)
             
         if not self.player.barrel_lock:
             for k, rock in enumerate(self.rock_list):
