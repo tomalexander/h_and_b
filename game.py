@@ -98,7 +98,7 @@ class game():
     def set_up_screen(self):
         """Initialize the window"""
         self.screen = pygame.display.set_mode((self.windowx, self.windowy))
-        pygame.display.set_caption("A Game With Koi Fish, Bears, Debris, and DRAGON MODE!!!!111!!!11!!!!1one")
+        pygame.display.set_caption("Finding Nema")
         pygame.mouse.set_visible(0)
     
     def draw(self):
@@ -155,6 +155,8 @@ class game():
         """Update every frame"""
         self.distance += self.time_since_last_frame * self.worldspeed
         projectiles = self.player.update(self.time_since_last_frame)
+        if self.boss_killed:
+            self.player.move_to_mid(self.time_since_last_frame)
         #If player is dead, deal with lives
         if self.player_killed == True:
             if self.distance > self.last_death + self.immortal_time:
