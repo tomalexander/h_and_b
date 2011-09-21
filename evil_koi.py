@@ -23,7 +23,7 @@ class evil_koi(object):
         self.frame = 0
         self.windowx = windowx
         #boss battle flags
-        self.health = 100
+        self.health = 5
         self.retreated = False
         self.chargecooldown = 1.0
         self.strafedir = False
@@ -113,8 +113,8 @@ class evil_koi(object):
             self.rect.bottom = 400
             self.yvel = -self.yvel
 
-    def take_damage(self):
-        self.health -= 1
+    def take_damage(self, damage):
+        self.health -= damage
     
     def shoot(self, FrameRate):
         self.shoot_cooldown -= FrameRate
