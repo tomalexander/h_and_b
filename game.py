@@ -120,7 +120,7 @@ class game():
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2, landrectr.width, landrectr.height))
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2 - landrectr.height, landrectr.width, landrectr.height))
         #Player
-        if self.distance > self.last_death + self.immortal_time or self.deaddraw or self.deadforealz:
+        if self.distance > self.last_death + self.immortal_time or self.deaddraw or self.killedforealz:
             self.player.draw(self.screen)
         self.deaddrawnum += 1
         if self.deaddrawnum > 10:
