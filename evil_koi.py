@@ -11,8 +11,8 @@ class evil_koi(object):
         self.energy = 0
         #move evil koi to the middle of the screen
         self.rect.x = 250
-        self.xvel = 35
-        self.yvel = 35
+        self.xvel = 25
+        self.yvel = 25
         self.angle = 5*math.pi/4
         #CONTROL LOCKS
         self.shoot_cooldown = 4.0
@@ -40,8 +40,8 @@ class evil_koi(object):
         #second boss stage
         elif self.health > 30:
             self.dragon = True
-            self.xvel = 40
-            self.yvel = 40
+            self.xvel = 35
+            self.yvel = 35
             self.strafe(FrameRate)
             self.shoot(FrameRate)
         #third boss stage

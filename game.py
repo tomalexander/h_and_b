@@ -266,6 +266,9 @@ class game():
                     trash.spinning = -trash.spinning
                     log.collided = True
                     trash.collided = True
+            for wbear in self.wbear_list:
+                if trash.rect.colliderect(wbear.rect):
+                    trash.displace(wbear.rect)
         if not self.player.barrel_lock:
             for k, rock in enumerate(self.rock_list):
                 if self.player.rect.colliderect(rock.rect):
