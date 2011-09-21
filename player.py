@@ -7,7 +7,7 @@ class player(object):
     """the player's koi fish"""
     def __init__(self, windowx, game):
         #pygame.sprite.Sprite.__init__(self) #call Sprite initializer
-        self.images = [pygame.image.load("img/koi.png"), pygame.image.load("img/dragon_sheet.png"), pygame.image.load("img/transform_two.png")]
+        self.images = [pygame.image.load("img/koi.png"), pygame.image.load("img/dragon_sheet.png"), pygame.image.load("img/transform_two.png"), pygame.image.load("img/koi_flip.png")]
         self.rect = self.images[0].get_rect()
         self.rect.width = 32
         self.energy = 0.0
@@ -37,10 +37,19 @@ class player(object):
         self.windowx = windowx
         self.game = game
         self.death_time = 0.0
+        self.regular = True
+        self.frames = 0
 		
     def update(self, FrameRate):
         """handles input"""
         FrameRate = FrameRate/100
+        self.frames += 1
+        
+        if self.regular:
+            if self.frames % 30 < 15:
+                self.frame = 0
+            else:
+                self.frame = 1
         
         self.energy += 0.5
         if self.energy > 300.0:
@@ -91,9 +100,11 @@ class player(object):
                 self.barrel[4] = 1.0
                 self.barrel[2] = 0.0
                 self.energy -= 100
+                self.regular = True
                 return False
             else:
                 #advance animation
+                self.regular = False
                 self.roll_left(FrameRate)
                 return True
         elif self.barrel[3]>0.0 or(self.barrel[1] and self.barrel[2]==0.0 and self.barrel[4]==0.0):
@@ -104,9 +115,11 @@ class player(object):
                 self.barrel[4] = 1.0
                 self.barrel[3] = 0.0
                 self.energy -= 100
+                self.regular = True
                 return False
             else:
                 #advance animation
+                self.regular = False
                 self.roll_right(FrameRate)
                 return True
         #if nothing is going on in here
@@ -207,6 +220,7 @@ class player(object):
             self.dragon_mode(FrameRate)
             return
         #start dragon transform sequence
+        self.regular = False
         self.dragon_prescene += 1
         self.rect.width = 48
         self.rect.height = 96
@@ -242,6 +256,7 @@ class player(object):
             self.dragon_prescene = 0
             self.dragon_flag = False
             self.dragon_pre_lock = False
+            self.regular = True
 
     def handle_shoot(self, FrameRate):
         self.shoot_cooldown -= FrameRate
@@ -289,7 +304,9 @@ class player(object):
     def draw(self, screen):
         """draws koi"""
         #screen.fill((255,255,255), self.rect)
-        if not self.dragon:
+        if not self.dragon and not self.barrel_lock:
+            screen.blit(self.images[3], self.rect, pygame.Rect(32*(self.frame), 0, 32, 64))
+        elif not self.dragon:
             screen.blit(self.images[0], self.rect, pygame.Rect(32*(self.frame), 0, 32, 64))
         elif self.dragon and not self.dragon_pre_lock:
             screen.blit(self.images[2], self.rect, pygame.Rect(48*(self.frame), 0, 48, 96))
