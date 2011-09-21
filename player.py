@@ -39,6 +39,7 @@ class player(object):
         self.death_time = 0.0
         self.regular = True
         self.frames = 0
+        self.death = False
 		
     def update(self, FrameRate):
         """handles input"""
@@ -294,7 +295,10 @@ class player(object):
     
     def death_animation(self, FrameRate):
         FrameRate = FrameRate/100
+        self.death = True
         self.death_time += FrameRate
+        self.regular = False
+        self.rect.move_ip(0, 25*FrameRate)
         if self.death_time < 1.25:
             self.frame = 1
         else:
@@ -304,7 +308,9 @@ class player(object):
     def draw(self, screen):
         """draws koi"""
         #screen.fill((255,255,255), self.rect)
-        if not self.dragon and not self.barrel_lock:
+        if self.death:
+            screen.blit(self.images[0], self.rect, pygame.Rect(32*(self.frame), 0, 32, 64))
+        elif not self.dragon and not self.barrel_lock:
             screen.blit(self.images[3], self.rect, pygame.Rect(32*(self.frame), 0, 32, 64))
         elif not self.dragon:
             screen.blit(self.images[0], self.rect, pygame.Rect(32*(self.frame), 0, 32, 64))
