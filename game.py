@@ -155,6 +155,8 @@ class game():
         """Update every frame"""
         self.distance += self.time_since_last_frame * self.worldspeed
         projectiles = self.player.update(self.time_since_last_frame)
+        if self.boss_killed:
+            self.player.move_to_mid(self.time_since_last_frame)
         #If player is dead, deal with lives
         if self.player_killed == True:
             if self.distance > self.last_death + self.immortal_time:

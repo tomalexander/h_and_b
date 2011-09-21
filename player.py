@@ -88,7 +88,7 @@ class player(object):
                 #reset utilites
                 self.barrel[4] = 1.0
                 self.barrel[2] = 0.0
-                self.energy -= 50
+                self.energy -= 100
                 return False
             else:
                 #advance animation
@@ -101,7 +101,7 @@ class player(object):
                 #reset utilities
                 self.barrel[4] = 1.0
                 self.barrel[3] = 0.0
-                self.energy -= 50
+                self.energy -= 100
                 return False
             else:
                 #advance animation
@@ -267,9 +267,9 @@ class player(object):
         FrameRate = FrameRate/100
     
         if self.rect.left > 300:
-            self.rect.move_ip(-xvel*FrameRate, yvel*FrameRate)
+            self.rect.move_ip(-self.xvel*FrameRate, self.yvel*FrameRate)
         elif self.rect.left < 300:
-            self.rect.move_ip(xvel*FrameRate, yvel*FrameRate)
+            self.rect.move_ip(self.xvel*FrameRate, self.yvel*FrameRate)
             
         if self.rect.top > 400:
             self.rect.top = 400
