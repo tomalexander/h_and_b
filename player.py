@@ -224,7 +224,7 @@ class player(object):
         self.rect.width = 48
         self.rect.height = 96
         self.dragon_cooldown += FrameRate
-        self.energy -= 6.5
+        self.energy -= 1.5
         #do animations
         if self.dragon_cooldown % 30 < 15:
             self.frame = 1
@@ -270,6 +270,9 @@ class player(object):
         elif self.rect.left < 300:
             self.rect.move_ip(self.xvel*FrameRate, self.yvel*FrameRate)
             
+        if self.rect.left > 280 and self.rect.left < 320:
+            self.rect.left = 300
+        
         if self.rect.top > 400:
             self.rect.top = 400
     

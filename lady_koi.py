@@ -29,6 +29,6 @@ class lady_koi(object):
     def draw(self, screen):
         """draws koi"""
         screen.fill((255,255,255), self.rect)
-        screen.blit(self.images[0], self.rect, pygame.Rect(0, 0, 32, 64))
+        screen.blit(self.image, self.rect, pygame.Rect(0, 0, 32, 64))
         
 
