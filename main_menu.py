@@ -71,7 +71,7 @@ class main_menu():
             surface.blit(text, text_pos)
 
         selector_rect = self.selector.get_rect()
-        selector_rect.centerx = surface.get_width()/3
+        selector_rect.centerx = surface.get_width()/3.5
         selector_rect.centery = surface.get_height()/2 - vertical_space*len(self._options) + vertical_space*self.selected
         surface.blit(self.selector, selector_rect)
 
