@@ -9,7 +9,8 @@ class water_bear(generic_bear):
     
     def __init__(self, player, x_position, y_position):
         generic_bear.__init__(self, x_position, y_position)
-        self.image = pygame.image.load("img/panda_swim_down.png")
+        self.original_image = pygame.image.load("img/panda_swim_down.png")
+        self.image = None
         self._max_preperation_time = 500
         self._preperation_time = self._max_preperation_time
         self.substate = None
@@ -119,9 +120,15 @@ class water_bear(generic_bear):
         if (self.get_distance(self.rect.x, self.rect.y, self._original_x, self._original_y) < 20):
             self.state = self.WAITING
 
+    def rotate_bear(self):
+        if (self.rect.centery > self.player.rect.centery):
+            self.image = pygame.transform.flip(self.original_image, False, True)
+        else:
+            self.image = self.original_image
 
     def draw(self, surface):
         surface.fill((255,255,255), self.rect)
+        self.rotate_bear()
         surface.blit(self.image, self.rect, pygame.Rect(0,0,self.rect.width,self.rect.height))
 
     def force_going_home(self):
