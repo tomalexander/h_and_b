@@ -97,7 +97,7 @@ class game():
     def set_up_screen(self):
         """Initialize the window"""
         self.screen = pygame.display.set_mode((self.windowx, self.windowy))
-        pygame.display.set_caption("A Game With Koi Fish, Bears, Debris, and DRAGON MODE!!!!111!!!11!!!!1one")
+        pygame.display.set_caption("Finding Nema")
         pygame.mouse.set_visible(0)
     
     def draw(self):
