@@ -12,6 +12,7 @@ from evil_koi import evil_koi
 from sound import game_music
 from generic_bar import generic_bar
 from lady_koi import lady_koi
+from fire_particle import fire_particle
 
 import math
 
@@ -34,6 +35,7 @@ class game():
         self.rock_list = []
         self.sbear_list = []
         self.wbear_list = []
+        self.particle_list = []
         self.boss = None
         self.boss_killed = False
         self.boss_spawned = False
@@ -69,6 +71,7 @@ class game():
         self.energy_bar = generic_bar(0, 300, (255,0,0), (255,255,255), 645, 100, 20, 300)
         self.dont_exit = True
         self.lady_time = 0
+        self.fire_particle_image = pygame.image.load("img/fire_particle.png").convert_alpha()
 
     def interp_enemies(self, enemy_txt):
         """translate enemies.txt input into a list of lists"""
@@ -168,7 +171,9 @@ class game():
         if self.lady_spawned and self.lady_time + 1000 < self.distance:
             self.screen.blit(self.heartimg, pygame.Rect(292, self.windowy/2 - 16, 16, 16))
             #print "drawing heart at %i, %i"%(292, self.windowy/2)
-            
+        for particle in self.particle_list:
+            particle.draw(self.screen)
+        
     def update(self):
         """Update every frame"""
         self.distance += self.time_since_last_frame * self.worldspeed
@@ -280,6 +285,9 @@ class game():
             if self.distance > txt[1]:
                 #print "removing %s at time %i"%(txt[0], txt[1])
                 self.text_list.pop(i)
+        for particle in self.particle_list:
+            particle.update(self.time_since_last_frame)
+        self.cull_particles()
         #COLLISION
         self.handle_collision(projectiles)
     
@@ -290,6 +298,8 @@ class game():
                 if bullet.rect.colliderect(trash.rect):
                     if bullet.type == "fireball":
                         self.debris_list.pop(i)
+                        for i in range(30):
+                            self.particle_list.append(fire_particle(self, bullet.rect.centerx, bullet.rect.centery))
                     else:
                         trash.displace(bullet.rect)
             for k, rock in enumerate(self.rock_list):
@@ -411,4 +421,8 @@ class game():
         """Exit the game"""
         pygame.quit()
         sys.exit()
+
+    def cull_particles(self):
+        self.particle_list = [x for x in self.particle_list if not x.dead]
+                
  
