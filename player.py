@@ -266,13 +266,13 @@ class player(object):
     def move_to_mid(self, FrameRate):
         FrameRate = FrameRate/100
     
-        if self.rect.left > 300:
+        if self.rect.left > 284:
             self.rect.move_ip(-self.xvel*FrameRate, self.yvel*FrameRate)
-        elif self.rect.left < 300:
+        elif self.rect.left < 284:
             self.rect.move_ip(self.xvel*FrameRate, self.yvel*FrameRate)
             
-        if self.rect.left > 280 and self.rect.left < 320:
-            self.rect.left = 300
+        if self.rect.left > 264 and self.rect.left < 304:
+            self.rect.left = 284
         
         if self.rect.top > 400:
             self.rect.top = 400

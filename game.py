@@ -288,8 +288,10 @@ class game():
             if self.boss != None and bullet.rect.colliderect(self.boss.rect):
                 if bullet.type == "fireball":
                     self.boss.take_damage(10)
+                    projectiles.pop(i)
                 else:
                     self.boss.take_damage(5)
+                    projectiles.pop(i)
         
 
         #do player collision
@@ -328,7 +330,7 @@ class game():
                     else:
                         self.player_killed = True
             if self.boss != None and self.boss.rect.colliderect(self.player.rect):
-                pass
+                self.player_killed = True
 
     def handle_events(self):
         """Handle events (such as key presses)"""
