@@ -260,7 +260,7 @@ class game():
                 if bullet.rect.colliderect(wbear.rect) and bullet.type == "fireball":
                     self.wbear_list.pop(j)
             if self.boss != None and bullet.rect.colliderect(self.boss.rect):
-                if bullet.type == "fireball"
+                if bullet.type == "fireball":
                     self.boss.take_damage(10)
                 else:
                     self.boss.take_damage(5)
