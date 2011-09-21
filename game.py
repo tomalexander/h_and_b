@@ -41,7 +41,7 @@ class game():
         self.lives = 6
         self.last_death = -2000
         self.immortal_time = 2000
-        self.player = player(self.windowx)
+        self.player = player(self.windowx, self)
         self.distance = 0
         self.worldspeed = 1 #distance per ms for river image movement
         self.riverimg = pygame.image.load("img/river1.png").convert()
@@ -348,10 +348,6 @@ class game():
                 if event.key in self.key_bindings.barrel_right:
                     self.player.barrel[1] = True
                 if event.key in self.key_bindings.shoot:
-                    if (self.player.dragon):
-                        self.music.play_fireball()
-                    else:
-                        self.music.play_drop()
                     self.player.shoot = False
 
     def activate_menu(self):
