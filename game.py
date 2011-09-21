@@ -40,6 +40,7 @@ class game():
         self.boss_killed = False
         self.boss_spawned = False
         self.lady_spawned = False
+        self.lady_koi = None
         self.lives = 60
         self.last_death = -2000
         self.immortal_time = 2000
@@ -52,11 +53,12 @@ class game():
         #self.landimgr = pygame.transform.rotate(self.landimgl, 180)
         self.landimgl = pygame.image.load("img/good_grass_left.png").convert_alpha()
         self.landimgr = pygame.image.load("img/good_grass_right.png").convert_alpha()
-        self.sidebarimg = pygame.image.load("img/sidebarproxy.png").convert()
+        self.sidebarimg = pygame.image.load("img/sidebar.png").convert()
         self.heartimg = pygame.image.load("img/heart.png").convert_alpha()
         self.key_bindings = key_bindings()
         self.screen_rect = pygame.Rect(0,0,self.windowx,self.windowy)
         self.player_killed = False
+        self.killedforealz = False
         self.deaddraw = True
         self.deaddrawnum = 0 #a counter to make the player flicker when respawning
         self.font32 = pygame.font.Font(None, 32) #Temp Font
@@ -121,7 +123,7 @@ class game():
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2, landrectr.width, landrectr.height))
         self.screen.blit(self.landimgr, pygame.Rect(self.windowx - 80 - landrectr.width, ydisp2 - landrectr.height, landrectr.width, landrectr.height))
         #Player
-        if self.distance > self.last_death + self.immortal_time or self.deaddraw:
+        if self.distance > self.last_death + self.immortal_time or self.deaddraw or self.killedforealz:
             self.player.draw(self.screen)
         self.deaddrawnum += 1
         if self.deaddrawnum > 10:
@@ -138,11 +140,13 @@ class game():
             e.draw(self.screen)
         if self.boss != None:
             self.boss.draw(self.screen)
+        if self.lady_spawned:
+            self.lady_koi.draw(self.screen)
         #Sidebar Stuff
         self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
         #Lives
         for i in range(self.lives):
-            self.screen.blit(self.heartimg, pygame.Rect(self.windowx - 80 + 8+24*(i%3), self.windowy - 44 +24*(i/3), 16, 16))
+            self.screen.blit(self.heartimg, pygame.Rect(self.windowx - 80 + 8+24*(i%3), self.windowy - 48 +24*(i/3), 16, 16))
         self.distance_bar.set_value(self.distance)
         self.distance_bar.draw(self.screen)
         self.energy_bar.set_value(self.player.energy)
@@ -160,9 +164,29 @@ class game():
     def update(self):
         """Update every frame"""
         self.distance += self.time_since_last_frame * self.worldspeed
-        projectiles = self.player.update(self.time_since_last_frame)
+        projectiles = []
+        if self.lives < 0:
+            self.player.death_animation(self.time_since_last_frame)
+        else:
+            projectiles = self.player.update(self.time_since_last_frame)
+        if self.lives < 0 and self.death_time + 2000 < self.distance:
+            txtsurf = self.font32.render("GAME OVER", 1, (0,0,0))
+            txtrect = txtsurf.get_rect()
+            txtrect.center = (300, self.windowy/2)
+            self.screen.blit(txtsurf, txtrect)
+            pygame.display.flip()
+            pygame.time.wait(2000)
+            self.exit_game()
         if self.boss_killed:
             self.player.move_to_mid(self.time_since_last_frame)
+        if self.lady_spawned and self.lady_time + 2000 < self.distance:
+            txtsurf = self.font32.render("YOU WIN", 1, (0,0,0))
+            txtrect = txtsurf.get_rect()
+            txtrect.center = (300, self.windowy/2)
+            self.screen.blit(txtsurf, txtrect)
+            pygame.display.flip()
+            pygame.time.wait(2000)
+            self.exit_game()
         #If player is dead, deal with lives
         if self.player_killed == True:
             if self.distance > self.last_death + self.immortal_time:
@@ -170,14 +194,9 @@ class game():
                 self.lives -= 1
                 self.music.play_hit()
                 self.player_killed = False
-                if self.lives < 0:
-                    txtsurf = self.font32.render("GAME OVER", 1, (0,0,0))
-                    txtrect = txtsurf.get_rect()
-                    txtrect.center = (300, self.windowy/2)
-                    self.screen.blit(txtsurf, txtrect)
-                    pygame.display.flip()
-                    pygame.time.wait(2000)
-                    self.exit_game()
+                if self.lives < 0 and not(self.killedforealz):
+                    self.death_time = self.distance
+                    self.killedforealz = True
             else:
                 self.player_killed = False
         #After updating the player, let's deal with enemies
@@ -220,9 +239,11 @@ class game():
             if self.boss.health <= 0:
                 self.boss_killed = True
                 self.boss = None
+        if self.lady_spawned:
+            self.lady_koi.update(self.time_since_last_frame)
         #If self.boss_killed, then spawn a lady koi
         if self.boss_killed and not(self.lady_spawned):
-            lady_koi(self.windowx)
+            self.lady_koi = lady_koi(self.windowx)
             self.lady_spawned = True
             self.lady_time = self.distance
         #3. Remove Enemies that are off screen
@@ -259,7 +280,7 @@ class game():
     
     def handle_collision(self, projectiles):
         #check to see if bullets hit anything
-        for bullet in projectiles:
+        for b, bullet in enumerate(projectiles):
             for i, trash in enumerate(self.debris_list):
                 if bullet.rect.colliderect(trash.rect):
                     if bullet.type == "fireball":
@@ -277,8 +298,10 @@ class game():
             if self.boss != None and bullet.rect.colliderect(self.boss.rect):
                 if bullet.type == "fireball":
                     self.boss.take_damage(10)
+                    projectiles.pop(b)
                 else:
                     self.boss.take_damage(5)
+                    projectiles.pop(b)
         
 
         #do player collision
@@ -295,9 +318,17 @@ class game():
                     trash.spinning = -trash.spinning
                     log.collided = True
                     trash.collided = True
+            #...and everything else
             for wbear in self.wbear_list:
                 if trash.rect.colliderect(wbear.rect):
                     trash.displace(wbear.rect)
+            for sbear in self.sbear_list:
+                if trash.rect.colliderect(sbear.rect):
+                    trash.displace(sbear.rect)
+            for rock in self.rock_list:
+                if trash.rect.colliderect(rock.rect):
+                    trash.displace(rock.rect)
+            
         if not self.player.barrel_lock:
             for k, rock in enumerate(self.rock_list):
                 if self.player.rect.colliderect(rock.rect):
@@ -312,7 +343,10 @@ class game():
                     self.player_killed = True
             for x, bullet in enumerate(self.bad_projectiles):
                 if bullet.rect.colliderect(self.player.rect):
-                    self.player_killed = True
+                    if bullet.type != "fireball" and self.player.dragon:
+                        pass
+                    else:
+                        self.player_killed = True
             if self.boss != None and self.boss.rect.colliderect(self.player.rect):
                 self.player_killed = True
 

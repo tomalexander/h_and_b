@@ -36,6 +36,7 @@ class player(object):
         self.frame = 0
         self.windowx = windowx
         self.game = game
+        self.death_time = 0.0
 		
     def update(self, FrameRate):
         """handles input"""
@@ -224,7 +225,7 @@ class player(object):
         self.rect.width = 48
         self.rect.height = 96
         self.dragon_cooldown += FrameRate
-        self.energy -= 6.5
+        self.energy -= 1.5
         #do animations
         if self.dragon_cooldown % 30 < 15:
             self.frame = 1
@@ -265,13 +266,25 @@ class player(object):
     def move_to_mid(self, FrameRate):
         FrameRate = FrameRate/100
     
-        if self.rect.left > 300:
+        if self.rect.left > 284:
             self.rect.move_ip(-self.xvel*FrameRate, self.yvel*FrameRate)
-        elif self.rect.left < 300:
+        elif self.rect.left < 284:
             self.rect.move_ip(self.xvel*FrameRate, self.yvel*FrameRate)
             
+        if self.rect.left > 264 and self.rect.left < 304:
+            self.rect.left = 284
+        
         if self.rect.top > 400:
             self.rect.top = 400
+    
+    def death_animation(self, FrameRate):
+        FrameRate = FrameRate/100
+        self.death_time += FrameRate
+        if self.death_time < 1.25:
+            self.frame = 1
+        else:
+            self.frame = 2
+        
     
     def draw(self, screen):
         """draws koi"""
