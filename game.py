@@ -61,7 +61,7 @@ class game():
         #self.bad_koi = evil_koi(self.windowx)
         self.bad_projectiles = []
         self.music = game_music()
-        self.distance_bar = generic_bar(0, 20000, (0,0,0), (255,255,255), 620, 100, 20, 300)
+        self.distance_bar = generic_bar(0, 200000, (0,0,0), (255,255,255), 620, 100, 20, 300)
         self.energy_bar = generic_bar(0, 300, (255,0,0), (255,255,255), 645, 100, 20, 300)
         self.dont_exit = True
 
