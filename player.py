@@ -7,7 +7,7 @@ class player(object):
     """the player's koi fish"""
     def __init__(self, windowx):
         #pygame.sprite.Sprite.__init__(self) #call Sprite initializer
-        self.images = [pygame.image.load("img/koi.png"), pygame.image.load("img/dragon_sheet.png"), pygame.image.load("img/transform.png")]
+        self.images = [pygame.image.load("img/koi.png"), pygame.image.load("img/dragon_sheet.png"), pygame.image.load("img/transform_two.png")]
         self.rect = self.images[0].get_rect()
         self.rect.width = 32
         self.energy = 0.0

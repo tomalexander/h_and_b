@@ -6,13 +6,13 @@ from bullet import fireball
 class evil_koi(object):
     """the final boss"""
     def __init__(self, windowx):
-        self.images = [pygame.image.load("img/evilkoiproxy.png"), pygame.image.load("img/evildragonproxy.png")]
+        self.images = [pygame.image.load("img/boss_up.png"), pygame.image.load("img/boss_dragon.png")]
         self.rect = self.images[0].get_rect()
         self.energy = 0
         #move evil koi to the middle of the screen
         self.rect.x = 250
-        self.xvel = 35
-        self.yvel = 35
+        self.xvel = 25
+        self.yvel = 25
         self.angle = 5*math.pi/4
         #CONTROL LOCKS
         self.shoot_cooldown = 4.0
@@ -27,6 +27,7 @@ class evil_koi(object):
         self.retreated = False
         self.chargecooldown = 1.0
         self.strafedir = False
+        self.stage = 1
         
         
     def update(self, FrameRate):
@@ -39,8 +40,8 @@ class evil_koi(object):
         #second boss stage
         elif self.health > 30:
             self.dragon = True
-            self.xvel = 70
-            self.yvel = 70
+            self.xvel = 35
+            self.yvel = 35
             self.strafe(FrameRate)
             self.shoot(FrameRate)
         #third boss stage
@@ -115,10 +116,6 @@ class evil_koi(object):
     def take_damage(self):
         self.health -= 1
     
-    def dragon_mode(self, FrameRate):
-        pass
-        
-
     def shoot(self, FrameRate):
         self.shoot_cooldown -= FrameRate
         if self.shoot_cooldown < 0.0:
