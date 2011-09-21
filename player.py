@@ -267,9 +267,9 @@ class player(object):
         FrameRate = FrameRate/100
     
         if self.rect.left > 300:
-            self.rect.move_ip(-xvel*FrameRate, yvel*FrameRate)
+            self.rect.move_ip(-self.xvel*FrameRate, self.yvel*FrameRate)
         elif self.rect.left < 300:
-            self.rect.move_ip(xvel*FrameRate, yvel*FrameRate)
+            self.rect.move_ip(self.xvel*FrameRate, self.yvel*FrameRate)
             
         if self.rect.top > 400:
             self.rect.top = 400
