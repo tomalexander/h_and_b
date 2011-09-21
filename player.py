@@ -199,8 +199,10 @@ class player(object):
         #disable dragon mode if they don't have enough energy
         if self.energy < self.dragon_prereq:
             self.dragon = False
+            return
         if self.dragon_prescene >= 30:
             self.dragon_mode(FrameRate)
+            return
         #start dragon transform sequence
         self.dragon_prescene += 1
         self.rect.width = 48
