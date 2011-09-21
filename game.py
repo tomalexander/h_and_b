@@ -38,7 +38,8 @@ class game():
         self.boss_killed = False
         self.boss_spawned = False
         self.lady_spawned = False
-        self.lives = 6
+        self.lady_koi = None
+        self.lives = 60
         self.last_death = -2000
         self.immortal_time = 2000
         self.player = player(self.windowx, self)
@@ -65,6 +66,7 @@ class game():
         self.distance_bar = generic_bar(0, 200000, (0,0,0), (255,255,255), 620, 100, 20, 300)
         self.energy_bar = generic_bar(0, 300, (255,0,0), (255,255,255), 645, 100, 20, 300)
         self.dont_exit = True
+        self.lady_time = 0
 
     def interp_enemies(self, enemy_txt):
         """translate enemies.txt input into a list of lists"""
@@ -134,6 +136,8 @@ class game():
             e.draw(self.screen)
         if self.boss != None:
             self.boss.draw(self.screen)
+        if self.lady_spawned:
+            self.lady_koi.draw(self.screen)
         #Sidebar Stuff
         self.screen.blit(self.sidebarimg, pygame.Rect(self.windowx - 80, 0, barrect.width, barrect.height))
         #Lives
@@ -214,10 +218,13 @@ class game():
             if self.boss.health <= 0:
                 self.boss_killed = True
                 self.boss = None
+        if self.lady_spawned:
+            self.lady_koi.update(self.time_since_last_frame)
         #If self.boss_killed, then spawn a lady koi
         if self.boss_killed and not(self.lady_spawned):
-            lady_koi(self.windowx)
+            self.lady_koi = lady_koi(self.windowx)
             self.lady_spawned = True
+            self.lady_time = self.distance
         #3. Remove Enemies that are off screen
         for en in self.debris_list:
             if not(self.screen_rect.colliderect(en.rect)):
