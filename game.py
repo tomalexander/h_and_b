@@ -39,7 +39,7 @@ class game():
         self.boss_spawned = False
         self.lady_spawned = False
         self.lady_koi = None
-        self.lives = 60
+        self.lives = 6
         self.last_death = -2000
         self.immortal_time = 2000
         self.player = player(self.windowx, self)
@@ -60,6 +60,7 @@ class game():
         self.deaddraw = True
         self.deaddrawnum = 0 #a counter to make the player flicker when respawning
         self.font32 = pygame.font.Font(None, 32) #Temp Font
+        self.aqua32 = pygame.font.Font("fonts/Aquanaut.ttf", 40)
         #final boss stuff
         #self.bad_koi = evil_koi(self.windowx)
         self.bad_projectiles = []
@@ -149,13 +150,25 @@ class game():
         self.energy_bar.set_value(self.player.energy)
         self.energy_bar.draw(self.screen)
         #self.player.draw(self.screen)
+        txtsurf = self.aqua32.render("Finding", 1, (0,0,0))
+        txtsurf2 = self.aqua32.render("Nema", 1, (0,0,0))
+        txtrect = txtsurf.get_rect()
+        txtrect2 = txtsurf2.get_rect()
+        txtrect.center = (self.windowx-40, 20)
+        txtrect2.center = (self.windowx-40, 60)
+        self.screen.blit(txtsurf, txtrect)
+        self.screen.blit(txtsurf2, txtrect2)
         #Text Engine
         for txt in self.text_list:
             txtsurf = self.font32.render("%s"%txt[0], 1, (0,0,0))
             txtrect = txtsurf.get_rect()
             txtrect.center = (300, self.windowy-160)
             self.screen.blit(txtsurf, txtrect)
-        
+        #Heart at end
+        if self.lady_spawned and self.lady_time + 1000 < self.distance:
+            self.screen.blit(self.heartimg, pygame.Rect(292, self.windowy/2 - 16, 16, 16))
+            #print "drawing heart at %i, %i"%(292, self.windowy/2)
+            
     def update(self):
         """Update every frame"""
         self.distance += self.time_since_last_frame * self.worldspeed
@@ -164,7 +177,7 @@ class game():
             self.player.death_animation(self.time_since_last_frame)
         else:
             projectiles = self.player.update(self.time_since_last_frame)
-        if self.lives < 0 and self.death_time + 2000 < self.distance:
+        if self.lives < 0 and self.death_time + 3000 < self.distance:
             txtsurf = self.font32.render("GAME OVER", 1, (0,0,0))
             txtrect = txtsurf.get_rect()
             txtrect.center = (300, self.windowy/2)
@@ -174,7 +187,7 @@ class game():
             self.exit_game()
         if self.boss_killed:
             self.player.move_to_mid(self.time_since_last_frame)
-        if self.lady_spawned and self.lady_time + 2000 < self.distance:
+        if self.lady_spawned and self.lady_time + 3000 < self.distance:
             txtsurf = self.font32.render("YOU WIN", 1, (0,0,0))
             txtrect = txtsurf.get_rect()
             txtrect.center = (300, self.windowy/2)
