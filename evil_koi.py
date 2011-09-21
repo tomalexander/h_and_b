@@ -40,12 +40,14 @@ class evil_koi(object):
         #second boss stage
         elif self.health > 100:
             self.dragon = True
-            self.xvel = 35
-            self.yvel = 35
+            self.xvel = 30
+            self.yvel = 30
             self.strafe(FrameRate)
             self.shoot(FrameRate)
         #third boss stage
         else:
+            self.xvel = 35
+            self.yvel = 35
             if not self.retreated:
                 self.retreat(FrameRate)
             else:
