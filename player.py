@@ -5,7 +5,7 @@ import math
 
 class player(object):
     """the player's koi fish"""
-    def __init__(self, windowx):
+    def __init__(self, windowx, game):
         #pygame.sprite.Sprite.__init__(self) #call Sprite initializer
         self.images = [pygame.image.load("img/koi.png"), pygame.image.load("img/dragon_sheet.png"), pygame.image.load("img/transform_two.png")]
         self.rect = self.images[0].get_rect()
@@ -34,6 +34,7 @@ class player(object):
         #animation utilities
         self.frame = 0
         self.windowx = windowx
+        self.game = game
 		
     def update(self, FrameRate):
         """handles input"""
@@ -249,10 +250,12 @@ class player(object):
         if self.shoot == True and self.shoot_cooldown == 0.0:
             self.energy +=1
             if not self.dragon:
+                self.game.play_drop()
                 new_bullet = bullet(self.rect.left+16, self.rect.top, math.pi/2)
                 self.projectiles.append(new_bullet)
                 self.shoot_cooldown = 2.0
             else:
+                self.game.play_fireball()
                 new_fireball = fireball(self.rect.left+16, self.rect.top, math.pi/2)
                 self.projectiles.append(new_fireball)
                 self.shoot_cooldown = 1.5
