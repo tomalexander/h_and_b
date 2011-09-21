@@ -189,7 +189,7 @@ class game():
                 self.lives -= 1
                 self.music.play_hit()
                 self.player_killed = False
-                if self.lives < 0 and not(self.killedforealz)
+                if self.lives < 0 and not(self.killedforealz):
                     self.death_time = self.distance
                     self.killedforealz = True
             else:
@@ -328,6 +328,7 @@ class game():
                     else:
                         self.player_killed = True
             if self.boss != None and self.boss.rect.colliderect(self.player.rect):
+                pass
 
     def handle_events(self):
         """Handle events (such as key presses)"""
