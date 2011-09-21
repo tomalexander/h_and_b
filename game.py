@@ -13,6 +13,7 @@ from sound import game_music
 from generic_bar import generic_bar
 from lady_koi import lady_koi
 from fire_particle import fire_particle
+from water_particle import water_particle
 
 import math
 
@@ -71,6 +72,7 @@ class game():
         self.dont_exit = True
         self.lady_time = 0
         self.fire_particle_image = pygame.image.load("img/fire_particle.png").convert_alpha()
+        self.water_particle_image = pygame.image.load("img/water_particle.png").convert_alpha()
 
     def interp_enemies(self, enemy_txt):
         """translate enemies.txt input into a list of lists"""
@@ -289,19 +291,37 @@ class game():
                             self.particle_list.append(fire_particle(self, bullet.rect.centerx, bullet.rect.centery))
                     else:
                         trash.displace(bullet.rect)
+                        for i in range(30):
+                            self.particle_list.append(water_particle(self, bullet.rect.centerx, bullet.rect.centery))
             for k, rock in enumerate(self.rock_list):
-                if bullet.rect.colliderect(rock.rect) and bullet.type == "fireball":
-                    self.rock_list.pop(k)
+                if bullet.rect.colliderect(rock.rect):
+                    if bullet.type == "fireball":
+                        self.rock_list.pop(k)
+                        for i in range(30):
+                            self.particle_list.append(fire_particle(self, bullet.rect.centerx, bullet.rect.centery))
+                    else:
+                        for i in range(30):
+                            self.particle_list.append(water_particle(self, bullet.rect.centerx, bullet.rect.centery))
             for j, wbear in enumerate(self.wbear_list):
-                if bullet.rect.colliderect(wbear.rect) and bullet.type == "fireball":
-                    self.wbear_list.pop(j)
+                if bullet.rect.colliderect(wbear.rect):
+                    if bullet.type == "fireball":
+                        self.wbear_list.pop(j)
+                        for i in range(30):
+                            self.particle_list.append(fire_particle(self, bullet.rect.centerx, bullet.rect.centery))
+                    else:
+                        for i in range(30):
+                            self.particle_list.append(water_particle(self, bullet.rect.centerx, bullet.rect.centery))
             if self.boss != None and bullet.rect.colliderect(self.boss.rect):
                 if bullet.type == "fireball":
                     self.boss.take_damage(10)
                     projectiles.pop(b)
+                    for i in range(30):
+                            self.particle_list.append(fire_particle(self, bullet.rect.centerx, bullet.rect.centery))
                 else:
                     self.boss.take_damage(5)
                     projectiles.pop(b)
+                    for i in range(30):
+                            self.particle_list.append(water_particle(self, bullet.rect.centerx, bullet.rect.centery))
         
 
         #do player collision
